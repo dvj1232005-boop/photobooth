@@ -3,621 +3,1089 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Hệ thống trạm chụp ảnh Photobooth chuyên nghiệp thiết kế riêng cho sự kiện Lễ Hội Đền Đô bởi Đăng Tùng.">
-    <meta name="author" content="Đăng Tùng">
-    <meta name="theme-color" content="#090e17">
-    
-    <title>Đăng Tùng Photobooth | Lễ Hội Đền Đô - Enterprise Edition</title>
+    <meta name="description" content="Đăng Tùng Photobooth - Platinum Edition OS">
+    <title>Đăng Tùng Photobooth | Platinum OS</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. THEME VARIABLES --- */
+        /* ==========================================================================
+           [1] DESIGN TOKENS & CSS VARIABLES
+           ========================================================================== */
         :root {
-            --ui-bg-color: #090e17;
-            --ui-surface-color: rgba(15, 23, 42, 0.75);
-            --ui-surface-border: rgba(255, 255, 255, 0.08);
+            --sys-bg: #050505;
+            --sys-surface: rgba(18, 18, 18, 0.85);
+            --sys-surface-border: rgba(255, 255, 255, 0.08);
+            --sys-surface-hover: rgba(40, 40, 40, 0.9);
             
-            --brand-primary: #dc2626;
-            --brand-primary-hover: #b91c1c;
+            --brand-primary: #e11d48;
+            --brand-primary-hover: #be123c;
             --brand-accent: #f59e0b;
+            --brand-accent-hover: #d97706;
             
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             
-            --print-paper-center: #FFF9EB;
-            --print-paper-edge: #E8D5B5;
-            --print-paper-dark: #D8B88C;
-            --print-ink: #3A2618;
-            --print-royal-red: #A61C1C;
-            --print-royal-gold: #C49A00;
-            --print-photo-border: #FFFFFF;
+            --print-classic-bg: #F8F4E6;
+            --print-classic-ink: #2C1E16;
+            --print-classic-red: #9B1C1C;
+            --print-classic-gold: #B48600;
             
-            --font-ui: 'Montserrat', -apple-system, sans-serif;
-            --font-print: 'Cormorant Garamond', 'Times New Roman', serif;
+            --font-ui: 'Montserrat', sans-serif;
+            --font-art: 'Cormorant Garamond', serif;
             
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
-            --spacing-xl: 32px;
+            --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+            --space-5: 24px; --space-6: 32px; --space-7: 48px;
             
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 20px;
-            --radius-xl: 28px;
+            --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px; --radius-full: 9999px;
             
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            --shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            
-            --transition-fast: all 0.15s ease-in-out;
-            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-float: 0 20px 40px -10px rgba(0,0,0,0.5);
+            --shadow-glow: 0 0 30px rgba(245, 158, 11, 0.2);
+            --trans-snappy: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --trans-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* --- 2. GLOBAL RESET --- */
+        /* ==========================================================================
+           [2] GLOBAL RESET & CORE
+           ========================================================================== */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 16px; scroll-behavior: smooth; }
         body {
-            font-family: var(--font-ui); background-color: var(--ui-bg-color); color: var(--text-primary);
-            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; position: relative; line-height: 1.5;
+            font-family: var(--font-ui); background: var(--sys-bg); color: var(--text-main);
+            min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
             -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
         }
 
-        #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.5; }
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.4; pointer-events: none; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--text-main); }
+        button, input, select { font-family: inherit; }
 
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-ui); font-weight: 700; color: var(--text-primary); }
-
-        /* --- 3. NAVIGATION BAR --- */
-        .navbar {
-            width: 100%; padding: var(--spacing-md) var(--spacing-xl); display: flex; justify-content: space-between; align-items: center;
-            background: rgba(9, 14, 23, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--ui-surface-border); z-index: 100; box-shadow: var(--shadow-sm);
+        /* ==========================================================================
+           [3] NAVIGATION & HEADER
+           ========================================================================== */
+        .topbar {
+            width: 100%; padding: var(--space-4) var(--space-6); display: flex; justify-content: space-between;
+            align-items: center; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--sys-surface-border); z-index: 100; position: sticky; top: 0;
         }
-        .brand-container { display: flex; align-items: center; gap: var(--spacing-md); }
-        .brand-icon { width: 36px; height: 36px; color: var(--brand-accent); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5)); }
-        .brand-text h1 { font-size: 1.5rem; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(90deg, var(--brand-accent) 0%, #fef08a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2px; }
-        .brand-text p { font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px; }
+        .logo-group { display: flex; align-items: center; gap: var(--space-4); }
+        .logo-icon { width: 40px; height: 40px; color: var(--brand-accent); animation: pulseGlow 3s infinite; }
+        .logo-text h1 { font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; background: linear-gradient(90deg, var(--brand-accent), #fef08a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-text span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 1px; }
 
-        .nav-menu { display: flex; gap: var(--spacing-sm); }
-        .nav-btn {
-            background: transparent; color: var(--text-secondary); border: 1px solid transparent; padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition-normal);
-            font-family: var(--font-ui); display: flex; align-items: center; gap: 6px;
-        }
-        .nav-btn:hover:not(.active) { color: var(--text-primary); background: rgba(255, 255, 255, 0.05); }
-        .nav-btn.active { color: var(--brand-accent); background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.05); }
+        .system-controls { display: flex; gap: var(--space-3); }
+        .sys-btn { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--sys-surface-border); padding: var(--space-2) var(--space-4); border-radius: var(--radius-full); cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: var(--trans-snappy); display: flex; align-items: center; gap: var(--space-2); }
+        .sys-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .sys-btn.active { background: rgba(245, 158, 11, 0.15); color: var(--brand-accent); border-color: rgba(245, 158, 11, 0.3); }
 
-        /* --- 4. MAIN LAYOUT --- */
-        .app-main { width: 100%; max-width: 1100px; padding: var(--spacing-xl) var(--spacing-md); display: flex; flex-direction: column; align-items: center; flex: 1; }
-        .tab-section { display: none; width: 100%; animation: slideUpFade var(--transition-slow); }
-        .tab-section.active { display: flex; flex-direction: column; align-items: center; }
+        /* ==========================================================================
+           [4] WORKSPACE LAYOUT
+           ========================================================================== */
+        .workspace { flex: 1; display: flex; width: 100%; max-width: 1600px; margin: 0 auto; padding: var(--space-5); gap: var(--space-5); }
         
-        .glass-panel {
-            width: 100%; background: var(--ui-surface-color); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--ui-surface-border); border-radius: var(--radius-xl); padding: var(--spacing-xl);
-            box-shadow: var(--shadow-glass); display: flex; flex-direction: column; gap: var(--spacing-lg);
-        }
-        .panel-max-lg { max-width: 860px; } .panel-max-md { max-width: 600px; }
-
-        /* --- 5. CAMERA MODULE --- */
-        .status-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-bottom: var(--spacing-sm); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .status-text { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-        .status-text i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #10b981; box-shadow: 0 0 8px #10b981; }
-        .progress-dots { display: flex; gap: var(--spacing-sm); }
-        .progress-dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 2px solid transparent; transition: var(--transition-normal); }
-        .progress-dot.active { background: var(--brand-primary); border-color: rgba(220, 38, 38, 0.3); box-shadow: 0 0 12px var(--brand-primary); transform: scale(1.2); }
-
-        .camera-viewport {
-            position: relative; width: 100%; aspect-ratio: 4/3; background-color: #000; border-radius: var(--radius-lg);
-            overflow: hidden; border: 2px solid rgba(245, 158, 11, 0.2); box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 10px 20px rgba(0,0,0,0.4);
-        }
-        #liveVideoFeed { width: 100%; height: 100%; object-fit: cover; transition: filter 0.2s ease-out; }
-        .rule-of-thirds { position: absolute; inset: 0; pointer-events: none; z-index: 5; background-image: linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px); background-size: 33.333% 33.333%; }
-        .timer-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 10; }
-        .timer-number { color: #ffffff; font-size: 10rem; font-weight: 900; text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9); font-variant-numeric: tabular-nums; animation: pulseText 1s infinite; }
-        .shutter-flash { position: absolute; inset: 0; background: #ffffff; z-index: 20; opacity: 0; pointer-events: none; }
-
-        /* --- 6. CONTROLS --- */
-        .hardware-controls { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); width: 100%; align-items: start; }
-        .settings-card { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--ui-surface-border); border-radius: var(--radius-md); padding: var(--spacing-md); display: flex; flex-direction: column; gap: var(--spacing-md); }
-        .settings-header { font-size: 0.9rem; color: var(--brand-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        /* Cột bên trái: Viewfinder & Core Actions */
+        .col-main { flex: 1; display: flex; flex-direction: column; gap: var(--space-5); max-width: 800px; }
         
-        .control-group { display: flex; flex-direction: column; gap: 6px; }
-        .control-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
-        .control-value { color: var(--text-primary); font-weight: 600; font-family: monospace; }
-        
-        .custom-select { appearance: none; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--ui-surface-border); color: var(--text-primary); padding: 10px 12px; border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 0.9rem; width: 100%; cursor: pointer; outline: none; transition: var(--transition-fast); }
-        .custom-select:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
-        .custom-select:focus { border-color: var(--brand-accent); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2); }
-        .custom-select option { background: var(--ui-bg-color); color: var(--text-primary); }
+        /* Cột bên phải: Cài đặt, Layout, Filters, Stickers */
+        .col-sidebar { width: 380px; display: flex; flex-direction: column; gap: var(--space-4); }
 
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 6px 0; }
+        .glass-box {
+            background: var(--sys-surface); border: 1px solid var(--sys-surface-border);
+            border-radius: var(--radius-lg); padding: var(--space-5);
+            box-shadow: var(--shadow-float); backdrop-filter: blur(20px);
+        }
+
+        /* ==========================================================================
+           [5] CAMERA VIEWFINDER COMPONENT
+           ========================================================================== */
+        .vf-header { display: flex; justify-content: space-between; margin-bottom: var(--space-4); align-items: center; }
+        .vf-status { display: flex; align-items: center; gap: var(--space-2); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
+        .status-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+        
+        .vf-progress { display: flex; gap: var(--space-2); }
+        .prog-node { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); transition: var(--trans-snappy); }
+        .prog-node.filled { background: var(--brand-primary); border-color: var(--brand-primary); box-shadow: 0 0 15px var(--brand-primary); }
+
+        .vf-screen {
+            position: relative; width: 100%; aspect-ratio: 4/3; background: #000;
+            border-radius: var(--radius-md); overflow: hidden; border: 2px solid rgba(245, 158, 11, 0.2);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+        #cameraStream { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); transition: filter 0.3s; }
+        
+        .vf-overlay-grid { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 33.333% 33.333%; }
+        .vf-overlay-timer { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10; }
+        .vf-timer-text { font-size: 12rem; font-weight: 900; color: #fff; text-shadow: 0 20px 50px rgba(0,0,0,0.9); font-variant-numeric: tabular-nums; }
+        .vf-flash { position: absolute; inset: 0; background: #fff; z-index: 20; opacity: 0; pointer-events: none; }
+
+        .vf-actions { margin-top: var(--space-5); display: flex; gap: var(--space-4); }
+        .btn-core {
+            flex: 1; padding: var(--space-4); border: none; border-radius: var(--radius-full);
+            font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: var(--space-3);
+            transition: var(--trans-snappy); position: relative; overflow: hidden;
+        }
+        .btn-core:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+        .btn-capture { background: var(--brand-primary); color: #fff; box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4); }
+        .btn-capture:hover:not(:disabled) { background: var(--brand-primary-hover); transform: translateY(-3px); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.15); transform: translateY(-3px); }
+
+        /* ==========================================================================
+           [6] SIDEBAR: CONTROLS & SETTINGS
+           ========================================================================== */
+        .panel-title { font-size: 1rem; color: var(--brand-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: var(--space-2); }
+        
+        .control-row { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4); }
+        .control-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+        .control-val { color: var(--text-main); font-family: monospace; }
+        
+        .custom-select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: var(--space-3); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; cursor: pointer; transition: var(--trans-snappy); }
+        .custom-select:focus { border-color: var(--brand-accent); }
+        .custom-select option { background: var(--sys-bg); }
+
+        /* Custom Range Slider */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; padding: var(--space-2) 0; }
         input[type=range]:focus { outline: none; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: rgba(255, 255, 255, 0.1); border-radius: 3px; border: 1px solid rgba(0,0,0,0.3); transition: var(--transition-fast); }
-        input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.15); }
-        input[type=range]::-webkit-slider-thumb { height: 18px; width: 18px; border-radius: 50%; background: var(--brand-accent); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 0 10px rgba(245, 158, 11, 0.6); border: 2px solid #fff; transition: transform 0.1s; }
-        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; }
+        input[type=range]::-webkit-slider-thumb { height: 18px; width: 18px; border-radius: 50%; background: var(--brand-accent); cursor: pointer; -webkit-appearance: none; margin-top: -6px; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); border: 2px solid #fff; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.3); }
 
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; font-size: 1.05rem; font-weight: 600; font-family: var(--font-ui); border: none; border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition-normal); position: relative; overflow: hidden; outline: none; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-        .btn svg { width: 22px; height: 22px; stroke-width: 2.2px; }
+        /* Khối Layout Selector */
+        .layout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+        .layout-card { background: rgba(0,0,0,0.4); border: 2px solid transparent; border-radius: var(--radius-sm); padding: var(--space-3); text-align: center; cursor: pointer; transition: var(--trans-snappy); }
+        .layout-card:hover { background: rgba(255,255,255,0.05); }
+        .layout-card.active { border-color: var(--brand-accent); background: rgba(245, 158, 11, 0.1); }
+        .layout-icon { height: 60px; margin-bottom: var(--space-2); display: flex; align-items: center; justify-content: center; }
+        .layout-name { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+        .layout-card.active .layout-name { color: var(--brand-accent); }
+
+        /* Switch Toggle (Voice Assistant) */
+        .switch-wrapper { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.2); padding: var(--space-3); border-radius: var(--radius-sm); margin-bottom: var(--space-4); }
+        .switch-label { font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: var(--space-2); }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--brand-accent); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* ==========================================================================
+           [7] PROCESSING & RESULT MODAL
+           ========================================================================== */
+        .fullscreen-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(30px);
+            display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .fullscreen-modal.show { display: flex; opacity: 1; }
         
-        .btn-danger { background-color: var(--brand-primary); color: #ffffff; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35); }
-        .btn-danger:hover:not(:disabled) { background-color: var(--brand-primary-hover); transform: translateY(-3px); box-shadow: 0 12px 25px rgba(220, 38, 38, 0.5); }
-        .btn-outline { background-color: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px); }
-        .btn-outline:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
-        .btn-golden { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); }
-        .btn-golden:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(245, 158, 11, 0.5); filter: brightness(1.1); }
-        .btn-icon-only { padding: 10px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+        .loader-core { width: 100px; height: 100px; border: 4px solid rgba(245, 158, 11, 0.1); border-left-color: var(--brand-accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: var(--space-5); }
+        .modal-title { font-size: 2rem; color: var(--brand-accent); margin-bottom: var(--space-2); }
+        .modal-subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; text-align: center; }
 
-        /* --- 7. PROCESSING & RESULT --- */
-        .processing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; min-height: 400px; }
-        .loader-ring { width: 80px; height: 80px; border: 6px solid rgba(245, 158, 11, 0.15); border-top-color: var(--brand-accent); border-radius: 50%; animation: spinLoader 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; margin-bottom: var(--spacing-xl); box-shadow: 0 0 30px rgba(245, 158, 11, 0.2); }
-        .processing-container h2 { color: var(--brand-accent); font-size: 1.8rem; margin-bottom: var(--spacing-sm); }
-        .processing-container p { color: var(--text-secondary); font-size: 1.1rem; }
+        /* Result View */
+        .result-container { display: none; flex-direction: column; align-items: center; height: 100%; padding: var(--space-5); overflow-y: auto; width: 100%; }
+        .result-container.active { display: flex; }
+        .result-canvas-wrapper { background: #fff; padding: var(--space-4); border-radius: 4px; box-shadow: 0 40px 100px rgba(0,0,0,1); max-height: 70vh; margin-bottom: var(--space-6); transition: transform 0.3s; }
+        .result-canvas-wrapper:hover { transform: scale(1.02); }
+        #finalExportCanvas { height: 100%; width: auto; max-width: 100%; object-fit: contain; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
+        
+        .result-actions { display: flex; gap: var(--space-4); }
+        .btn-gold { background: linear-gradient(135deg, var(--brand-accent), #fcd34d); color: #000; }
+        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4); }
 
-        .result-stage { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .canvas-wrapper { background-color: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05), inset 0 2px 4px rgba(0,0,0,0.05); margin-bottom: var(--spacing-xl); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 100%; width: 600px; }
-        .canvas-wrapper:hover { transform: scale(1.02) translateY(-10px); }
-        #finalPrintCanvas { width: 100%; height: auto; display: block; box-shadow: inset 0 0 20px rgba(0,0,0,0.15); border-radius: 2px; }
-        .result-actions { display: flex; gap: var(--spacing-md); flex-wrap: wrap; justify-content: center; }
+        /* ==========================================================================
+           [8] GALLERY & ADMIN DASHBOARD
+           ========================================================================== */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-4); width: 100%; margin-top: var(--space-5); }
+        .gallery-item { background: #fff; padding: 8px; border-radius: 4px; cursor: pointer; transition: var(--trans-snappy); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: auto; display: block; }
+        .gallery-item:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 10; }
+        .empty-state { grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--text-muted); border: 2px dashed rgba(255,255,255,0.1); border-radius: var(--radius-lg); }
 
-        /* --- 8. GALLERY --- */
-        .gallery-header { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--ui-surface-border); padding-bottom: var(--spacing-md); margin-bottom: var(--spacing-lg); }
-        .gallery-stats { background: rgba(245, 158, 11, 0.1); color: var(--brand-accent); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--spacing-lg); width: 100%; }
-        .gallery-card { background: #ffffff; padding: 12px; border-radius: 6px; box-shadow: var(--shadow-md); cursor: pointer; transition: var(--transition-normal); position: relative; overflow: hidden; }
-        .gallery-card::before { content: "Nhấn để xem kỹ"; position: absolute; inset: 0; background: rgba(0,0,0,0.6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; opacity: 0; transition: opacity 0.2s; z-index: 10; }
-        .gallery-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-lg); z-index: 2; }
-        .gallery-card:hover::before { opacity: 1; }
-        .gallery-card img { width: 100%; height: auto; display: block; border-radius: 2px; }
-        .gallery-empty { grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; color: var(--text-tertiary); background: rgba(0,0,0,0.2); border-radius: var(--radius-md); border: 1px dashed rgba(255,255,255,0.1); }
-        .gallery-empty svg { width: 64px; height: 64px; opacity: 0.5; margin-bottom: 1rem; }
+        /* Admin Settings Input */
+        .admin-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: var(--space-3); border-radius: var(--radius-sm); font-size: 0.95rem; outline: none; margin-bottom: var(--space-3); font-family: var(--font-ui); }
+        .admin-input:focus { border-color: var(--brand-primary); }
 
-        /* --- 9. TOAST & ANIMATIONS --- */
-        .toast-system { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(150px); background: rgba(15, 23, 42, 0.95); color: #ffffff; padding: 14px 28px; border-radius: 50px; font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 12px; opacity: 0; transition: var(--transition-slow); z-index: 9999; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
-        .toast-system.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast-icon { color: #10b981; }
+        /* ==========================================================================
+           [9] UTILITIES & ANIMATIONS
+           ========================================================================== */
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(20,20,20,0.95); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: var(--space-3) var(--space-5); border-radius: var(--radius-full); font-weight: 500; display: flex; align-items: center; gap: var(--space-3); opacity: 0; transition: var(--trans-smooth); z-index: 9999; box-shadow: 0 20px 40px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        .hide { display: none !important; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 5px rgba(245,158,11,0.4)); } 50% { filter: drop-shadow(0 0 15px rgba(245,158,11,0.8)); } 100% { filter: drop-shadow(0 0 5px rgba(245,158,11,0.4)); } }
+        @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
 
-        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes spinLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes shutterFlash { 0% { opacity: 1; } 100% { opacity: 0; } }
-        @keyframes pulseText { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* --- 10. RESPONSIVE --- */
-        @media (max-width: 900px) { .hardware-controls { grid-template-columns: 1fr; } .canvas-wrapper { padding: 12px; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
-        @media (max-width: 600px) { .navbar { padding: var(--spacing-md); flex-direction: column; gap: var(--spacing-md); } .brand-text h1 { font-size: 1.2rem; } .app-main { padding: var(--spacing-md) var(--spacing-sm); } .glass-panel { padding: var(--spacing-md); border-radius: var(--radius-md); } .result-actions { flex-direction: column; width: 100%; } .btn { width: 100%; } .timer-number { font-size: 6rem; } }
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .workspace { flex-direction: column; }
+            .col-main { max-width: 100%; }
+            .col-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; }
+            .col-sidebar .glass-box { flex: 1; min-width: 300px; }
+        }
+        @media (max-width: 768px) {
+            .col-sidebar { flex-direction: column; }
+            .vf-actions { flex-direction: column; }
+            .topbar { flex-direction: column; gap: var(--space-4); }
+        }
     </style>
 </head>
 <body>
 
-    <canvas id="particleCanvas"></canvas>
+    <!-- OS Background Engine -->
+    <canvas id="bg-canvas"></canvas>
     
-    <div id="toastNotification" class="toast-system">
-        <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        <span id="toastMessage">Khởi tạo hệ thống thành công</span>
+    <!-- System Toast -->
+    <div id="sys-toast" class="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="toast-msg">Khởi chạy hệ điều hành Platinum...</span>
     </div>
 
-    <header class="navbar">
-        <div class="brand-container">
-            <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                <circle cx="12" cy="13" r="4"></circle>
-            </svg>
-            <div class="brand-text">
-                <h1>Đăng Tùng Photobooth</h1>
-                <p>Enterprise Edition • Lễ Hội Đền Đô</p>
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="logo-group">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <div class="logo-text">
+                <h1 id="ui-brand-title">Đăng Tùng Photobooth</h1>
+                <span>PLATINUM OS • ENTERPRISE EDITION</span>
             </div>
         </div>
-        <nav class="nav-menu">
-            <button class="nav-btn active" data-target="tab-camera" onclick="AppCtrl.switchTab('tab-camera')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path></svg>
-                Phòng Chụp
+        <div class="system-controls">
+            <button class="sys-btn active" data-view="view-studio" onclick="OS.switchView('view-studio')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/></svg> <span class="lang-studio">Phòng Chụp</span>
             </button>
-            <button class="nav-btn" data-target="tab-gallery" onclick="AppCtrl.switchTab('tab-gallery')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                Thư Viện Ảnh
+            <button class="sys-btn" data-view="view-gallery" onclick="OS.switchView('view-gallery')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> <span class="lang-gallery">Thư Viện Ảnh</span>
             </button>
-        </nav>
+            <button class="sys-btn" data-view="view-admin" onclick="OS.switchView('view-admin')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> <span class="lang-admin">Cấu Hình</span>
+            </button>
+            <button class="sys-btn" onclick="I18n.toggleLanguage()" title="Language">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span id="lang-code">VI</span>
+            </button>
+        </div>
     </header>
 
-    <main class="app-main">
+    <!-- Main Workspace -->
+    <main class="workspace">
         
-        <section id="tab-camera" class="tab-section active">
-            <div class="glass-panel panel-max-lg">
-                <div class="status-bar">
-                    <div class="status-text"><i></i> <span id="cameraStatusText">Đang tải cấu hình máy ảnh...</span></div>
-                    <div class="progress-dots">
-                        <div class="progress-dot" id="progDot1"></div>
-                        <div class="progress-dot" id="progDot2"></div>
-                        <div class="progress-dot" id="progDot3"></div>
+        <!-- View 1: STUDIO (Phòng chụp) -->
+        <div id="view-studio" class="col-main">
+            <div class="glass-box" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="vf-header">
+                    <div class="vf-status">
+                        <div class="status-dot"></div> <span id="cam-status" class="lang-cam-ready">Quang học ổn định</span>
+                    </div>
+                    <div class="vf-progress" id="prog-dots">
+                        <div class="prog-node"></div><div class="prog-node"></div><div class="prog-node"></div>
                     </div>
                 </div>
 
-                <div class="camera-viewport" id="viewportContainer">
-                    <video id="liveVideoFeed" autoplay playsinline muted></video>
-                    <div class="rule-of-thirds" id="gridOverlay"></div>
-                    <div class="timer-overlay" id="timerOverlay"><span class="timer-number" id="timerDisplay">3</span></div>
-                    <div class="shutter-flash" id="shutterFlash"></div>
+                <div class="vf-screen">
+                    <video id="cameraStream" autoplay playsinline muted></video>
+                    <div class="vf-overlay-grid"></div>
+                    <div id="countdown-ui" class="vf-overlay-timer"><span id="timer-val" class="vf-timer-text">3</span></div>
+                    <div id="flash-ui" class="vf-flash"></div>
                 </div>
 
-                <div class="hardware-controls">
-                    <div class="settings-card">
-                        <div class="settings-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                            Thiết Lập Máy Ảnh
-                        </div>
-                        
-                        <div class="control-group">
-                            <label class="control-label" for="cameraSelect">Thiết Bị / Camera Điện Thoại</label>
-                            <div style="display: flex; gap: 8px;">
-                                <select id="cameraSelect" class="custom-select" style="flex: 1;">
-                                    <option value="">Đang dò tìm thiết bị...</option>
-                                </select>
-                                <button id="btnToggleCamMobile" class="btn btn-outline btn-icon-only" title="Đảo Camera Trước/Sau" style="padding: 0 14px;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="control-group" style="margin-top: 8px;">
-                            <label class="control-label" for="timerSelect">Hẹn Giờ Chụp (Countdown)</label>
-                            <select id="timerSelect" class="custom-select">
-                                <option value="3">3 Giây (Tiêu chuẩn)</option>
-                                <option value="5">5 Giây (Chụp nhóm)</option>
-                                <option value="10">10 Giây (Góc rộng)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="settings-card">
-                        <div class="settings-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-                            Ma Trận Hình Ảnh
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label"><span>Độ Sáng (Brightness)</span><span class="control-value" id="valBright">100%</span></label>
-                            <input type="range" id="sliderBright" min="50" max="150" value="100">
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label"><span>Độ Tương Phản (Contrast)</span><span class="control-value" id="valContrast">100%</span></label>
-                            <input type="range" id="sliderContrast" min="50" max="150" value="100">
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label"><span>Làm Ấm / Cổ Điển (Sepia)</span><span class="control-value" id="valSepia">0%</span></label>
-                            <input type="range" id="sliderSepia" min="0" max="100" value="0">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="action-buttons" style="align-items: center;">
-                    <button id="btnTriggerCapture" class="btn btn-danger" disabled style="min-width: 250px;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
-                        Khởi động Camera...
+                <div class="vf-actions">
+                    <button id="btn-toggle-cam" class="btn-core btn-secondary">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        <span class="lang-flip">Đảo Camera</span>
+                    </button>
+                    <button id="btn-trigger" class="btn-core btn-capture" disabled style="flex: 2;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                        <span id="trigger-text" class="lang-start">Đang tải máy ảnh...</span>
                     </button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section id="tab-processing" class="tab-section">
-            <div class="glass-panel panel-max-md processing-container">
-                <div class="loader-ring"></div>
-                <h2>Đang In Nghệ Thuật...</h2>
-                <p>Máy chủ đang áp dụng đổ bóng 3D, tính toán phân luồng Text Wrapping và Render High-Resolution.</p>
-            </div>
-        </section>
-
-        <section id="tab-result" class="tab-section">
-            <div class="result-stage">
-                <div class="canvas-wrapper"><canvas id="finalPrintCanvas" width="1200" height="1600"></canvas></div>
-                <div class="result-actions">
-                    <button id="btnResetSession" class="btn btn-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Tạo Phiên Mới</button>
-                    <button id="btnSaveToDevice" class="btn btn-golden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Tải & Lưu Vào Thư Viện</button>
+        <!-- Cột công cụ (Sidebar) -->
+        <div id="sidebar-tools" class="col-sidebar">
+            
+            <!-- Widget 1: Layout Selector -->
+            <div class="glass-box">
+                <div class="panel-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    <span class="lang-layout">Mẫu In Ấn (Layouts)</span>
                 </div>
-            </div>
-        </section>
-
-        <section id="tab-gallery" class="tab-section">
-            <div class="glass-panel" style="max-width: 1100px;">
-                <div class="gallery-header">
-                    <h2>Nhật Ký Sự Kiện Lễ Hội Đền Đô</h2>
-                    <div class="gallery-stats" id="galleryCounter">Tổng: 0 ảnh</div>
-                </div>
-                <div id="galleryGrid" class="gallery-grid">
-                    <div class="gallery-empty">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                        <p>Dữ liệu trống. Hãy quay lại phòng chụp để tạo những bức ảnh nghệ thuật đầu tiên.</p>
+                <div class="layout-grid">
+                    <div class="layout-card active" data-layout="classic" onclick="Config.setLayout('classic')">
+                        <div class="layout-icon">
+                            <svg width="40" height="50" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="30" height="40" rx="2"/><rect x="8" y="8" width="24" height="18"/><rect x="8" y="28" width="11" height="8"/><rect x="21" y="28" width="11" height="8"/></svg>
+                        </div>
+                        <div class="layout-name lang-lay-classic">Poster Đền Đô</div>
+                    </div>
+                    <div class="layout-card" data-layout="strip" onclick="Config.setLayout('strip')">
+                        <div class="layout-icon">
+                            <svg width="24" height="50" viewBox="0 0 24 50" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="46" rx="2"/><rect x="5" y="5" width="14" height="11"/><rect x="5" y="19" width="14" height="11"/><rect x="5" y="33" width="14" height="11"/></svg>
+                        </div>
+                        <div class="layout-name lang-lay-strip">Photo Strip (Dọc)</div>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Widget 2: Image Filters (Matrix Processing) -->
+            <div class="glass-box">
+                <div class="panel-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                    <span class="lang-filters">Ma Trận Cảm Biến</span>
+                </div>
+                
+                <div class="control-row">
+                    <label class="control-label"><span class="lang-preset">Bộ Lọc Màu Nhanh</span></label>
+                    <select id="filter-preset" class="custom-select" onchange="CamEngine.applyPreset(this.value)">
+                        <option value="normal" class="lang-f-norm">Gốc (Original)</option>
+                        <option value="cinematic" class="lang-f-cine">Điện Ảnh (Cinematic)</option>
+                        <option value="vintage" class="lang-f-vint">Hoài Cổ (Vintage 1990)</option>
+                        <option value="bw" class="lang-f-bw">Nghệ Thuật (B&W)</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <label class="control-label"><span>Độ Sáng</span> <span id="val-b" class="control-val">100%</span></label>
+                    <input type="range" id="sl-bright" min="50" max="150" value="100" oninput="CamEngine.updateManualFilters()">
+                </div>
+                <div class="control-row">
+                    <label class="control-label"><span>Tương Phản</span> <span id="val-c" class="control-val">100%</span></label>
+                    <input type="range" id="sl-contrast" min="50" max="150" value="100" oninput="CamEngine.updateManualFilters()">
+                </div>
+            </div>
+
+            <!-- Widget 3: Hệ thống Tiện ích nâng cao -->
+            <div class="glass-box">
+                <div class="panel-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    <span class="lang-utils">Tiện ích Bổ sung</span>
+                </div>
+                
+                <div class="switch-wrapper">
+                    <div class="switch-label">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-accent)" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                        <span class="lang-voice">Trợ lý Đếm ngược (Voice)</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-voice" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-row">
+                    <label class="control-label"><span class="lang-timer">Hẹn Giờ / Ảnh</span></label>
+                    <select id="timer-sec" class="custom-select" onchange="Config.state.countdown = parseInt(this.value)">
+                        <option value="3">3 Giây (Khuyên dùng)</option>
+                        <option value="5">5 Giây (Đổi dáng nhóm)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 2: GALLERY (Thư viện) -->
+        <div id="view-gallery" class="col-main hide" style="max-width: 1200px;">
+            <div class="glass-box" style="flex:1;">
+                <div class="panel-title" style="font-size: 1.5rem; margin-bottom: var(--space-5);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <span class="lang-gal-title">Nhật Ký Sự Kiện / Album</span>
+                </div>
+                <div id="gallery-grid" class="gallery-grid">
+                    <!-- Dữ liệu render từ JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- View 3: ADMIN SETTINGS -->
+        <div id="view-admin" class="col-main hide" style="max-width: 800px;">
+            <div class="glass-box" style="flex:1;">
+                <div class="panel-title" style="font-size: 1.5rem; margin-bottom: var(--space-5);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span class="lang-admin-title">Cấu Hình Dữ Liệu Bản In</span>
+                </div>
+                
+                <label class="control-label" style="margin-bottom: 8px;">Tiêu đề Sự kiện chính</label>
+                <input type="text" id="cfg-title" class="admin-input" value="LỄ HỘI ĐỀN ĐÔ">
+                
+                <label class="control-label" style="margin-bottom: 8px;">Thương hiệu Phụ (Photobooth Name)</label>
+                <input type="text" id="cfg-brand" class="admin-input" value="Đăng Tùng Photobooth">
+                
+                <label class="control-label" style="margin-bottom: 8px;">Nội dung Bản tin (Chỉ áp dụng layout Truyền thống)</label>
+                <textarea id="cfg-news" class="admin-input" rows="5" style="resize: vertical;">Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.
+Đền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương.
+Nhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc.</textarea>
+                
+                <button class="btn-core btn-capture" onclick="OS.saveAdminSettings()" style="width: 100%; margin-top: var(--space-4);">LƯU CẤU HÌNH HỆ THỐNG</button>
+            </div>
+        </div>
+
     </main>
 
+    <!-- ==========================================================================
+         [10] FULLSCREEN MODALS (Processing & Result)
+         ========================================================================== -->
+    <div id="modal-engine" class="fullscreen-modal">
+        
+        <!-- Processing State -->
+        <div id="engine-processing" style="display:flex; flex-direction: column; align-items: center;">
+            <div class="loader-core"></div>
+            <h2 class="modal-title lang-proc-title">Đang kết xuất Đồ họa...</h2>
+            <p class="modal-subtitle lang-proc-sub">Kích hoạt Engine vẽ đa luồng, dựng bóng 3D không gian thực và lưới toạ độ Typography.</p>
+        </div>
+
+        <!-- Result State -->
+        <div id="engine-result" class="result-container">
+            <h2 class="modal-title lang-res-title" style="margin-bottom: var(--space-5);">Tuyệt Tác Đã Hoàn Thành!</h2>
+            <div class="result-canvas-wrapper">
+                <canvas id="exportCanvas"></canvas>
+            </div>
+            <div class="result-actions">
+                <button class="btn-core btn-secondary" onclick="OS.closeModalAndReset()" style="min-width: 200px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span class="lang-res-new">Phiên Mới</span>
+                </button>
+                <button class="btn-core btn-gold" onclick="GallerySys.saveAndDownload()" style="min-width: 250px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span class="lang-res-save">Tải & Lưu Thư Viện</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================================================
+         [11] PLATINUM OS CORE LOGIC (VANILLA JS OOP)
+         Hơn 1000 lines Javascript nguyên chất với các Engine phức tạp
+         ========================================================================== -->
     <script>
         "use strict";
 
-        const APP_CONFIG = {
-            rules: { totalPhotosRequired: 3, exportQuality: 0.95, canvasWidth: 1200, canvasHeight: 1600, targetRatio: 4 / 3 },
-            storageKey: 'DangTung_Gallery_v1',
-            fonts: { royal: "'Cormorant Garamond', 'Times New Roman', serif" },
-            palette: { paperBgCenter: '#FFF9EB', paperBgEdge: '#E8D5B5', paperBgDark: '#D8B88C', inkDark: '#3A2618', redRoyal: '#A61C1C', goldRoyal: '#C49A00', photoWhite: '#FFFFFF' }
-        };
-
-        const AppState = { frames: [], currentDeviceId: null, currentFacingMode: 'user', isMirroredPreview: true, stream: null, isProcessing: false, countdownTime: 3, filters: { bright: 100, contrast: 100, sepia: 0 }, savedGallery: [] };
-
-        const Utils = {
-            el: (id) => document.getElementById(id),
-            Storage: {
-                save: (dataArray) => { try { localStorage.setItem(APP_CONFIG.storageKey, JSON.stringify(dataArray)); } catch(e) { console.warn("Bộ nhớ Local đầy."); } },
-                load: () => { const d = localStorage.getItem(APP_CONFIG.storageKey); return d ? JSON.parse(d) : []; }
+        /** 
+         * ==========================================
+         * MODULE 1: GLOBAL CONFIGURATION & DATA
+         * ==========================================
+         */
+        const Config = {
+            app: {
+                version: 'Platinum OS v2.0',
+                storageKey: 'DangTung_Photobooth_Enterprise_DB',
+                totalShots: 3
             },
-            Toast: {
-                show: (msg, type = 'success', duration = 3500) => {
-                    const toast = Utils.el('toastNotification'); const text = Utils.el('toastMessage'); const icon = document.querySelector('.toast-icon');
-                    text.innerText = msg;
-                    if(type === 'error') { icon.style.color = '#ef4444'; toast.style.borderColor = 'rgba(239, 68, 68, 0.3)'; } 
-                    else { icon.style.color = '#10b981'; toast.style.borderColor = 'rgba(255, 255, 255, 0.1)'; }
-                    toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), duration);
+            state: {
+                currentLayout: 'classic', // 'classic' | 'strip'
+                countdown: 3,
+                useVoice: true,
+                language: 'vi', // 'vi' | 'en'
+                frames: [],
+                isOperating: false,
+                adminParams: {
+                    title: "LỄ HỘI ĐỀN ĐÔ",
+                    brand: "Đăng Tùng Photobooth",
+                    news: "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.\n\nĐền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương.\n\nNhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc."
+                }
+            },
+            print: {
+                classic: { w: 1200, h: 1600 },
+                strip: { w: 600, h: 1800 },
+                palette: {
+                    bgCenter: '#FFF9EB', bgEdge: '#E8D5B5', bgDark: '#D8B88C',
+                    ink: '#3A2618', red: '#A61C1C', gold: '#C49A00', white: '#FFF'
+                },
+                fonts: { main: "'Cormorant Garamond', 'Times New Roman', serif" }
+            },
+            
+            setLayout(type) {
+                this.state.currentLayout = type;
+                document.querySelectorAll('.layout-card').forEach(el => el.classList.remove('active'));
+                document.querySelector(`[data-layout="${type}"]`).classList.add('active');
+                UI.toast(I18n.t('toast_layout') + type.toUpperCase());
+            }
+        };
+
+        /** 
+         * ==========================================
+         * MODULE 2: INTERNATIONALIZATION (I18N)
+         * ==========================================
+         */
+        const I18n = {
+            dict: {
+                vi: {
+                    'studio': 'Phòng Chụp', 'gallery': 'Thư Viện Ảnh', 'admin': 'Cấu Hình',
+                    'cam-ready': 'Hệ thống Quang học Ổn định', 'flip': 'Đảo Camera',
+                    'start': 'Bấm Để Khởi Động', 'next': 'Chụp Kiểu Kế',
+                    'layout': 'Mẫu In Ấn (Layouts)', 'lay-classic': 'Poster Đền Đô', 'lay-strip': 'Photo Strip (Dọc)',
+                    'filters': 'Ma Trận Cảm Biến', 'preset': 'Bộ Lọc Màu Nhanh',
+                    'f-norm': 'Gốc (Original)', 'f-cine': 'Điện Ảnh (Cinematic)', 'f-vint': 'Hoài Cổ (Vintage)', 'f-bw': 'Nghệ Thuật (B&W)',
+                    'utils': 'Tiện ích Bổ sung', 'voice': 'Trợ lý Đếm ngược (Voice)', 'timer': 'Hẹn Giờ / Ảnh',
+                    'gal-title': 'Nhật Ký Sự Kiện / Album', 'admin-title': 'Cấu Hình Dữ Liệu Bản In',
+                    'proc-title': 'Đang kết xuất Đồ họa...', 'proc-sub': 'Kích hoạt Engine vẽ đa luồng, dựng bóng 3D không gian thực.',
+                    'res-title': 'Tuyệt Tác Đã Hoàn Thành!', 'res-new': 'Phiên Mới', 'res-save': 'Tải & Lưu Thư Viện',
+                    'toast_layout': 'Đã đổi mẫu in: ', 'toast_save': 'Đã lưu và tải ảnh xuống!', 'toast_ready': 'Khởi chạy OS thành công.'
+                },
+                en: {
+                    'studio': 'Studio', 'gallery': 'Photo Gallery', 'admin': 'Settings',
+                    'cam-ready': 'Optical System Stable', 'flip': 'Flip Camera',
+                    'start': 'Start Capture', 'next': 'Next Shot',
+                    'layout': 'Print Layouts', 'lay-classic': 'Classic Poster', 'lay-strip': 'Photo Strip',
+                    'filters': 'Sensor Matrix', 'preset': 'Quick Presets',
+                    'f-norm': 'Original', 'f-cine': 'Cinematic', 'f-vint': 'Vintage', 'f-bw': 'B&W Art',
+                    'utils': 'Utilities', 'voice': 'Voice Assistant', 'timer': 'Timer / Shot',
+                    'gal-title': 'Event Log / Album', 'admin-title': 'Print Data Configuration',
+                    'proc-title': 'Rendering Graphics...', 'proc-sub': 'Activating multi-thread drawing engine & 3D shadows.',
+                    'res-title': 'Masterpiece Completed!', 'res-new': 'New Session', 'res-save': 'Save & Download',
+                    'toast_layout': 'Layout changed to: ', 'toast_save': 'Saved and downloaded!', 'toast_ready': 'OS Booted successfully.'
+                }
+            },
+            
+            t(key) { return this.dict[Config.state.language][key] || key; },
+            
+            updateDOM() {
+                document.getElementById('lang-code').innerText = Config.state.language.toUpperCase();
+                const keys = Object.keys(this.dict.vi);
+                keys.forEach(k => {
+                    const els = document.querySelectorAll(`.lang-${k}`);
+                    els.forEach(el => { el.innerText = this.t(k); });
+                });
+            },
+            
+            toggleLanguage() {
+                Config.state.language = Config.state.language === 'vi' ? 'en' : 'vi';
+                this.updateDOM();
+                UI.toast(`Language switched to ${Config.state.language.toUpperCase()}`);
+            }
+        };
+
+        /** 
+         * ==========================================
+         * MODULE 3: UTILITIES & UI MANAGER
+         * ==========================================
+         */
+        const UI = {
+            el: (id) => document.getElementById(id),
+            
+            toast(msg, type = 'success') {
+                const t = this.el('sys-toast');
+                this.el('toast-msg').innerText = msg;
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 3000);
+            },
+
+            updateProgress() {
+                const len = Config.state.frames.length;
+                const req = Config.app.totalShots;
+                const btn = this.el('btn-trigger');
+                
+                [1,2,3].forEach(i => {
+                    this.el('prog-dots').children[i-1].className = i <= len ? 'prog-node filled' : 'prog-node';
+                });
+
+                if (len === 0) {
+                    this.el('trigger-text').innerText = `${I18n.t('start')} (0/${req})`;
+                } else if (len < req) {
+                    this.el('trigger-text').innerText = `${I18n.t('next')} (${len}/${req})`;
+                }
+            },
+
+            flash() {
+                const f = this.el('flash-ui');
+                f.style.animation = 'none'; f.offsetHeight; 
+                f.style.animation = 'flashAnim 0.7s ease-out forwards';
+            },
+
+            showModal(state) {
+                const m = this.el('modal-engine');
+                const p = this.el('engine-processing');
+                const r = this.el('engine-result');
+                
+                m.classList.add('show');
+                if (state === 'processing') {
+                    p.style.display = 'flex'; r.classList.remove('active');
+                } else if (state === 'result') {
+                    p.style.display = 'none'; r.classList.add('active');
+                }
+            },
+
+            hideModal() { this.el('modal-engine').classList.remove('show'); }
+        };
+
+        /** 
+         * ==========================================
+         * MODULE 4: AUDIO & VOICE ASSISTANT ENGINE
+         * ==========================================
+         */
+        const AudioSys = {
+            ctx: new (window.AudioContext || window.webkitAudioContext)(),
+            synth: window.speechSynthesis,
+            
+            playTone(freq, dur, type='sine') {
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+                osc.type = type; osc.frequency.value = freq;
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); gain.gain.setValueAtTime(0.5, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
+                osc.stop(this.ctx.currentTime + dur);
+            },
+            
+            tick() { this.playTone(880, 0.1); },
+            snap() { this.playTone(150, 0.1, 'square'); },
+
+            speak(text) {
+                if (!Config.state.useVoice || !this.synth) return;
+                // Huỷ lệnh đang đọc dở
+                this.synth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = Config.state.language === 'vi' ? 'vi-VN' : 'en-US';
+                utterance.rate = 1.1; // Nói nhanh nhẹ để kịp nhịp countdown
+                this.synth.speak(utterance);
+            },
+
+            getCountdownWord(num) {
+                if(Config.state.language === 'vi') {
+                    const words = {3: 'Ba', 2: 'Hai', 1: 'Một', 0: 'Cười lên!'};
+                    return words[num] || num.toString();
+                } else {
+                    const words = {3: 'Three', 2: 'Two', 1: 'One', 0: 'Smile!'};
+                    return words[num] || num.toString();
                 }
             }
         };
 
-        class AudioEngine {
-            constructor() { const AudioCtx = window.AudioContext || window.webkitAudioContext; this.ctx = new AudioCtx(); }
-            playTone(freq, dur, type = 'sine', vol = 0.5) {
-                if(this.ctx.state === 'suspended') this.ctx.resume();
-                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                osc.type = type; osc.frequency.value = freq; osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); gain.gain.setValueAtTime(vol, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + dur); osc.stop(this.ctx.currentTime + dur);
-            }
-            beepTimer() { this.playTone(880, 0.15, 'sine', 0.4); }
-            beepShutter() { this.playTone(150, 0.1, 'square', 0.6); }
-        }
-        const AudioSys = new AudioEngine();
+        /** 
+         * ==========================================
+         * MODULE 5: CAMERA & MATRIX FILTER ENGINE
+         * ==========================================
+         */
+        const CamEngine = {
+            video: UI.el('cameraStream'),
+            stream: null,
+            facingMode: 'user',
+            
+            filters: { b: 100, c: 100, sepia: 0, sat: 100 },
 
-        class CameraManager {
-            constructor() {
-                this.videoEl = Utils.el('liveVideoFeed'); this.selectEl = Utils.el('cameraSelect'); this.btnCapture = Utils.el('btnTriggerCapture');
-            }
-
-            async initializeSystem() {
-                try {
-                    await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                    await this.populateCameraList();
-                    await this.startStream(false); // Gọi luồng theo deviceId ban đầu
-                } catch (err) {
-                    Utils.el('cameraStatusText').innerText = "Từ chối quyền Camera!";
-                    Utils.Toast.show("Không thể truy cập máy ảnh. Vui lòng cấp quyền.", "error");
-                }
-            }
-
-            async populateCameraList() {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(d => d.kind === 'videoinput');
-                this.selectEl.innerHTML = '';
-                if(videoDevices.length === 0) { this.selectEl.innerHTML = '<option>Không tìm thấy thiết bị</option>'; return; }
-
-                videoDevices.forEach((d, i) => {
-                    const opt = document.createElement('option'); opt.value = d.deviceId; opt.text = d.label || `Máy ảnh ${i + 1}`; this.selectEl.appendChild(opt);
-                });
-                AppState.currentDeviceId = videoDevices[0].deviceId;
-                
-                this.selectEl.addEventListener('change', (e) => {
-                    AppState.currentDeviceId = e.target.value;
-                    this.startStream(false); // Dùng DeviceID khi chọn từ Dropdown
-                });
-            }
-
-            // Logic quản lý luồng ảnh, tự động nhận biết cam trước/sau
-            async startStream(useFacingMode = false) {
-                if (AppState.stream) AppState.stream.getTracks().forEach(t => t.stop());
-                this.btnCapture.disabled = true;
-
-                let constraints = { audio: false, video: { width: { ideal: 1920 }, height: { ideal: 1080 } } };
-                
-                if (useFacingMode) {
-                    constraints.video.facingMode = { ideal: AppState.currentFacingMode };
-                    AppState.currentDeviceId = null;
-                    this.selectEl.value = ""; // Xoá trắng dropdown vì đang xài mode di động
-                } else if (AppState.currentDeviceId) {
-                    constraints.video.deviceId = { exact: AppState.currentDeviceId };
-                } else {
-                    constraints.video.facingMode = { ideal: AppState.currentFacingMode };
-                }
+            async boot() {
+                if (this.stream) this.stream.getTracks().forEach(t => t.stop());
+                UI.el('btn-trigger').disabled = true;
 
                 try {
-                    AppState.stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    this.videoEl.srcObject = AppState.stream;
+                    this.stream = await navigator.mediaDevices.getUserMedia({
+                        video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: this.facingMode },
+                        audio: false
+                    });
+                    this.video.srcObject = this.stream;
+                    this.video.style.transform = this.facingMode === 'user' ? 'scaleX(-1)' : 'none';
                     
-                    // Phát hiện thông minh: Cam sau thì không được lật
-                    const track = AppState.stream.getVideoTracks()[0];
-                    const label = track.label.toLowerCase();
-                    if (AppState.currentFacingMode === 'environment' || label.includes('back') || label.includes('rear') || label.includes('sau')) {
-                        AppState.isMirroredPreview = false;
-                    } else {
-                        AppState.isMirroredPreview = true;
-                    }
-                    
-                    // Chỉ lật Preview để dễ tạo dáng (nếu là cam trước)
-                    this.videoEl.style.transform = AppState.isMirroredPreview ? 'scaleX(-1)' : 'none';
-
-                    this.videoEl.onloadedmetadata = () => {
-                        this.btnCapture.disabled = false;
-                        Utils.el('cameraStatusText').innerText = "Hệ thống Quang học Ổn định";
-                        AppCtrl.updateUIState();
+                    this.video.onloadedmetadata = () => {
+                        UI.el('btn-trigger').disabled = false;
+                        UI.updateProgress();
                     };
-                } catch (e) { Utils.Toast.show("Lỗi khởi động luồng camera.", "error"); }
-            }
+                } catch (e) {
+                    UI.toast("Camera Error / Permission Denied", "error");
+                }
+            },
 
-            toggleMobileCamera() {
-                AppState.currentFacingMode = AppState.currentFacingMode === 'user' ? 'environment' : 'user';
-                this.startStream(true);
-            }
+            toggle() {
+                this.facingMode = this.facingMode === 'user' ? 'environment' : 'user';
+                this.boot();
+            },
 
-            applyLiveFilters() { const f = AppState.filters; this.videoEl.style.filter = `brightness(${f.bright}%) contrast(${f.contrast}%) sepia(${f.sepia}%)`; }
-
-            captureHighResFrame() {
-                const tempCanvas = document.createElement('canvas'); const vW = this.videoEl.videoWidth; const vH = this.videoEl.videoHeight; const target = APP_CONFIG.rules.targetRatio;
-                let cropX = 0, cropY = 0, cropW = vW, cropH = vH;
-                if (vW / vH > target) { cropW = cropH * target; cropX = (vW - cropW) / 2; } else { cropH = cropW / target; cropY = (vH - cropH) / 2; }
-
-                tempCanvas.width = 1200; tempCanvas.height = 900; const ctx = tempCanvas.getContext('2d');
-                ctx.filter = `brightness(${AppState.filters.bright}%) contrast(${AppState.filters.contrast}%) sepia(${AppState.filters.sepia}%)`;
+            // --- Quản lý Ma trận CSS Filters trực tiếp ---
+            applyPreset(type) {
+                const presets = {
+                    'normal': { b: 100, c: 100, sepia: 0, sat: 100 },
+                    'cinematic': { b: 90, c: 120, sepia: 10, sat: 80 },
+                    'vintage': { b: 110, c: 90, sepia: 50, sat: 70 },
+                    'bw': { b: 100, c: 130, sepia: 0, sat: 0 }
+                };
+                const p = presets[type];
+                this.filters = { ...p };
                 
-                // QUAN TRỌNG: Không Flip Canvas ở đây để Ảnh in cuối cùng luôn thuận chiều chữ thực tế!
-                ctx.drawImage(this.videoEl, cropX, cropY, cropW, cropH, 0, 0, tempCanvas.width, tempCanvas.height);
-                return tempCanvas;
+                // Cập nhật thanh trượt UI
+                UI.el('sl-bright').value = p.b; UI.el('val-b').innerText = p.b + '%';
+                UI.el('sl-contrast').value = p.c; UI.el('val-c').innerText = p.c + '%';
+                
+                this.renderFilter();
+            },
+
+            updateManualFilters() {
+                this.filters.b = UI.el('sl-bright').value; UI.el('val-b').innerText = this.filters.b + '%';
+                this.filters.c = UI.el('sl-contrast').value; UI.el('val-c').innerText = this.filters.c + '%';
+                // Reset select preset
+                UI.el('filter-preset').value = 'normal';
+                this.filters.sepia = 0; this.filters.sat = 100;
+                this.renderFilter();
+            },
+
+            renderFilter() {
+                const f = this.filters;
+                this.video.style.filter = `brightness(${f.b}%) contrast(${f.c}%) sepia(${f.sepia}%) saturate(${f.sat}%)`;
+            },
+
+            /** Tính toán Crop chuẩn tỷ lệ Photobooth 4:3 từ video HD */
+            captureCore() {
+                const canvas = document.createElement('canvas');
+                const vw = this.video.videoWidth, vh = this.video.videoHeight;
+                const ratio = 4/3;
+                let cx = 0, cy = 0, cw = vw, ch = vh;
+
+                if (vw/vh > ratio) { cw = ch * ratio; cx = (vw - cw) / 2; } 
+                else { ch = cw / ratio; cy = (vh - ch) / 2; }
+
+                // Ảnh High-Res gốc
+                canvas.width = 1200; canvas.height = 900;
+                const ctx = canvas.getContext('2d');
+                
+                // Áp dụng bộ lọc quang học vĩnh viễn vào Pixel
+                ctx.filter = `brightness(${this.filters.b}%) contrast(${this.filters.c}%) sepia(${this.filters.sepia}%) saturate(${this.filters.sat}%)`;
+                
+                // Lật lại ảnh gốc để thuận chiều
+                if (this.facingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
+                
+                ctx.drawImage(this.video, cx, cy, cw, ch, 0, 0, canvas.width, canvas.height);
+                return canvas;
             }
-        }
-        const CamSys = new CameraManager();
+        };
 
-        class GraphicsEngine {
-            constructor() { this.canvas = Utils.el('finalPrintCanvas'); this.ctx = this.canvas.getContext('2d'); }
+        /** 
+         * ==========================================
+         * MODULE 6: GRAPHICS RENDERING ENGINE
+         * Thuật toán vẽ Layout cực mạnh, tính toán toạ độ 2D
+         * ==========================================
+         */
+        const RenderEngine = {
+            canvas: UI.el('exportCanvas'),
+            
+            init() { this.ctx = this.canvas.getContext('2d'); },
 
-            drawTextStrictBounds(text, x, y, maxWidth, lineHeight) {
-                const paragraphs = text.split('\n'); let currentY = y;
-                for (let p of paragraphs) {
+            drawTextWrap(text, x, y, maxW, lineH) {
+                const paras = text.split('\n'); let cY = y;
+                for (let p of paras) {
                     const words = p.split(' '); let line = '';
                     for (let n = 0; n < words.length; n++) {
-                        const testLine = line + words[n] + ' '; const metrics = this.ctx.measureText(testLine);
-                        if (metrics.width > maxWidth && n > 0) { this.ctx.fillText(line.trim(), x, currentY); line = words[n] + ' '; currentY += lineHeight; } else { line = testLine; }
+                        const test = line + words[n] + ' ';
+                        if (this.ctx.measureText(test).width > maxW && n > 0) {
+                            this.ctx.fillText(line.trim(), x, cY); line = words[n] + ' '; cY += lineH;
+                        } else line = test;
                     }
-                    this.ctx.fillText(line.trim(), x, currentY); currentY += lineHeight;
-                } return currentY;
-            }
+                    this.ctx.fillText(line.trim(), x, cY); cY += lineH;
+                } return cY;
+            },
 
-            drawVectorStar(cx, cy, r, color) {
+            drawStarVector(cx, cy, r, fill) {
                 this.ctx.beginPath(); this.ctx.moveTo(cx, cy - r);
-                for (let i = 0; i < 5; i++) {
-                    this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i)) * r, cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i)) * r);
-                    this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i+1)) * (r/2.2), cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i+1)) * (r/2.2));
+                for(let i=0; i<5; i++){
+                    this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5*(2*i))*r, cy + Math.sin(Math.PI/2*3 + Math.PI/5*(2*i))*r);
+                    this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5*(2*i+1))*(r/2.2), cy + Math.sin(Math.PI/2*3 + Math.PI/5*(2*i+1))*(r/2.2));
                 }
-                this.ctx.closePath(); this.ctx.fillStyle = color; this.ctx.fill();
-            }
+                this.ctx.closePath(); this.ctx.fillStyle = fill; this.ctx.fill();
+            },
 
-            drawDecorDashedLines(yPos) {
-                this.ctx.beginPath(); this.ctx.setLineDash([8, 8]); this.ctx.moveTo(60, yPos); this.ctx.lineTo(1140, yPos);
-                this.ctx.strokeStyle = APP_CONFIG.palette.inkDark; this.ctx.lineWidth = 1.5; this.ctx.stroke(); this.ctx.setLineDash([]);
-            }
-
-            drawPolaroidShadowFrame(imgObj, x, y, w, h) {
+            drawShadowFrame(img, x, y, w, h) {
                 this.ctx.save();
-                this.ctx.shadowColor = 'rgba(0,0,0,0.5)'; this.ctx.shadowBlur = 30; this.ctx.shadowOffsetX = 10; this.ctx.shadowOffsetY = 15;
-                this.ctx.fillStyle = APP_CONFIG.palette.photoWhite; this.ctx.fillRect(x - 14, y - 14, w + 28, h + 28);
+                this.ctx.shadowColor = 'rgba(0,0,0,0.5)'; this.ctx.shadowBlur = 20; this.ctx.shadowOffsetY = 10;
+                this.ctx.fillStyle = Config.print.palette.white; this.ctx.fillRect(x-12, y-12, w+24, h+24);
                 this.ctx.shadowColor = 'transparent';
-                this.ctx.strokeStyle = APP_CONFIG.palette.inkDark; this.ctx.lineWidth = 1; this.ctx.strokeRect(x - 2, y - 2, w + 4, h + 4);
-                this.ctx.drawImage(imgObj, x, y, w, h);
+                this.ctx.strokeStyle = Config.print.palette.ink; this.ctx.lineWidth = 1; this.ctx.strokeRect(x-2, y-2, w+4, h+4);
+                this.ctx.drawImage(img, x, y, w, h);
                 this.ctx.restore();
-            }
+            },
 
-            async compileFinalPoster() {
-                await document.fonts.ready; const ctx = this.ctx; const c = APP_CONFIG.palette; const fontR = APP_CONFIG.fonts.royal; const w = APP_CONFIG.rules.canvasWidth; const h = APP_CONFIG.rules.canvasHeight;
+            drawVintageBackground(w, h, c) {
+                const grad = this.ctx.createRadialGradient(w/2, h/2, 100, w/2, h/2, h);
+                grad.addColorStop(0, c.bgCenter); grad.addColorStop(0.7, c.bgEdge); grad.addColorStop(1, c.bgDark);
+                this.ctx.fillStyle = grad; this.ctx.fillRect(0, 0, w, h);
                 
-                const grad = ctx.createRadialGradient(w/2, h/2, 100, w/2, h/2, h); grad.addColorStop(0, c.paperBgCenter); grad.addColorStop(0.7, c.paperBgEdge); grad.addColorStop(1, c.paperBgDark); ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
-                for(let i=0; i<9000; i++) { ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.03})`; ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2); }
-
-                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 2.5; ctx.strokeRect(30, 30, w - 60, h - 60); ctx.lineWidth = 1; ctx.strokeRect(38, 38, w - 76, h - 76);
-
-                ctx.beginPath(); ctx.roundRect(60, 60, 240, 90, 20); ctx.stroke();
-                ctx.fillStyle = c.inkDark; ctx.textAlign = "center"; ctx.font = `bold 28px ${fontR}`; ctx.fillText("Đăng Tùng", 180, 100); ctx.font = `italic 22px ${fontR}`; ctx.fillText("Photobooth", 180, 135);
-
-                ctx.textAlign = "left"; ctx.font = `bold 90px ${fontR}`; ctx.fillStyle = 'rgba(196, 154, 0, 0.35)'; ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 345, 140); ctx.fillStyle = c.redRoyal; ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 340, 135);
-                this.drawDecorDashedLines(180);
-
-                this.drawPolaroidShadowFrame(AppState.frames[0], 60, 220, 680, 510);
-                this.drawPolaroidShadowFrame(AppState.frames[1], 60, 760, 330, 247.5);
-                this.drawPolaroidShadowFrame(AppState.frames[2], 410, 760, 330, 247.5);
-
-                ctx.strokeRect(60, 1070, 680, 160); ctx.fillStyle = c.redRoyal; ctx.fillRect(70, 1080, 100, 140);
-                this.drawVectorStar(120, 1120, 20, c.goldRoyal); this.drawVectorStar(120, 1180, 20, c.goldRoyal);
-                ctx.fillStyle = c.redRoyal; ctx.textAlign = "center"; ctx.font = `bold 55px ${fontR}`; ctx.fillText("TỰ HÀO LÀ NGƯỜI", 410, 1140); ctx.fillText("VIỆT NAM", 410, 1205);
-
-                const rx = 760; const rw = 380;
-                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 2; ctx.strokeRect(rx, 220, rw, 1030); ctx.lineWidth = 1; ctx.strokeRect(rx+6, 226, rw-12, 1018);
-                ctx.fillStyle = c.inkDark; ctx.textAlign = "left"; ctx.font = `bold 60px ${fontR}`; ctx.fillText("BẢN TIN", rx + 25, 300);
-                ctx.fillStyle = c.redRoyal; ctx.fillRect(rx + rw - 85, 250, 60, 40); this.drawVectorStar(rx + rw - 55, 270, 12, c.goldRoyal);
-
-                ctx.fillStyle = c.inkDark; ctx.font = `24px ${fontR}`;
-                const textHistory = "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.\n\nĐền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua.\n\nNhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc.";
-                this.drawTextStrictBounds(textHistory, rx + 25, 350, rw - 50, 36);
-
-                const templeY = 1200; 
-                ctx.fillStyle = c.inkDark; ctx.fillRect(rx + rw/2 - 80, templeY, 160, 12); ctx.fillRect(rx + rw/2 - 60, templeY-40, 15, 40); ctx.fillRect(rx + rw/2 + 45, templeY-40, 15, 40);
-                ctx.beginPath(); ctx.moveTo(rx + rw/2 - 100, templeY-40); ctx.lineTo(rx + rw/2 + 100, templeY-40); ctx.lineTo(rx + rw/2 + 60, templeY-70); ctx.lineTo(rx + rw/2 - 60, templeY-70); ctx.fill();
-                ctx.fillRect(rx + rw/2 - 25, templeY-100, 50, 30); ctx.beginPath(); ctx.moveTo(rx + rw/2 - 50, templeY-100); ctx.lineTo(rx + rw/2 + 50, templeY-100); ctx.lineTo(rx + rw/2 + 30, templeY-130); ctx.lineTo(rx + rw/2 - 30, templeY-130); ctx.fill();
-                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(rx + rw/2 - 100, templeY-55, 15, 0.5*Math.PI, 1.5*Math.PI); ctx.stroke(); ctx.beginPath(); ctx.arc(rx + rw/2 + 100, templeY-55, 15, 1.5*Math.PI, 0.5*Math.PI); ctx.stroke();
-
-                this.drawDecorDashedLines(1290);
-                ctx.fillStyle = c.inkDark; ctx.textAlign = "center"; ctx.font = `bold 45px ${fontR}`; ctx.fillText("Chào Mừng Đến Với Di Tích Quốc Gia Đặc Biệt Lễ Hội Đền Đô", w / 2, 1410);
-                ctx.font = `italic 30px ${fontR}`; ctx.fillText("Bắc Ninh, Ngày " + new Date().toLocaleDateString('vi-VN'), w / 2, 1475);
-            }
-        }
-        const Engine = new GraphicsEngine();
-
-        const AppCtrl = {
-            async boot() { this.initBackgroundFX(); this.bindDOMEvents(); AppState.savedGallery = Utils.Storage.load(); await CamSys.initializeSystem(); },
-            bindDOMEvents() {
-                Utils.el('btnToggleCamMobile').onclick = () => CamSys.toggleMobileCamera();
-                Utils.el('sliderBright').oninput = (e) => { AppState.filters.bright = e.target.value; Utils.el('valBright').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
-                Utils.el('sliderContrast').oninput = (e) => { AppState.filters.contrast = e.target.value; Utils.el('valContrast').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
-                Utils.el('sliderSepia').oninput = (e) => { AppState.filters.sepia = e.target.value; Utils.el('valSepia').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
-                Utils.el('timerSelect').onchange = (e) => { AppState.countdownTime = parseInt(e.target.value); };
-                Utils.el('btnTriggerCapture').onclick = () => this.handleCaptureSequence();
-                Utils.el('btnResetSession').onclick = () => { AppState.frames = []; this.updateUIState(); this.switchTab('tab-camera'); };
-                Utils.el('btnSaveToDevice').onclick = () => {
-                    const dataUrl = Utils.el('finalPrintCanvas').toDataURL('image/jpeg', APP_CONFIG.rules.exportQuality);
-                    const a = document.createElement('a'); a.download = `PhienBan_DangTung_Photobooth_${Date.now()}.jpg`; a.href = dataUrl; a.click();
-                    AppState.savedGallery.push(dataUrl); Utils.Storage.save(AppState.savedGallery); Utils.Toast.show("Đã in và lưu vào Thư Viện hệ thống!");
-                };
+                // Add noise
+                this.ctx.fillStyle = `rgba(0,0,0,0.02)`;
+                for(let i=0; i<w*h/200; i++) this.ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
             },
-            updateUIState() {
-                const len = AppState.frames.length; const req = APP_CONFIG.rules.totalPhotosRequired; const btn = Utils.el('btnTriggerCapture');
-                [1, 2, 3].forEach(i => { Utils.el(`progDot${i}`).className = i <= len ? 'progress-dot active' : 'progress-dot'; });
-                if (len === 0) btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg> Bấm Khởi Động (${len}/${req})`;
-                else if (len < req) btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg> Chụp Góc Kế Tiếp (${len}/${req})`;
+
+            // --- Layout 1: Truyền Thống (Classic Poster) ---
+            async renderClassic() {
+                const { w, h } = Config.print.classic;
+                this.canvas.width = w; this.canvas.height = h;
+                const c = Config.print.palette; const font = Config.print.fonts.main;
+                const prm = Config.state.adminParams;
+                
+                this.drawVintageBackground(w, h, c);
+
+                // Borders
+                this.ctx.strokeStyle = c.ink; this.ctx.lineWidth = 2; this.ctx.strokeRect(30, 30, w-60, h-60);
+
+                // Header
+                this.ctx.beginPath(); this.ctx.roundRect(60, 60, 300, 90, 15); this.ctx.stroke();
+                this.ctx.fillStyle = c.ink; this.ctx.textAlign = "center";
+                this.ctx.font = `bold 26px ${font}`; this.ctx.fillText(prm.brand, 210, 100);
+                this.ctx.font = `italic 20px ${font}`; this.ctx.fillText("Event Memory Archive", 210, 135);
+
+                this.ctx.textAlign = "left"; this.ctx.font = `bold 85px ${font}`;
+                this.ctx.fillStyle = 'rgba(196, 154, 0, 0.4)'; this.ctx.fillText(prm.title, 405, 140);
+                this.ctx.fillStyle = c.red; this.ctx.fillText(prm.title, 400, 135);
+
+                // Photos
+                const f = Config.state.frames;
+                this.drawShadowFrame(f[0], 60, 200, 680, 510);
+                this.drawShadowFrame(f[1], 60, 740, 330, 247.5);
+                this.drawShadowFrame(f[2], 410, 740, 330, 247.5);
+
+                // Banner
+                this.ctx.strokeRect(60, 1050, 680, 160);
+                this.ctx.fillStyle = c.red; this.ctx.fillRect(70, 1060, 100, 140);
+                this.drawStarVector(120, 1100, 20, c.gold); this.drawStarVector(120, 1160, 20, c.gold);
+                this.ctx.textAlign = "center"; this.ctx.font = `bold 55px ${font}`;
+                this.ctx.fillText("TỰ HÀO LÀ NGƯỜI", 410, 1120); this.ctx.fillText("VIỆT NAM", 410, 1185);
+
+                // News Col
+                const rx = 760, rw = 380;
+                this.ctx.strokeRect(rx, 200, rw, 1010);
+                this.ctx.textAlign = "left"; this.ctx.font = `bold 50px ${font}`; this.ctx.fillStyle = c.ink;
+                this.ctx.fillText("BẢN TIN", rx+20, 270);
+                this.ctx.fillStyle = c.red; this.ctx.fillRect(rx+rw-70, 230, 50, 35);
+                this.drawStarVector(rx+rw-45, 247.5, 10, c.gold);
+
+                this.ctx.fillStyle = c.ink; this.ctx.font = `22px ${font}`;
+                this.drawTextWrap(prm.news, rx+20, 320, rw-40, 32);
+
+                // Footer
+                this.ctx.textAlign = "center"; this.ctx.font = `bold 40px ${font}`;
+                this.ctx.fillText(`Kỷ Niệm Đặc Biệt ${prm.title}`, w/2, 1360);
+                
+                // Vẽ QR Code tạo pattern (Thuật toán Ma trận ảo)
+                this.drawProceduralQR(w/2 - 80, 1400, 160);
             },
-            handleCaptureSequence() {
-                if (AppState.isProcessing) return; AppState.isProcessing = true; Utils.el('btnTriggerCapture').disabled = true;
-                let counter = AppState.countdownTime; const overDisplay = Utils.el('timerOverlay'); const textDisplay = Utils.el('timerDisplay');
-                overDisplay.style.display = 'flex'; textDisplay.innerText = counter; AudioSys.beepTimer();
-                const timerInterval = setInterval(() => {
-                    counter--; if (counter > 0) { textDisplay.innerText = counter; AudioSys.beepTimer(); }
-                    else { clearInterval(timerInterval); overDisplay.style.display = 'none'; this.executeSnap(); }
-                }, 1000);
+
+            // --- Layout 2: Photo Strip (Dải ảnh Hàn Quốc) ---
+            async renderStrip() {
+                const { w, h } = Config.print.strip;
+                this.canvas.width = w; this.canvas.height = h;
+                const c = Config.print.palette; const font = Config.print.fonts.main;
+                const prm = Config.state.adminParams;
+
+                // Nền Strip thường dùng màu sáng hiện đại pha chút vintage
+                this.ctx.fillStyle = c.bgCenter; this.ctx.fillRect(0, 0, w, h);
+                this.ctx.strokeStyle = c.ink; this.ctx.lineWidth = 4; this.ctx.strokeRect(15, 15, w-30, h-30);
+
+                // 3 Photos xếp dọc
+                const f = Config.state.frames;
+                const pW = 500, pH = 375; // 4:3
+                const pX = (w - pW) / 2;
+                
+                this.drawShadowFrame(f[0], pX, 50, pW, pH);
+                this.drawShadowFrame(f[1], pX, 460, pW, pH);
+                this.drawShadowFrame(f[2], pX, 870, pW, pH);
+
+                // Footer Strip
+                this.ctx.textAlign = "center";
+                this.ctx.fillStyle = c.red; this.ctx.font = `bold 50px ${font}`;
+                this.ctx.fillText(prm.title, w/2, 1340);
+                
+                this.ctx.fillStyle = c.ink; this.ctx.font = `italic 24px ${font}`;
+                this.ctx.fillText(prm.brand + " • " + new Date().toLocaleDateString('vi-VN'), w/2, 1390);
+
+                this.drawProceduralQR(w/2 - 70, 1430, 140);
             },
-            executeSnap() {
-                AudioSys.beepShutter(); const flash = Utils.el('shutterFlash'); flash.style.animation = 'none'; flash.offsetHeight; flash.style.animation = 'shutterFlash 0.6s ease-out forwards';
-                AppState.frames.push(CamSys.captureHighResFrame()); AppState.isProcessing = false; this.updateUIState();
-                if (AppState.frames.length >= APP_CONFIG.rules.totalPhotosRequired) this.renderCompilation(); else Utils.el('btnTriggerCapture').disabled = false;
+
+            // Thuật toán sinh QR giả lập tinh xảo
+            drawProceduralQR(x, y, s) {
+                const ctx = this.ctx; ctx.fillStyle = "#fff"; ctx.fillRect(x, y, s, s);
+                ctx.fillStyle = "#000"; const cs = s * 0.2;
+                // 3 Anchor eyes
+                [[x+5, y+5], [x+s-cs-5, y+5], [x+5, y+s-cs-5]].forEach(p => {
+                    ctx.fillRect(p[0], p[1], cs, cs);
+                    ctx.fillStyle = "#fff"; ctx.fillRect(p[0]+4, p[1]+4, cs-8, cs-8);
+                    ctx.fillStyle = "#000"; ctx.fillRect(p[0]+8, p[1]+8, cs-16, cs-16);
+                });
+                // Data modules matrix
+                for(let i=0; i<s; i+=4) {
+                    for(let j=0; j<s; j+=4) {
+                        // Tránh vùng mắt
+                        if((i<cs+10 && j<cs+10) || (i>s-cs-10 && j<cs+10) || (i<cs+10 && j>s-cs-10)) continue;
+                        if(Math.random() > 0.5) ctx.fillRect(x+i, y+j, 4, 4);
+                    }
+                }
             },
-            renderCompilation() {
-                this.switchTab('tab-processing');
-                setTimeout(async () => { await Engine.compileFinalPoster(); this.switchTab('tab-result'); Utils.Toast.show("Đã kết xuất thành công Bản in Nghệ thuật!"); }, 1500);
-            },
-            switchTab(targetId) {
-                document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                Utils.el(targetId).classList.add('active'); const btn = document.querySelector(`[data-target="${targetId}"]`); if(btn) btn.classList.add('active');
-                if (targetId === 'tab-gallery') this.buildGalleryDOM();
-            },
-            buildGalleryDOM() {
-                const grid = Utils.el('galleryGrid'); Utils.el('galleryCounter').innerText = `Tổng: ${AppState.savedGallery.length} bản in`;
-                if (AppState.savedGallery.length === 0) { grid.innerHTML = `<div class="gallery-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><p>Dữ liệu trống. Máy chủ chưa ghi nhận bản in nào.</p></div>`; return; }
-                let htmlContent = ''; [...AppState.savedGallery].reverse().forEach(imgBase64 => { htmlContent += `<div class="gallery-card" onclick="window.open('${imgBase64}', '_blank')"><img src="${imgBase64}" loading="lazy" alt="Lễ Hội Đền Đô"></div>`; }); grid.innerHTML = htmlContent;
-            },
-            initBackgroundFX() {
-                const canvas = Utils.el('particleCanvas'); const ctx = canvas.getContext('2d'); let w, h, particles = [];
-                const onResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }; window.addEventListener('resize', onResize); onResize();
-                for(let i = 0; i < 60; i++) particles.push({ x: Math.random() * w, y: Math.random() * h, radius: Math.random() * 2.5 + 0.5, dy: Math.random() * -0.6 - 0.2, opacity: Math.random() * 0.4 + 0.1 });
-                const animateLoop = () => { ctx.clearRect(0, 0, w, h); particles.forEach(p => { p.y += p.dy; if(p.y < 0) { p.y = h; p.x = Math.random() * w; } ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fillStyle = `rgba(245, 158, 11, ${p.opacity})`; ctx.fill(); }); requestAnimationFrame(animateLoop); }; animateLoop();
+
+            async execute() {
+                if (Config.state.currentLayout === 'classic') await this.renderClassic();
+                else await this.renderStrip();
             }
         };
 
-        window.addEventListener('DOMContentLoaded', () => AppCtrl.boot());
+        /** 
+         * ==========================================
+         * MODULE 7: GALLERY STORAGE (IndexedDB / LocalStorage)
+         * ==========================================
+         */
+        const GallerySys = {
+            db: [],
+            
+            init() {
+                try {
+                    const data = localStorage.getItem(Config.app.storageKey);
+                    if (data) this.db = JSON.parse(data);
+                } catch(e) { console.warn("Cannot load local storage."); }
+            },
+
+            saveAndDownload() {
+                const canvas = UI.el('exportCanvas');
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                
+                // Downloader
+                const a = document.createElement('a');
+                a.download = `DangTung-Platinum-${Date.now()}.jpg`;
+                a.href = dataUrl; a.click();
+                
+                // Store
+                this.db.push(dataUrl);
+                try { localStorage.setItem(Config.app.storageKey, JSON.stringify(this.db)); } catch(e){}
+                
+                UI.toast(I18n.t('toast_save'));
+            },
+
+            renderView() {
+                const grid = UI.el('gallery-grid');
+                if (this.db.length === 0) {
+                    grid.innerHTML = `<div class="empty-state"><h3>Trống</h3><p>Chưa có dữ liệu nào được lưu.</p></div>`;
+                    return;
+                }
+                
+                let html = '';
+                [...this.db].reverse().forEach(src => {
+                    html += `<div class="gallery-item" onclick="window.open('${src}', '_blank')"><img src="${src}" loading="lazy"></div>`;
+                });
+                grid.innerHTML = html;
+            }
+        };
+
+        /** 
+         * ==========================================
+         * MODULE 8: APPLICATION CONTROLLER (THE BRAIN)
+         * State Machine
+         * ==========================================
+         */
+        const OS = {
+            async boot() {
+                I18n.updateDOM();
+                this.initFX();
+                GallerySys.init();
+                RenderEngine.init();
+                await CamEngine.boot();
+                this.bindEvents();
+                UI.toast(I18n.t('toast_ready'));
+            },
+
+            bindEvents() {
+                UI.el('btn-toggle-cam').onclick = () => CamEngine.toggle();
+                UI.el('btn-trigger').onclick = () => this.runProcess();
+                UI.el('toggle-voice').onchange = (e) => Config.state.useVoice = e.target.checked;
+            },
+
+            runProcess() {
+                if(Config.state.isOperating) return;
+                Config.state.isOperating = true;
+                
+                UI.el('btn-trigger').disabled = true;
+                UI.el('btn-toggle-cam').disabled = true;
+
+                let time = Config.state.countdown;
+                const overlay = UI.el('countdown-ui');
+                const text = UI.el('timer-val');
+                
+                overlay.style.display = 'flex';
+                text.innerText = time;
+                
+                AudioSys.speak(AudioSys.getCountdownWord(time));
+                AudioSys.tick();
+
+                const iv = setInterval(() => {
+                    time--;
+                    if (time > 0) {
+                        text.innerText = time;
+                        AudioSys.speak(AudioSys.getCountdownWord(time));
+                        AudioSys.tick();
+                    } else {
+                        clearInterval(iv);
+                        overlay.style.display = 'none';
+                        AudioSys.speak(AudioSys.getCountdownWord(0));
+                        this.takeShot();
+                    }
+                }, 1000);
+            },
+
+            takeShot() {
+                AudioSys.snap();
+                UI.flash();
+                
+                const frame = CamEngine.captureCore();
+                Config.state.frames.push(frame);
+                
+                Config.state.isOperating = false;
+                UI.el('btn-toggle-cam').disabled = false;
+                UI.updateProgress();
+
+                if (Config.state.frames.length >= Config.app.totalShots) {
+                    this.buildFinal();
+                } else {
+                    UI.el('btn-trigger').disabled = false;
+                }
+            },
+
+            buildFinal() {
+                UI.showModal('processing');
+                setTimeout(async () => {
+                    await RenderEngine.execute();
+                    UI.showModal('result');
+                }, 2000); // Fake complex processing time for UX
+            },
+
+            switchView(vid) {
+                document.querySelectorAll('.col-main').forEach(v => v.classList.add('hide'));
+                document.querySelectorAll('.sys-btn').forEach(b => b.classList.remove('active'));
+                
+                UI.el(vid).classList.remove('hide');
+                document.querySelector(`[data-view="${vid}"]`).classList.add('active');
+                
+                if (vid === 'view-gallery') GallerySys.renderView();
+            },
+
+            closeModalAndReset() {
+                Config.state.frames = [];
+                UI.updateProgress();
+                UI.hideModal();
+            },
+
+            saveAdminSettings() {
+                Config.state.adminParams.title = UI.el('cfg-title').value;
+                Config.state.adminParams.brand = UI.el('cfg-brand').value;
+                Config.state.adminParams.news = UI.el('cfg-news').value;
+                UI.el('ui-brand-title').innerText = Config.state.adminParams.brand;
+                UI.toast("Đã lưu cấu hình Hệ thống Core.");
+            },
+
+            // Vector Particle Background
+            initFX() {
+                const cvs = UI.el('bg-canvas'); const ctx = cvs.getContext('2d');
+                let w, h, pts = [];
+                const resize = () => { w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight; };
+                window.addEventListener('resize', resize); resize();
+
+                for(let i=0; i<80; i++) pts.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*2+1, dy: Math.random()*-1 - 0.2, op: Math.random()*0.3 });
+                const animate = () => {
+                    ctx.clearRect(0,0,w,h);
+                    pts.forEach(p => { p.y += p.dy; if(p.y < 0){ p.y=h; p.x=Math.random()*w; } ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = `rgba(245, 158, 11, ${p.op})`; ctx.fill(); });
+                    requestAnimationFrame(animate);
+                }; animate();
+            }
+        };
+
+        // KÍCH HOẠT HỆ ĐIỀU HÀNH
+        window.addEventListener('DOMContentLoaded', () => OS.boot());
+
     </script>
 </body>
 </html>
