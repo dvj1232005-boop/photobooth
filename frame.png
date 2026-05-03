@@ -1,1 +1,27 @@
+// --- 4. RENDER GHÉP ẢNH ---
+function generateFinalPoster() {
+    video.style.display = 'none';
+    resultCanvas.style.display = 'block';
+    captureBtn.style.display = 'none';
+    retakeBtn.style.display = 'inline-block';
+    downloadBtn.style.display = 'inline-block';
+    statusText.innerText = "Hoàn thành! Bạn có thể tải ảnh về 🇻🇳";
 
+    // Xóa canvas
+    ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+
+    // BƯỚC A: Vẽ 3 ảnh chụp nằm ở LỚP DƯỚI CÙNG
+    // Tọa độ đã ĐƯỢC CẬP NHẬT ĐỂ KHỚP VỚI FILE FRAME MỚI:
+
+    // 1. Ảnh chính (Main Photo) - Cần điều chỉnh tọa độ và kích thước cho chính xác
+    ctx.drawImage(photoData[0], 115, 230, 670, 500); 
+
+    // 2. Ảnh phụ 1 (Extra Photo 1) - Cần điều chỉnh tọa độ và kích thước cho chính xác
+    ctx.drawImage(photoData[1], 115, 830, 315, 235);
+
+    // 3. Ảnh phụ 2 (Extra Photo 2) - Cần điều chỉnh tọa độ và kích thước cho chính xác
+    ctx.drawImage(photoData[2], 470, 830, 315, 235);
+
+    // BƯỚC B: Vẽ Frame (khung có đầy đủ họa tiết) lên LỚP TRÊN CÙNG
+    ctx.drawImage(frameImg, 0, 0, resultCanvas.width, resultCanvas.height);
+}
