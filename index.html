@@ -3,45 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photobooth Lễ Hội Đền Đô</title>
+    <title>Photobooth Đền Đô - Bản Chuẩn</title>
     <style>
         :root {
-            --primary-red: #8b0000;
+            --primary-red: #9e1e1e;
             --gold: #d4af37;
             --bg-dark: #1a1a1a;
         }
         
         body {
-            margin: 0;
-            padding: 20px 0;
+            margin: 0; padding: 20px 0;
             font-family: 'Times New Roman', Times, serif;
-            background-color: var(--bg-dark);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: var(--bg-dark); color: white;
+            display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
         }
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 {
-            color: var(--gold); margin: 0; font-size: 32px;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
+        .header h1 { color: var(--gold); margin: 0 0 20px 0; font-size: 28px; text-transform: uppercase; }
 
         .app-container {
             display: flex; flex-direction: column; align-items: center;
-            background: #2a2a2a; padding: 25px; border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6); border: 1px solid #444;
+            background: #2a2a2a; padding: 25px; border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             max-width: 95vw;
         }
 
+        /* Khung hiển thị camera (Tỷ lệ 4:3) */
         .view-screen {
-            position: relative;
-            width: 680px; height: 510px;
-            background: #000; border: 4px solid var(--gold); border-radius: 10px;
+            position: relative; width: 640px; height: 480px;
+            background: #000; border: 4px solid var(--gold); border-radius: 8px;
             overflow: hidden; display: flex; justify-content: center; align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 768px) {
@@ -55,24 +47,23 @@
             border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        .controls { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .controls { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
         
         button {
-            padding: 14px 28px; font-size: 18px; font-weight: bold; border: none;
-            border-radius: 8px; cursor: pointer; transition: all 0.2s ease-in-out;
+            padding: 14px 24px; font-size: 16px; font-weight: bold; border: none;
+            border-radius: 6px; cursor: pointer; transition: 0.2s;
             text-transform: uppercase; font-family: inherit;
         }
-        
         button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        #captureBtn { background-color: var(--primary-red); color: var(--gold); border: 2px solid var(--gold); }
-        #captureBtn:hover:not(:disabled) { background-color: #a00000; transform: translateY(-2px); }
+        #captureBtn { background-color: var(--primary-red); color: white; border: 2px solid var(--gold); }
+        #captureBtn:hover:not(:disabled) { background-color: #801212; }
 
         #retakeBtn, #downloadBtn { display: none; }
-        #retakeBtn { background-color: #444; color: white; border: 1px solid #666; }
+        #retakeBtn { background-color: #444; color: white; }
         #downloadBtn { background-color: var(--gold); color: var(--primary-red); }
 
-        .status { margin-top: 20px; font-size: 20px; color: var(--gold); font-weight: bold; text-align: center; }
+        .status { margin-top: 15px; font-size: 18px; color: var(--gold); font-weight: bold; }
 
         .photo-count { display: flex; gap: 10px; margin-bottom: 15px; }
         .dot { width: 15px; height: 15px; border-radius: 50%; background: #555; border: 2px solid var(--gold); }
@@ -82,7 +73,7 @@
 <body>
 
     <div class="header">
-        <h1>📸 Photobooth Đền Đô</h1>
+        <h1>📸 Đăng Tùng Photobooth</h1>
     </div>
 
     <div class="app-container">
@@ -94,17 +85,16 @@
 
         <div class="view-screen">
             <video id="video" autoplay playsinline></video>
-            <!-- Canvas chuẩn tỷ lệ 3:4 (900x1200) -->
             <canvas id="resultCanvas" width="900" height="1200"></canvas>
         </div>
 
         <div class="controls">
             <button id="captureBtn" disabled>Đang tải camera...</button>
             <button id="retakeBtn">🔄 Chụp lại</button>
-            <button id="downloadBtn">📥 Lưu Ảnh</button>
+            <button id="downloadBtn">📥 Lưu Ảnh (Bản in)</button>
         </div>
         
-        <div class="status" id="statusText">Vui lòng cho phép truy cập Camera</div>
+        <div class="status" id="statusText">Vui lòng cấp quyền truy cập Camera</div>
     </div>
 
     <script>
@@ -125,23 +115,21 @@
         async function initCamera() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: "user" },
-                    audio: false
+                    video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: "user" }, audio: false
                 });
                 video.srcObject = stream;
                 
                 video.onplaying = () => {
                     captureBtn.disabled = false;
                     captureBtn.innerText = "Chụp Ảnh (1/3)";
-                    statusText.innerText = "Sẵn sàng! Hãy tạo dáng thật đẹp";
+                    statusText.innerText = "Sẵn sàng! Hãy tạo dáng";
                 };
             } catch (err) {
-                statusText.innerText = "Lỗi Camera. Hãy kiểm tra quyền truy cập!";
-                statusText.style.color = "red";
+                statusText.innerText = "Lỗi Camera!"; statusText.style.color = "red";
             }
         }
 
-        // Chụp ảnh
+        // Chụp ảnh tỷ lệ 4:3
         function takePhoto() {
             const tempCanvas = document.createElement('canvas');
             const videoRatio = video.videoWidth / video.videoHeight;
@@ -153,144 +141,179 @@
                 sx = (video.videoWidth - sWidth) / 2;
             }
 
-            tempCanvas.width = 800; 
-            tempCanvas.height = 600;
+            tempCanvas.width = 800; tempCanvas.height = 600;
             const tempCtx = tempCanvas.getContext('2d');
             
-            // Lật gương
-            tempCtx.translate(tempCanvas.width, 0);
+            tempCtx.translate(tempCanvas.width, 0); // Lật gương
             tempCtx.scale(-1, 1);
-            
-            // Cắt crop ảnh 4:3 từ camera
             tempCtx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
             
             photoData.push(tempCanvas);
-            updateDots();
+            
+            dots.forEach((dot, idx) => { if (idx < photoData.length) dot.classList.add('active'); else dot.classList.remove('active'); });
             
             if (photoData.length < 3) {
                 captureBtn.innerText = `Chụp Ảnh (${photoData.length + 1}/3)`;
-                statusText.innerText = `Tuyệt! Chụp tiếp kiểu thứ ${photoData.length + 1} nào`;
+                statusText.innerText = `Ảnh ${photoData.length}/3. Chụp tiếp nào!`;
             } else {
                 generateFinalPoster();
             }
         }
 
-        function updateDots() {
-            dots.forEach((dot, index) => {
-                if (index < photoData.length) dot.classList.add('active');
-                else dot.classList.remove('active');
+        // --- CÁC HÀM HỖ TRỢ VẼ ĐỒ HỌA ---
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            let words = text.split(' '); let line = '';
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = context.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' '; y += lineHeight;
+                } else { line = testLine; }
+            }
+            context.fillText(line, x, y);
+        }
+
+        function drawStar(context, cx, cy, outerRadius, color) {
+            let spikes = 5; let innerRadius = outerRadius / 2.2;
+            let rot = Math.PI / 2 * 3; let x, y; let step = Math.PI / spikes;
+            context.beginPath(); context.moveTo(cx, cy - outerRadius);
+            for (let i = 0; i < spikes; i++) {
+                x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; context.lineTo(x, y); rot += step;
+                x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; context.lineTo(x, y); rot += step;
+            }
+            context.lineTo(cx, cy - outerRadius); context.closePath();
+            context.fillStyle = color; context.fill();
+        }
+
+        function drawQRCode(context, x, y, size) {
+            context.fillStyle = "#fff"; context.fillRect(x, y, size, size);
+            context.fillStyle = "#000"; let cs = size * 0.22;
+            // 3 ô vuông định vị
+            [ [x+2, y+2], [x+size-cs-2, y+2], [x+2, y+size-cs-2] ].forEach(pos => {
+                context.fillRect(pos[0], pos[1], cs, cs);
+                context.fillStyle = "#fff"; context.fillRect(pos[0]+3, pos[1]+3, cs-6, cs-6);
+                context.fillStyle = "#000"; context.fillRect(pos[0]+6, pos[1]+6, cs-12, cs-12);
             });
+            // Hạt pixel ngẫu nhiên
+            for(let i=0; i<60; i++) { context.fillRect(x + Math.random()*(size-8)+4, y + Math.random()*(size-8)+4, 4, 4); }
         }
 
-        // --- HÀM TỰ ĐỘNG VẼ POSTER TRUYỀN THỐNG BẰNG CODE JS ---
-        function drawRichBackground(context, width, height) {
-            // 1. Nền Gradient giấy cổ hoàng gia
-            let gradient = context.createLinearGradient(0, 0, width, height);
-            gradient.addColorStop(0, "#f4e3c5");
-            gradient.addColorStop(0.5, "#e6ce9e");
-            gradient.addColorStop(1, "#d1b373");
-            context.fillStyle = gradient;
-            context.fillRect(0, 0, width, height);
-
-            // 2. Viền ngoài (Đỏ sẫm)
-            context.lineWidth = 18;
-            context.strokeStyle = "#7c0a02";
-            context.strokeRect(15, 15, width - 30, height - 30);
-
-            // 3. Viền trong (Vàng Gold)
-            context.lineWidth = 4;
-            context.strokeStyle = "#b58d3d";
-            context.strokeRect(35, 35, width - 70, height - 70);
-
-            // 4. Logo / Chữ Tiêu đề
-            context.fillStyle = "#7c0a02";
-            context.font = "bold 70px 'Times New Roman', serif";
-            context.textAlign = "center";
-            context.fillText("LỄ HỘI ĐỀN ĐÔ", width / 2, 130);
-            
-            context.font = "italic 24px 'Times New Roman', serif";
-            context.fillStyle = "#553a1f";
-            context.fillText("Di tích Quốc gia đặc biệt - Từ Sơn, Bắc Ninh", width / 2, 175);
-
-            // 5. Tiêu đề nhỏ (Photobooth) góc trái
-            context.fillStyle = "#b58d3d";
-            context.fillRect(45, 45, 120, 35);
-            context.fillStyle = "#7c0a02";
-            context.font = "bold 16px Arial";
-            context.fillText("PHOTOBOOTH", 105, 68);
-
-            // 6. Khu vực Text giữa
-            context.fillStyle = "#7c0a02";
-            context.font = "bold 45px 'Times New Roman', serif";
-            context.fillText("TỰ HÀO LÀ NGƯỜI VIỆT NAM", width / 2, 790);
-
-            // 7. Chân trang
-            context.fillStyle = "#7c0a02";
-            context.font = "bold 32px 'Times New Roman', serif";
-            context.fillText("BẢN TIN 🇻🇳", width / 2, 1140);
+        function drawTemple(context, cx, cy) {
+            context.fillStyle = "#3a2a1a";
+            context.fillRect(cx - 50, cy, 100, 8); // Đế
+            context.fillRect(cx - 35, cy - 25, 8, 25); // Cột trái
+            context.fillRect(cx + 27, cy - 25, 8, 25); // Cột phải
+            context.fillRect(cx - 8, cy - 25, 16, 25); // Cột giữa
+            // Mái 1
+            context.beginPath(); context.moveTo(cx - 60, cy - 25); context.lineTo(cx + 60, cy - 25);
+            context.lineTo(cx + 40, cy - 40); context.lineTo(cx - 40, cy - 40); context.fill();
+            // Mái 2
+            context.fillRect(cx - 15, cy - 55, 30, 15);
+            context.beginPath(); context.moveTo(cx - 35, cy - 55); context.lineTo(cx + 35, cy - 55);
+            context.lineTo(cx + 20, cy - 70); context.lineTo(cx - 20, cy - 70); context.fill();
+            // Râu mái (cong)
+            context.beginPath(); context.arc(cx - 60, cy - 35, 10, 0.5*Math.PI, 1.5*Math.PI); context.stroke();
+            context.beginPath(); context.arc(cx + 60, cy - 35, 10, 1.5*Math.PI, 0.5*Math.PI); context.stroke();
         }
 
-        // Vẽ ảnh người dùng vào khung có viền 3D
-        function drawFramedPhoto(context, img, x, y, w, h) {
-            // Đổ bóng (Shadow)
-            context.shadowColor = "rgba(0,0,0,0.5)";
-            context.shadowBlur = 15;
-            context.shadowOffsetX = 5;
-            context.shadowOffsetY = 5;
-
-            // Viền ngoài (Màu đỏ sẫm)
-            context.fillStyle = "#7c0a02";
-            context.fillRect(x - 10, y - 10, w + 20, h + 20);
-            
-            // Tắt shadow cho các lớp bên trong
-            context.shadowColor = "transparent";
-
-            // Viền trong (Màu vàng kim)
-            context.fillStyle = "#d4af37";
-            context.fillRect(x - 4, y - 4, w + 8, h + 8);
-
-            // Vẽ ảnh thật
-            context.drawImage(img, x, y, w, h);
-        }
-
-        // Render toàn bộ
+        // --- RENDER BẢN IN CHÍNH XÁC ---
         function generateFinalPoster() {
-            video.style.display = 'none';
-            resultCanvas.style.display = 'block';
+            video.style.display = 'none'; resultCanvas.style.display = 'block';
             captureBtn.style.display = 'none';
-            retakeBtn.style.display = 'inline-block';
-            downloadBtn.style.display = 'inline-block';
-            statusText.innerText = "Hoàn thành! Bạn có thể tải ảnh về 🇻🇳";
+            retakeBtn.style.display = 'inline-block'; downloadBtn.style.display = 'inline-block';
+            statusText.innerText = "Tuyệt đẹp! Layout đã được tái tạo chuẩn xác.";
 
-            // 1. Vẽ nền trang trí
-            drawRichBackground(ctx, resultCanvas.width, resultCanvas.height);
+            const w = 900, h = 1200;
+            const paperColor = "#e6d5b8"; // Màu giấy craft
+            const darkText = "#3b2b1f";   // Màu mực in nâu đen
+            const redColor = "#a32323";   // Đỏ cờ
+            const goldColor = "#e6c229";  // Vàng sao
 
-            // 2. Vẽ 3 bức ảnh đè lên trên nền (Có khung viền bao quanh)
-            drawFramedPhoto(ctx, photoData[0], 115, 230, 670, 500); // Ảnh 1 (Main)
-            drawFramedPhoto(ctx, photoData[1], 115, 830, 315, 235); // Ảnh 2 (Sub 1)
-            drawFramedPhoto(ctx, photoData[2], 470, 830, 315, 235); // Ảnh 3 (Sub 2)
+            // 1. Nền giấy & Viền ngoài
+            ctx.fillStyle = paperColor; ctx.fillRect(0, 0, w, h);
+            ctx.strokeStyle = darkText; ctx.lineWidth = 1;
+            ctx.strokeRect(20, 20, w - 40, h - 40);
+
+            // 2. HEADER
+            // Logo bo góc trái
+            ctx.beginPath(); ctx.roundRect(40, 40, 150, 60, 15); ctx.stroke();
+            ctx.fillStyle = darkText; ctx.font = "bold 18px Arial"; ctx.textAlign = "center";
+            ctx.fillText("Đăng Dương", 115, 65); ctx.fillText("Photobooth", 115, 87);
+            
+            // Text Header
+            ctx.fillStyle = redColor; ctx.font = "bold 65px 'Times New Roman', serif"; ctx.textAlign = "left";
+            ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 230, 95);
+
+            // Đường nét đứt chia cách Header
+            ctx.beginPath(); ctx.setLineDash([6, 6]); ctx.moveTo(40, 125); ctx.lineTo(860, 125); ctx.stroke(); ctx.setLineDash([]);
+
+            // 3. ẢNH CHÍNH (BÊN TRÁI) - 480x360
+            ctx.fillStyle = darkText; ctx.fillRect(38, 148, 484, 364); // Viền đen mỏng
+            ctx.drawImage(photoData[0], 40, 150, 480, 360);
+
+            // 4. BẢN TIN (BÊN PHẢI) - Chạy dọc
+            ctx.strokeStyle = darkText; ctx.lineWidth = 1;
+            ctx.strokeRect(540, 150, 320, 560);
+            ctx.strokeRect(545, 155, 310, 550); // Viền đôi
+
+            // Tiêu đề Bản Tin
+            ctx.fillStyle = "#2d4a36"; // Màu xanh rêu đậm
+            ctx.font = "bold 38px 'Times New Roman', serif"; ctx.textAlign = "left";
+            ctx.fillText("BẢN TIN", 565, 205);
+            
+            // Hộp cờ đỏ sao vàng nhỏ của bản tin
+            ctx.fillStyle = redColor; ctx.fillRect(730, 175, 45, 30);
+            drawStar(ctx, 752.5, 190, 8, goldColor);
+
+            // Text paragraph Bản tin
+            ctx.fillStyle = darkText; ctx.font = "16px Arial"; ctx.textAlign = "left";
+            const newsText = "Đến Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, ngày nay nằm ở phường Đình Bảng, thành phố Từ Sơn. Đền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng Đình Bảng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua. Khi vua Lý Công Uẩn băng hà, Lý Thái Tông lên ngôi kế vị vua cha, ông đã cho sửa sang lại ngôi nhà xưa và chọn làm nơi thờ tự vua cha, từ đó Đền trở thành nơi thờ tự các vị vua nhà Lý sau khi băng hà. Nhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống văn hóa.";
+            wrapText(ctx, newsText, 565, 240, 275, 24);
+
+            // Hình minh họa mái đền
+            drawTemple(ctx, 700, 680);
+
+            // 5. BANNER GIỮA (DƯỚI ẢNH CHÍNH)
+            ctx.fillStyle = darkText; ctx.font = "14px 'Times New Roman'"; ctx.textAlign = "center";
+            ctx.fillText("———— ĐĂNG Tùng PHOTOBOOTH ————", 280, 535);
+
+            ctx.strokeRect(40, 550, 480, 110);
+            // Dải cờ đỏ
+            ctx.fillStyle = redColor; ctx.fillRect(45, 555, 50, 100);
+            drawStar(ctx, 70, 580, 10, goldColor);
+            drawStar(ctx, 70, 630, 10, goldColor);
+            // Đường đứt nét giữa 2 sao
+            ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.moveTo(55, 605); ctx.lineTo(85, 605); ctx.stroke(); ctx.setLineDash([]);
+            
+            // Text Tự hào
+            ctx.fillStyle = redColor; ctx.font = "bold 32px 'Times New Roman', serif";
+            ctx.fillText("TỰ HÀO LÀ NGƯỜI", 295, 595);
+            ctx.fillText("VIỆT NAM", 295, 640);
+
+            // 6. HAI ẢNH NHỎ BÊN DƯỚI (400x300 mỗi ảnh)
+            ctx.fillStyle = darkText;
+            ctx.fillRect(38, 738, 404, 304); ctx.drawImage(photoData[1], 40, 740, 400, 300);
+            ctx.fillRect(458, 738, 404, 304); ctx.drawImage(photoData[2], 460, 740, 400, 300);
+
+            // 7. CHÂN TRANG & QR CODE
+            ctx.fillStyle = darkText; ctx.font = "24px 'Times New Roman', serif"; ctx.textAlign = "center";
+            ctx.fillText("Chào Mừng Đến Với Lễ Hội Đền Đô", w / 2, 1120);
+            drawQRCode(ctx, w - 100, 1070, 60);
         }
 
+        // Các nút bấm
         captureBtn.addEventListener('click', takePhoto);
-
         retakeBtn.addEventListener('click', () => {
-            photoData = [];
-            updateDots();
-            video.style.display = 'block';
-            resultCanvas.style.display = 'none';
-            captureBtn.style.display = 'inline-block';
-            retakeBtn.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            captureBtn.innerText = 'Chụp Ảnh (1/3)';
-            statusText.innerText = "Sẵn sàng! Hãy tạo dáng thật đẹp";
+            photoData = []; dots.forEach(dot => dot.classList.remove('active'));
+            video.style.display = 'block'; resultCanvas.style.display = 'none';
+            captureBtn.style.display = 'inline-block'; retakeBtn.style.display = 'none'; downloadBtn.style.display = 'none';
+            captureBtn.innerText = 'Chụp Ảnh (1/3)'; statusText.innerText = "Sẵn sàng! Hãy tạo dáng";
         });
-
         downloadBtn.addEventListener('click', () => {
-            const dateStr = new Date().toISOString().replace(/[:.]/g, '-');
             const link = document.createElement('a');
-            link.download = `Photobooth-DenDo-${dateStr}.png`;
-            link.href = resultCanvas.toDataURL('image/png', 1.0); 
-            link.click();
+            link.download = `Đăng-Tùng-Photobooth-${Date.now()}.png`;
+            link.href = resultCanvas.toDataURL('image/png', 1.0); link.click();
         });
 
         window.addEventListener('load', initCamera);
