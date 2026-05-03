@@ -3,40 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Đăng Tùng Photobooth | Lễ Hội Đền Đô PRO</title>
+    <title>Đăng Tùng Photobooth | Lễ Hội Đền Đô - Professional Edition</title>
+    
+    <!-- Tải Font chữ chuyên dụng hỗ trợ tiếng Việt (Cormorant cho thiết kế báo, Montserrat cho UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         /* ==========================================================================
-           1. CSS VARIABLES & THEME
+           1. CSS VARIABLES & THEME CONFIGURATION
            ========================================================================== */
         :root {
-            /* Colors - Bản in */
-            --print-bg: #E8D8B8;
-            --print-text: #3b2b1f;
-            --print-red: #A82C2D;
-            --print-gold: #E6C229;
-            --print-green: #2A402D;
-            
-            /* Colors - UI App */
-            --app-bg: #0f172a;
-            --app-surface: rgba(30, 41, 59, 0.7);
-            --app-primary: #ef4444;
-            --app-primary-hover: #dc2626;
-            --app-accent: #fbbf24;
+            /* Theme Ứng dụng */
+            --app-bg: #090e17;
+            --app-surface: rgba(15, 23, 42, 0.75);
+            --app-surface-hover: rgba(30, 41, 59, 0.85);
+            --app-primary: #dc2626;
+            --app-primary-hover: #b91c1c;
+            --app-accent: #f59e0b;
             --app-text: #f8fafc;
             --app-text-muted: #94a3b8;
+            --app-border: rgba(255, 255, 255, 0.1);
+            
+            /* Theme Bản In (Màu sắc báo cổ/giấy craft) */
+            --print-paper: #F8F4E6; /* Giấy kem sáng dễ đọc */
+            --print-ink: #2C1E16;   /* Mực nâu đen, tương phản cao, không gây chói như màu đen tuyền */
+            --print-red: #9B1C1C;   /* Đỏ đô trầm ấm */
+            --print-gold: #B48600;  /* Vàng kim loại */
             
             /* Typography */
-            --font-ui: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            --font-print: 'Georgia', 'Times New Roman', serif;
+            --font-ui: 'Montserrat', sans-serif;
+            --font-print: 'Cormorant Garamond', serif;
             
-            /* Effects */
-            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Layout & Effects */
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
+            --shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ==========================================================================
-           2. RESET & BASE
+           2. GLOBAL RESET
            ========================================================================== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
@@ -45,566 +54,531 @@
             background-color: var(--app-bg);
             color: var(--app-text);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; position: relative;
         }
 
-        /* Canvas Background Effect */
-        #bgCanvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
+        /* Particles Background */
+        #particleCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; opacity: 0.6;
         }
 
         /* ==========================================================================
-           3. LAYOUT COMPONENTS
+           3. UI COMPONENTS & LAYOUT
            ========================================================================== */
-        .app-wrapper {
-            width: 100%;
-            max-width: 1200px;
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1;
+        .navbar {
+            width: 100%; padding: 1.5rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(9, 14, 23, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--app-border); z-index: 50;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            animation: fadeInDown 0.8s ease-out;
+        .brand {
+            display: flex; align-items: center; gap: 1rem;
         }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
+        .brand h1 {
+            font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
             background: linear-gradient(to right, var(--app-accent), #fef08a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 4px 20px rgba(251, 191, 36, 0.2);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+        .brand-subtitle { font-size: 0.85rem; color: var(--app-text-muted); font-weight: 500; }
 
-        .header p {
-            color: var(--app-text-muted);
-            font-size: 1.1rem;
-            margin-top: 0.5rem;
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-btn {
+            background: transparent; color: var(--app-text-muted); border: none;
+            padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-weight: 600;
+            cursor: pointer; transition: var(--transition); font-family: var(--font-ui);
         }
+        .nav-btn.active { color: var(--app-accent); background: rgba(245, 158, 11, 0.1); }
+        .nav-btn:hover:not(.active) { color: var(--app-text); background: rgba(255,255,255,0.05); }
 
         .main-container {
-            width: 100%;
-            max-width: 800px;
-            background: var(--app-surface);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: var(--glass-border);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-            overflow: hidden;
+            width: 100%; max-width: 1000px; padding: 2rem 1rem;
+            display: flex; flex-direction: column; align-items: center; flex: 1;
         }
+
+        /* Các Tab (Screens) */
+        .tab-content { display: none; width: 100%; animation: fadeUp 0.5s ease-out; }
+        .tab-content.active { display: flex; flex-direction: column; align-items: center; }
 
         /* ==========================================================================
-           4. SCREENS & VIEWS
+           4. CAMERA APP SECTION
            ========================================================================== */
-        .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
-        .screen.active { display: flex; animation: fadeIn 0.5s ease-out; }
-
-        /* Camera Screen */
-        .viewfinder-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 640px;
-            aspect-ratio: 4/3;
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
-            border: 2px solid rgba(251, 191, 36, 0.3);
-            margin-bottom: 2rem;
+        .app-panel {
+            width: 100%; max-width: 760px;
+            background: var(--app-surface); backdrop-filter: blur(20px);
+            border: 1px solid var(--app-border); border-radius: var(--radius-lg);
+            padding: 2rem; box-shadow: var(--shadow-glass); display: flex; flex-direction: column; gap: 1.5rem;
         }
 
+        /* Thanh Trạng thái chụp */
+        .status-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .photo-indicators { display: flex; gap: 0.75rem; }
+        .dot {
+            width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            border: 2px solid transparent; transition: var(--transition);
+        }
+        .dot.active { background: var(--app-primary); border-color: rgba(220, 38, 38, 0.4); box-shadow: 0 0 10px var(--app-primary); transform: scale(1.3); }
+
+        /* Màn hình Viewfinder */
+        .viewfinder-container {
+            position: relative; width: 100%; aspect-ratio: 4/3; background: #000;
+            border-radius: var(--radius-md); overflow: hidden;
+            border: 2px solid rgba(245, 158, 11, 0.3); box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+        
         #videoElement {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); /* Gương */
-            transition: opacity 0.3s;
+            width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);
+            transition: filter 0.3s;
         }
 
-        .grid-overlay {
-            position: absolute; inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+        .grid-lines {
+            position: absolute; inset: 0; pointer-events: none; z-index: 2;
+            background-image: linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px);
             background-size: 33.33% 33.33%;
-            pointer-events: none;
-            z-index: 2;
         }
 
-        #countdownDisplay {
-            position: absolute; inset: 0;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 8rem; font-weight: 900; color: white;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
-            z-index: 10; opacity: 0; pointer-events: none;
-            transition: opacity 0.2s;
+        .countdown-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 10;
+            color: white; font-size: 8rem; font-weight: 800; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        /* Processing Screen */
-        .processing-wrapper {
-            padding: 4rem 0;
-            text-align: center;
+        .flash-effect {
+            position: absolute; inset: 0; background: #fff; z-index: 20; opacity: 0; pointer-events: none;
         }
+
+        /* Bảng điều khiển Camera & Filters */
+        .controls-panel {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%;
+        }
+
+        .filters-group {
+            display: flex; flex-direction: column; gap: 1rem; background: rgba(0,0,0,0.2);
+            padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--app-border);
+        }
+        .filter-ctrl { display: flex; flex-direction: column; gap: 0.5rem; }
+        .filter-ctrl label { font-size: 0.85rem; font-weight: 600; color: var(--app-text-muted); display: flex; justify-content: space-between; }
         
-        .loader-ring {
-            width: 80px; height: 80px;
-            border: 4px solid rgba(251, 191, 36, 0.1);
-            border-left-color: var(--app-accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 2rem auto;
+        /* Custom Input Range */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--app-accent); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+        /* Nút bấm (Buttons) */
+        .btn-group { display: flex; flex-direction: column; gap: 1rem; justify-content: center; }
+        .btn {
+            padding: 1rem 1.5rem; font-size: 1rem; font-weight: 600; font-family: var(--font-ui);
+            border: none; border-radius: 50px; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; gap: 0.75rem; text-transform: uppercase;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+        .btn svg { width: 22px; height: 22px; }
+
+        .btn-primary { background: var(--app-primary); color: white; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3); }
+        .btn-primary:hover:not(:disabled) { background: var(--app-primary-hover); transform: translateY(-2px); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--app-border); }
+        .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .btn-accent { background: var(--app-accent); color: #000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); }
+        .btn-accent:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-2px); }
+
+        /* ==========================================================================
+           5. PROCESSING & RESULT SECTION
+           ========================================================================== */
+        .processing-view {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 4rem 0; text-align: center;
+        }
+        .spinner {
+            width: 60px; height: 60px; border: 4px solid rgba(245, 158, 11, 0.2);
+            border-top-color: var(--app-accent); border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 1.5rem;
         }
 
-        /* Result Screen */
         .result-mockup {
-            width: 100%; max-width: 500px;
-            background: #fff; padding: 12px;
-            border-radius: 4px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
-            margin-bottom: 2rem;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%; max-width: 550px; background: #fff; padding: 15px;
+            border-radius: 4px; box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
+            margin: 0 auto 2rem auto; transition: transform 0.3s ease;
         }
-        .result-mockup:hover { transform: translateY(-10px) scale(1.02); }
-
+        .result-mockup:hover { transform: scale(1.02); }
+        
         #finalCanvas {
-            width: 100%; height: auto; display: block;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            width: 100%; height: auto; display: block; box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
         }
 
         /* ==========================================================================
-           5. UI CONTROLS & MODULES
+           6. GALLERY SECTION
            ========================================================================== */
-        .status-indicators {
-            display: flex; gap: 1rem; margin-bottom: 1.5rem;
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem; width: 100%; padding: 1rem 0;
         }
-        
-        .indicator-dot {
-            width: 16px; height: 16px; border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid transparent;
-            transition: var(--transition-smooth);
+        .gallery-item {
+            position: relative; background: #fff; padding: 10px; border-radius: 4px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer; transition: var(--transition);
         }
-        .indicator-dot.active {
-            background: var(--app-primary);
-            border-color: rgba(239, 68, 68, 0.5);
-            box-shadow: 0 0 15px var(--app-primary);
-            transform: scale(1.2);
-        }
+        .gallery-item img { width: 100%; height: auto; display: block; }
+        .gallery-item:hover { transform: translateY(-5px) scale(1.03); z-index: 10; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .empty-gallery { width: 100%; text-align: center; padding: 4rem 0; color: var(--app-text-muted); font-size: 1.2rem; }
 
-        .controls-group {
-            display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; width: 100%;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none; border-radius: 50px;
-            cursor: pointer;
-            display: flex; align-items: center; gap: 0.75rem;
-            transition: var(--transition-smooth);
-            text-transform: uppercase; letter-spacing: 1px;
-            font-family: inherit;
-        }
-
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-        .btn svg { width: 24px; height: 24px; }
-
-        .btn-primary {
-            background: var(--app-primary); color: white;
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
-        }
-        .btn-primary:hover:not(:disabled) {
-            background: var(--app-primary-hover); transform: translateY(-3px);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.1); color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .btn-secondary:hover:not(:disabled) {
-            background: rgba(255,255,255,0.2); transform: translateY(-2px);
-        }
-
-        .btn-accent {
-            background: var(--app-accent); color: #000;
-            box-shadow: 0 10px 25px rgba(251, 191, 36, 0.3);
-        }
-        .btn-accent:hover { transform: translateY(-3px); filter: brightness(1.1); }
-
+        /* ==========================================================================
+           7. UTILITIES & ANIMATIONS
+           ========================================================================== */
         .toast {
             position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: rgba(0,0,0,0.8); color: white; padding: 1rem 2rem;
-            border-radius: 50px; backdrop-filter: blur(10px);
-            font-weight: 500; opacity: 0; transition: var(--transition-smooth);
-            z-index: 100; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.9); color: white; padding: 1rem 2rem; border-radius: 50px;
+            font-weight: 500; opacity: 0; transition: var(--transition); z-index: 9999;
+            border: 1px solid var(--app-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* ==========================================================================
-           6. ANIMATIONS
-           ========================================================================== */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .flash-effect {
-            position: absolute; inset: 0; background: white; z-index: 50;
-            animation: flash 0.5s ease-out forwards; pointer-events: none;
-        }
-        @keyframes flash { 0% { opacity: 1; } 100% { opacity: 0; } }
+        @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header h1 { font-size: 1.8rem; }
-            .main-container { padding: 1rem; border-radius: 16px; }
-            .btn { width: 100%; justify-content: center; }
+            .controls-panel { grid-template-columns: 1fr; }
+            .brand h1 { font-size: 1.2rem; }
+            .app-panel { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cinematic Particle Background -->
-    <canvas id="bgCanvas"></canvas>
+    <!-- Nền Đồ họa Hạt -->
+    <canvas id="particleCanvas"></canvas>
+    
+    <!-- Thông báo hệ thống -->
+    <div id="toast" class="toast">Hệ thống sẵn sàng</div>
 
-    <!-- Toast Notification System -->
-    <div id="toast" class="toast">Thông báo</div>
+    <!-- Thanh Điều Hướng -->
+    <nav class="navbar">
+        <div class="brand">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--app-accent)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <div>
+                <h1>Đăng Tùng Photobooth</h1>
+                <div class="brand-subtitle">Trạm Lưu Trữ Lễ Hội Đền Đô</div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="App.switchTab('camera')">Phòng Chụp</button>
+            <button class="nav-btn" onclick="App.switchTab('gallery')">Thư Viện</button>
+        </div>
+    </nav>
 
-    <div class="app-wrapper">
-        <header class="header">
-            <h1>Đăng Tùng Photobooth</h1>
-            <p>Di tích Quốc gia đặc biệt Lễ Hội Đền Đô</p>
-        </header>
-
-        <main class="main-container">
-            
-            <!-- SCREEN 1: CAMERA CAPTURE -->
-            <section id="screenCamera" class="screen active">
-                <div class="status-indicators">
-                    <div class="indicator-dot" id="dot1"></div>
-                    <div class="indicator-dot" id="dot2"></div>
-                    <div class="indicator-dot" id="dot3"></div>
-                </div>
-
-                <div class="viewfinder-wrapper" id="viewfinder">
-                    <video id="videoElement" autoplay playsinline></video>
-                    <div class="grid-overlay"></div>
-                    <div id="countdownDisplay">3</div>
-                </div>
-
-                <div class="controls-group">
-                    <button id="btnSwitchCam" class="btn btn-secondary" title="Đổi Camera">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                    </button>
-                    <button id="btnCapture" class="btn btn-primary" style="flex: 1;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-                        Khởi động Camera
-                    </button>
-                </div>
-            </section>
-
-            <!-- SCREEN 2: PROCESSING -->
-            <section id="screenProcessing" class="screen">
-                <div class="processing-wrapper">
-                    <div class="loader-ring"></div>
-                    <h2 style="color: var(--app-accent); margin-bottom: 1rem;">Đang xử lý bản in...</h2>
-                    <p style="color: var(--app-text-muted);">Áp dụng thuật toán cân bằng màu & Layout báo chí</p>
-                </div>
-            </section>
-
-            <!-- SCREEN 3: RESULT -->
-            <section id="screenResult" class="screen">
-                <div class="result-mockup">
-                    <canvas id="finalCanvas"></canvas>
-                </div>
+    <main class="main-container">
+        
+        <!-- TAB 1: PHÒNG CHỤP (CAMERA) -->
+        <section id="tab-camera" class="tab-content active">
+            <div class="app-panel">
                 
-                <div class="controls-group">
-                    <button id="btnRetake" class="btn btn-secondary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        Chụp Lại
-                    </button>
-                    <button id="btnDownload" class="btn btn-accent">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Tải Bản In Xuất Sắc
-                    </button>
+                <div class="status-header">
+                    <span id="statusText" style="color: var(--app-text-muted); font-size: 0.9rem; font-weight: 500;">Sẵn sàng khởi động Camera</span>
+                    <div class="photo-indicators">
+                        <div class="dot" id="dot1"></div>
+                        <div class="dot" id="dot2"></div>
+                        <div class="dot" id="dot3"></div>
+                    </div>
                 </div>
-            </section>
 
-        </main>
-    </div>
+                <div class="viewfinder-container" id="viewfinder">
+                    <video id="videoElement" autoplay playsinline></video>
+                    <div class="grid-lines"></div>
+                    <div class="countdown-overlay" id="countdownDisplay">3</div>
+                    <div class="flash-effect" id="flashEffect"></div>
+                </div>
 
-    <!-- CÁC LOGIC CHÍNH BÊN TRONG -->
+                <div class="controls-panel">
+                    <!-- Tinh chỉnh Hình ảnh -->
+                    <div class="filters-group">
+                        <div class="filter-ctrl">
+                            <label><span>Độ Sáng (Brightness)</span> <span id="valBrightness">100%</span></label>
+                            <input type="range" id="slBrightness" min="50" max="150" value="100">
+                        </div>
+                        <div class="filter-ctrl">
+                            <label><span>Độ Tương Phản (Contrast)</span> <span id="valContrast">100%</span></label>
+                            <input type="range" id="slContrast" min="50" max="150" value="100">
+                        </div>
+                    </div>
+                    
+                    <!-- Cụm Nút bấm -->
+                    <div class="btn-group">
+                        <button id="btnSwitchCam" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            Đổi Camera
+                        </button>
+                        <button id="btnCapture" class="btn btn-primary" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                            Tải Camera...
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ĐANG XỬ LÝ (PROCESSING) -->
+        <section id="tab-processing" class="tab-content">
+            <div class="app-panel processing-view">
+                <div class="spinner"></div>
+                <h2 style="color: var(--app-accent); font-size: 1.5rem; margin-bottom: 0.5rem;">Đang rửa bản in chuyên nghiệp...</h2>
+                <p style="color: var(--app-text-muted);">Áp dụng thuật toán Text Wrapping thông minh và Render High-Res.</p>
+            </div>
+        </section>
+
+        <!-- TAB 3: KẾT QUẢ (RESULT) -->
+        <section id="tab-result" class="tab-content">
+            <div class="result-mockup">
+                <!-- Canvas cực lớn để in: 1200x1600. Đảm bảo chữ sắc nét không vỡ. -->
+                <canvas id="finalCanvas" width="1200" height="1600"></canvas>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <button id="btnRetake" class="btn btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Chụp Phiên Mới
+                </button>
+                <button id="btnDownload" class="btn btn-accent">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Lưu Máy & Thêm Vào Thư Viện
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 4: THƯ VIỆN (GALLERY) -->
+        <section id="tab-gallery" class="tab-content">
+            <div class="app-panel" style="max-width: 1000px; padding: 2rem;">
+                <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--app-border); padding-bottom: 1rem;">Nhật Ký Sự Kiện Lễ Hội Đền Đô</h2>
+                <div id="galleryContainer" class="gallery-grid">
+                    <div class="empty-gallery">Chưa có bức ảnh nào được chụp trong phiên làm việc này.</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         JAVASCRIPT - CORE APPLICATION LOGIC
+         ========================================================================== -->
     <script>
         /**
-         * ĐĂNG TÙNG PHOTOBOOTH - CORE LOGIC
-         * Architecture: 
-         * 1. AudioEngine (Synthesize sound)
-         * 2. UIEngine (Toast, Screen management)
-         * 3. CameraManager (Stream, constraints, capture)
-         * 4. GraphicsEngine (Canvas drawing, layout algorithms)
-         * 5. AppController (Event binding, state management)
+         * KIẾN TRÚC ỨNG DỤNG HƯỚNG ĐỐI TƯỢNG (OOP)
+         * Đảm bảo tính mở rộng, không xung đột biến, chạy mượt mà.
          */
 
-        // ==========================================
-        // 0. CONFIGURATION & STATE
-        // ==========================================
+        // 1. CẤU HÌNH HỆ THỐNG
         const CONFIG = {
-            maxPhotos: 3,
-            countdownSeconds: 3,
-            canvasW: 900,
-            canvasH: 1200,
-            textDark: "#4A3525",
-            paperBg1: "#E8D8B8",
-            paperBg2: "#D6C098",
-            red: "#A82C2D",
-            gold: "#E6C229",
-            green: "#2A402D",
-            fontNews: "'Georgia', 'Times New Roman', serif"
+            photosNeeded: 3,
+            countdownSecs: 3,
+            layoutW: 1200,
+            layoutH: 1600,
+            fonts: {
+                text: "'Cormorant Garamond', 'Times New Roman', serif"
+            },
+            colors: {
+                bg: '#F8F4E6',       // Giấy màu kem truyền thống
+                text: '#2C1E16',     // Mực nâu đen (không chói, rất chuyên nghiệp)
+                title: '#9B1C1C',    // Đỏ cờ đậm
+                accent: '#B48600'    // Vàng ánh kim
+            }
         };
 
-        const STATE = {
-            photos: [], // Array of canvas elements
-            currentFacingMode: "user",
+        // 2. QUẢN LÝ TRẠNG THÁI (STATE MANAGER)
+        const State = {
+            capturedCanvases: [], // Lưu các thẻ canvas nhỏ
+            facingMode: 'user',
             stream: null,
-            isCapturing: false
+            filters: { brightness: 100, contrast: 100 },
+            isProcessing: false,
+            galleryData: [] // Mảng chứa DataURL
         };
 
-        // DOM Elements
-        const DOM = {
-            screens: {
-                camera: document.getElementById('screenCamera'),
-                processing: document.getElementById('screenProcessing'),
-                result: document.getElementById('screenResult')
-            },
-            video: document.getElementById('videoElement'),
-            viewfinder: document.getElementById('viewfinder'),
-            countdown: document.getElementById('countdownDisplay'),
-            dots: [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')],
-            finalCanvas: document.getElementById('finalCanvas'),
-            btns: {
-                capture: document.getElementById('btnCapture'),
-                switchCam: document.getElementById('btnSwitchCam'),
-                retake: document.getElementById('btnRetake'),
-                download: document.getElementById('btnDownload')
-            },
-            toast: document.getElementById('toast')
-        };
-
-        // ==========================================
-        // 1. AUDIO ENGINE (Web Audio API)
-        // Tạo âm thanh không cần file ngoài
-        // ==========================================
-        const AudioEngine = {
-            ctx: new (window.AudioContext || window.webkitAudioContext)(),
-            playTone: function(frequency, duration, type = 'sine') {
-                if (this.ctx.state === 'suspended') this.ctx.resume();
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+        // 3. QUẢN LÝ GIAO DIỆN (UI MANAGER)
+        const UI = {
+            els: {
+                video: document.getElementById('videoElement'),
+                viewfinder: document.getElementById('viewfinder'),
+                countdown: document.getElementById('countdownDisplay'),
+                flash: document.getElementById('flashEffect'),
+                finalCanvas: document.getElementById('finalCanvas'),
+                gallery: document.getElementById('galleryContainer'),
+                toast: document.getElementById('toast'),
+                statusText: document.getElementById('statusText'),
+                dots: [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')],
                 
-                gain.gain.setValueAtTime(0.5, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+                // Nút bấm
+                btnCap: document.getElementById('btnCapture'),
+                btnSwitch: document.getElementById('btnSwitchCam'),
+                btnRetake: document.getElementById('btnRetake'),
+                btnDown: document.getElementById('btnDownload'),
                 
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + duration);
+                // Filters
+                slBright: document.getElementById('slBrightness'),
+                slCont: document.getElementById('slContrast'),
+                vBright: document.getElementById('valBrightness'),
+                vCont: document.getElementById('valContrast'),
             },
-            playBeep: () => AudioEngine.playTone(880, 0.1, 'sine'), // Note A5
-            playShutter: () => {
-                AudioEngine.playTone(150, 0.05, 'square');
-                setTimeout(() => AudioEngine.playTone(100, 0.1, 'sawtooth'), 50);
-            }
-        };
 
-        // ==========================================
-        // 2. UI ENGINE
-        // ==========================================
-        const UIEngine = {
-            showScreen: (screenName) => {
-                Object.values(DOM.screens).forEach(s => s.classList.remove('active'));
-                DOM.screens[screenName].classList.add('active');
+            showToast(msg, ms = 3000) {
+                this.els.toast.innerText = msg;
+                this.els.toast.classList.add('show');
+                setTimeout(() => this.els.toast.classList.remove('show'), ms);
             },
-            showToast: (msg, duration = 3000) => {
-                DOM.toast.innerText = msg;
-                DOM.toast.classList.add('show');
-                setTimeout(() => DOM.toast.classList.remove('show'), duration);
+
+            switchTab(tabId) {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+                
+                document.getElementById('tab-' + tabId).classList.add('active');
+                
+                // Tìm nút nav tương ứng bật active
+                const btns = document.querySelectorAll('.nav-btn');
+                if (tabId === 'camera') btns[0].classList.add('active');
+                if (tabId === 'gallery') {
+                    btns[1].classList.add('active');
+                    this.renderGallery();
+                }
             },
-            updateDots: () => {
-                DOM.dots.forEach((dot, idx) => {
-                    idx < STATE.photos.length ? dot.classList.add('active') : dot.classList.remove('active');
+
+            updateProgress() {
+                const len = State.capturedCanvases.length;
+                this.els.dots.forEach((dot, idx) => {
+                    dot.className = idx < len ? 'dot active' : 'dot';
                 });
+                
+                if (len === 0) {
+                    this.els.btnCap.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Bấm Để Chụp (1/3)`;
+                    this.els.statusText.innerText = "Sẵn sàng tạo dáng!";
+                } else if (len < CONFIG.photosNeeded) {
+                    this.els.btnCap.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Chụp Kiểu Kế (${len + 1}/3)`;
+                    this.els.statusText.innerText = `Hoàn thành ${len}/3. Đổi dáng ngầu hơn nhé!`;
+                }
             },
-            flashEffect: () => {
-                const flash = document.createElement('div');
-                flash.className = 'flash-effect';
-                DOM.viewfinder.appendChild(flash);
-                setTimeout(() => flash.remove(), 600);
-            }
-        };
 
-        // ==========================================
-        // 3. BACKGROUND EFFECTS (Cinematic Particles)
-        // Tạo hiệu ứng không gian mờ ảo
-        // ==========================================
-        const BackgroundFX = {
-            canvas: document.getElementById('bgCanvas'),
-            ctx: null,
-            particles: [],
-            init: function() {
-                this.ctx = this.canvas.getContext('2d');
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                for(let i=0; i<50; i++) this.particles.push(this.createParticle());
-                this.animate();
+            triggerFlash() {
+                this.els.flash.style.animation = 'none';
+                this.els.flash.offsetHeight; // Kích hoạt reflow
+                this.els.flash.style.animation = 'flashAnim 0.5s ease-out forwards';
             },
-            resize: function() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-            },
-            createParticle: function() {
-                return {
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    size: Math.random() * 2 + 0.5,
-                    speedX: Math.random() * 0.5 - 0.25,
-                    speedY: Math.random() * -0.5 - 0.1, // Nổi lên trên
-                    opacity: Math.random() * 0.5 + 0.1
-                };
-            },
-            animate: function() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.particles.forEach(p => {
-                    p.x += p.speedX; p.y += p.speedY;
-                    if(p.y < 0) { p.y = this.canvas.height; p.x = Math.random() * this.canvas.width; }
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    this.ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity})`;
-                    this.ctx.fill();
-                });
-                requestAnimationFrame(() => this.animate());
-            }
-        };
 
-        // ==========================================
-        // 4. CAMERA MANAGER
-        // ==========================================
-        const CameraManager = {
-            init: async function() {
-                DOM.btns.capture.disabled = true;
-                if (STATE.stream) {
-                    STATE.stream.getTracks().forEach(track => track.stop());
+            renderGallery() {
+                if (State.galleryData.length === 0) {
+                    this.els.gallery.innerHTML = '<div class="empty-gallery">Chưa có ảnh nào. Hãy qua phòng chụp ngay!</div>';
+                    return;
                 }
                 
+                let html = '';
+                // Hiển thị ảnh mới nhất lên đầu
+                [...State.galleryData].reverse().forEach(src => {
+                    html += `<div class="gallery-item" onclick="window.open('${src}', '_blank')"><img src="${src}" alt="Photobooth"></div>`;
+                });
+                this.els.gallery.innerHTML = html;
+            }
+        };
+
+        // 4. QUẢN LÝ CAMERA & ẢNH (CAMERA ENGINE)
+        const Camera = {
+            async init() {
+                if (State.stream) State.stream.getTracks().forEach(t => t.stop());
+                UI.els.btnCap.disabled = true;
+
                 try {
-                    const constraints = {
-                        video: { 
-                            width: { ideal: 1920 }, 
-                            height: { ideal: 1080 },
-                            facingMode: STATE.currentFacingMode 
-                        },
+                    State.stream = await navigator.mediaDevices.getUserMedia({
+                        video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: State.facingMode },
                         audio: false
+                    });
+                    
+                    UI.els.video.srcObject = State.stream;
+                    UI.els.video.style.transform = State.facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
+                    
+                    UI.els.video.onloadedmetadata = () => {
+                        UI.els.btnCap.disabled = false;
+                        UI.updateProgress();
+                        UI.showToast("Đã kết nối Camera thành công");
                     };
-                    
-                    STATE.stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    DOM.video.srcObject = STATE.stream;
-                    
-                    // Xử lý hiệu ứng lật gương
-                    DOM.video.style.transform = STATE.currentFacingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
-                    
-                    DOM.video.onloadedmetadata = () => {
-                        DOM.btns.capture.disabled = false;
-                        this.updateCaptureButtonText();
-                        UIEngine.showToast("Camera đã sẵn sàng!");
-                    };
-                } catch (err) {
-                    console.error("Camera Error:", err);
-                    UIEngine.showToast("Không thể truy cập Camera. Kiểm tra quyền trình duyệt!");
+                } catch (e) {
+                    console.error(e);
+                    UI.els.statusText.innerText = "Lỗi truy cập Camera. Cần cấp quyền!";
+                    UI.els.statusText.style.color = "var(--app-primary)";
+                    UI.showToast("Không tìm thấy Camera");
                 }
             },
-            toggleCamera: function() {
-                STATE.currentFacingMode = STATE.currentFacingMode === "user" ? "environment" : "user";
-                this.init();
+
+            applyVideoFilters() {
+                // Áp dụng bộ lọc bằng CSS trên thẻ video để người dùng xem trước
+                const f = State.filters;
+                UI.els.video.style.filter = `brightness(${f.brightness}%) contrast(${f.contrast}%)`;
             },
-            updateCaptureButtonText: function() {
-                const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`;
-                const num = STATE.photos.length;
-                DOM.btns.capture.innerHTML = num === 0 ? `${icon} Chụp Ảnh (1/3)` : `${icon} Chụp Tiếp (${num + 1}/3)`;
-            },
-            captureFrame: function() {
+
+            captureFrame() {
                 const tempCanvas = document.createElement('canvas');
-                // Tỷ lệ chuẩn photobooth là 4:3
-                const targetRatio = 4/3;
-                const vW = DOM.video.videoWidth;
-                const vH = DOM.video.videoHeight;
-                const vRatio = vW / vH;
-                
-                let sx = 0, sy = 0, sWidth = vW, sHeight = vH;
+                // Tính toán Crop ảnh chuẩn 4:3 từ video HD 16:9
+                const vW = UI.els.video.videoWidth;
+                const vH = UI.els.video.videoHeight;
+                const targetRatio = 4 / 3;
+                let cropX = 0, cropY = 0, cropW = vW, cropH = vH;
 
-                if (vRatio > targetRatio) {
-                    sWidth = sHeight * targetRatio;
-                    sx = (vW - sWidth) / 2;
-                } else if (vRatio < targetRatio) {
-                    sHeight = sWidth / targetRatio;
-                    sy = (vH - sHeight) / 2;
+                if (vW / vH > targetRatio) {
+                    cropW = cropH * targetRatio;
+                    cropX = (vW - cropW) / 2;
+                } else {
+                    cropH = cropW / targetRatio;
+                    cropY = (vH - cropH) / 2;
                 }
 
-                // Render độ phân giải cao cho bản in
-                tempCanvas.width = 1200; 
-                tempCanvas.height = 900;
-                const tempCtx = tempCanvas.getContext('2d');
-                
-                // Lật gương ảnh chụp nếu là cam trước
-                if (STATE.currentFacingMode === 'user') {
-                    tempCtx.translate(tempCanvas.width, 0);
-                    tempCtx.scale(-1, 1);
+                // Vẽ độ phân giải cao cho canvas nháp (1200x900)
+                tempCanvas.width = 1200; tempCanvas.height = 900;
+                const ctx = tempCanvas.getContext('2d');
+
+                // Xử lý bộ lọc thực tế lên Canvas (Pixel thao tác hoặc Context Filter)
+                ctx.filter = `brightness(${State.filters.brightness}%) contrast(${State.filters.contrast}%)`;
+
+                if (State.facingMode === 'user') {
+                    ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
                 }
                 
-                tempCtx.drawImage(DOM.video, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
+                ctx.drawImage(UI.els.video, cropX, cropY, cropW, cropH, 0, 0, tempCanvas.width, tempCanvas.height);
                 return tempCanvas;
             }
         };
 
-        // ==========================================
-        // 5. GRAPHICS ENGINE (The core renderer)
-        // Tạo layout báo chí cổ điển Đền Đô
-        // ==========================================
-        const GraphicsEngine = {
-            ctx: DOM.finalCanvas.getContext('2d'),
+        // 5. BỘ RENDER ĐỒ HỌA CHUYÊN NGHIỆP (GRAPHICS ENGINE)
+        // Thiết kế đảm bảo không bao giờ che chữ, chuẩn báo chí.
+        const Graphics = {
+            ctx: UI.els.finalCanvas.getContext('2d'),
             
-            // Hàm tiện ích bọc text
-            wrapText: function(text, x, y, maxWidth, lineHeight) {
-                let words = text.split(' '), line = '';
-                for(let n = 0; n < words.length; n++) {
-                    let testLine = line + words[n] + ' ';
-                    let metrics = this.ctx.measureText(testLine);
-                    if (metrics.width > maxWidth && n > 0) {
-                        this.ctx.fillText(line, x, y);
-                        line = words[n] + ' '; y += lineHeight;
-                    } else { line = testLine; }
+            /** 
+             * Thuật toán bọc văn bản TỐI ƯU NHẤT. 
+             * Tính toán kích thước từng từ, tự động ngắt dòng, 
+             * trả về chiều cao (Y) cuối cùng để đẩy các thành phần khác xuống dưới.
+             */
+            drawTextStrictBounds(text, x, y, maxWidth, lineHeight) {
+                const paragraphs = text.split('\n');
+                let currentY = y;
+                
+                for (let p of paragraphs) {
+                    const words = p.split(' ');
+                    let line = '';
+                    
+                    for (let n = 0; n < words.length; n++) {
+                        const testLine = line + words[n] + ' ';
+                        const metrics = this.ctx.measureText(testLine);
+                        if (metrics.width > maxWidth && n > 0) {
+                            this.ctx.fillText(line.trim(), x, currentY);
+                            line = words[n] + ' ';
+                            currentY += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    this.ctx.fillText(line.trim(), x, currentY);
+                    currentY += lineHeight;
                 }
-                this.ctx.fillText(line, x, y);
+                return currentY;
             },
-            
-            drawStar: function(cx, cy, r, color) {
+
+            drawStar(cx, cy, r, color) {
                 this.ctx.beginPath(); this.ctx.moveTo(cx, cy - r);
                 for (let i = 0; i < 5; i++) {
                     this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i)) * r, cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i)) * r);
@@ -613,215 +587,287 @@
                 this.ctx.closePath(); this.ctx.fillStyle = color; this.ctx.fill();
             },
 
-            drawVectorTemple: function(cx, cy) {
-                const ctx = this.ctx; ctx.fillStyle = CONFIG.textDark;
-                // Đế
-                ctx.fillRect(cx-60, cy, 120, 10); 
-                // Cột
-                ctx.fillRect(cx-45, cy-35, 10, 35); ctx.fillRect(cx+35, cy-35, 10, 35); ctx.fillRect(cx-10, cy-35, 20, 35);
-                // Mái dưới
-                ctx.beginPath(); ctx.moveTo(cx-75, cy-35); ctx.lineTo(cx+75, cy-35); ctx.lineTo(cx+50, cy-55); ctx.lineTo(cx-50, cy-55); ctx.fill();
-                // Tầng 2
-                ctx.fillRect(cx-20, cy-75, 40, 20);
-                // Mái trên
-                ctx.beginPath(); ctx.moveTo(cx-45, cy-75); ctx.lineTo(cx+45, cy-75); ctx.lineTo(cx+25, cy-95); ctx.lineTo(cx-25, cy-95); ctx.fill();
-                // Râu rồng nghệ thuật
-                ctx.lineWidth = 2; ctx.strokeStyle = CONFIG.textDark;
-                ctx.beginPath(); ctx.arc(cx-75, cy-45, 12, 0.5*Math.PI, 1.5*Math.PI); ctx.stroke();
-                ctx.beginPath(); ctx.arc(cx+75, cy-45, 12, 1.5*Math.PI, 0.5*Math.PI); ctx.stroke();
+            drawDecorLines(yPos) {
+                this.ctx.beginPath();
+                this.ctx.setLineDash([8, 8]);
+                this.ctx.moveTo(60, yPos); this.ctx.lineTo(1140, yPos);
+                this.ctx.strokeStyle = CONFIG.colors.text; this.ctx.lineWidth = 1.5;
+                this.ctx.stroke(); this.ctx.setLineDash([]);
             },
 
-            drawFakeQR: function(x, y, size) {
-                const ctx = this.ctx; ctx.fillStyle = "#fff"; ctx.fillRect(x, y, size, size);
-                ctx.fillStyle = "#000"; let cs = size * 0.22;
-                // 3 Anchor squares
-                [ [x+2, y+2], [x+size-cs-2, y+2], [x+2, y+size-cs-2] ].forEach(p => {
-                    ctx.fillRect(p[0], p[1], cs, cs);
-                    ctx.fillStyle = "#fff"; ctx.fillRect(p[0]+3, p[1]+3, cs-6, cs-6);
-                    ctx.fillStyle = "#000"; ctx.fillRect(p[0]+6, p[1]+6, cs-12, cs-12);
+            drawQR(x, y, size) {
+                this.ctx.fillStyle = "#fff"; this.ctx.fillRect(x, y, size, size);
+                this.ctx.fillStyle = "#000"; let cs = size * 0.22;
+                [ [x+4, y+4], [x+size-cs-4, y+4], [x+4, y+size-cs-4] ].forEach(p => {
+                    this.ctx.fillRect(p[0], p[1], cs, cs);
+                    this.ctx.fillStyle = "#fff"; this.ctx.fillRect(p[0]+4, p[1]+4, cs-8, cs-8);
+                    this.ctx.fillStyle = "#000"; this.ctx.fillRect(p[0]+8, p[1]+8, cs-16, cs-16);
                 });
-                // Random modules cho giống QR thật
-                for(let i=0; i<100; i++) ctx.fillRect(x + 8 + Math.random()*(size-16), y + 8 + Math.random()*(size-16), 4, 4);
+                for(let i=0; i<150; i++) this.ctx.fillRect(x + 12 + Math.random()*(size-24), y + 12 + Math.random()*(size-24), 4, 4);
             },
 
-            renderPoster: function() {
+            async renderFinalLayout() {
+                // Đảm bảo font chữ (Cormorant) đã load xong trên trình duyệt
+                await document.fonts.ready;
+
                 const ctx = this.ctx;
-                const { canvasW: w, canvasH: h, textDark, red, gold, green, fontNews } = CONFIG;
+                const { layoutW: w, layoutH: h, fonts, colors: c } = CONFIG;
                 
-                // 1. Background Craft Paper
-                const bgGradient = ctx.createLinearGradient(0, 0, w, h);
-                bgGradient.addColorStop(0, CONFIG.paperBg1);
-                bgGradient.addColorStop(1, CONFIG.paperBg2);
-                ctx.fillStyle = bgGradient;
-                ctx.fillRect(0, 0, w, h);
+                // 1. FILL BACKGROUND NỀN GIẤY
+                ctx.fillStyle = c.bg; ctx.fillRect(0, 0, w, h);
                 
-                // 2. Viền mỏng toàn trang
-                ctx.strokeStyle = textDark; ctx.lineWidth = 1;
-                ctx.strokeRect(20, 20, w - 40, h - 40);
+                // Nền Texture giả giấy thủ công (Tạo nhiễu nhẹ)
+                for(let i=0; i<5000; i++) {
+                    ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.03})`;
+                    ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
+                }
 
-                // ================== HEADER ==================
-                // Logo Đăng Tùng bo góc
-                ctx.beginPath(); ctx.roundRect(40, 40, 160, 65, 15); ctx.stroke();
-                ctx.fillStyle = textDark; ctx.font = `bold 20px ${fontNews}`; ctx.textAlign = "center";
-                ctx.fillText("Đăng Tùng", 120, 68); 
-                ctx.font = `italic 18px ${fontNews}`;
-                ctx.fillText("Photobooth", 120, 92);
-                
-                // Title lớn
-                ctx.fillStyle = red; ctx.font = `bold 68px ${fontNews}`; ctx.textAlign = "left";
-                ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 240, 98);
-                
-                // Kẻ phân cách Header
-                ctx.beginPath(); ctx.setLineDash([5, 5]); ctx.moveTo(40, 130); ctx.lineTo(860, 130); ctx.stroke(); ctx.setLineDash([]);
+                // 2. VIỀN KHUNG NGOÀI (PADDING 30)
+                ctx.strokeStyle = c.text; ctx.lineWidth = 2;
+                ctx.strokeRect(30, 30, w - 60, h - 60);
+                ctx.lineWidth = 1; ctx.strokeRect(36, 36, w - 72, h - 72);
 
-                // ================== ẢNH CHÍNH (MAIN PHOTO) ==================
-                ctx.fillStyle = textDark; ctx.fillRect(38, 148, 484, 364); 
-                ctx.drawImage(STATE.photos[0], 40, 150, 480, 360);
+                // 3. HEADER (PHẦN ĐẦU)
+                // Hộp Logo Đăng Tùng
+                ctx.beginPath(); ctx.roundRect(60, 60, 240, 90, 20); ctx.stroke();
+                ctx.fillStyle = c.text; ctx.textAlign = "center";
+                ctx.font = `bold 28px ${fonts.text}`; ctx.fillText("Đăng Tùng", 180, 100);
+                ctx.font = `italic 22px ${fonts.text}`; ctx.fillText("Photobooth", 180, 135);
 
-                // ================== CỘT BẢN TIN BÊN PHẢI ==================
-                ctx.strokeStyle = textDark; ctx.lineWidth = 1;
-                ctx.strokeRect(540, 150, 320, 560); 
-                ctx.strokeRect(545, 155, 310, 550); // Viền kép báo chí
-                
-                // Tiêu đề Bản tin
-                ctx.fillStyle = green; ctx.font = `bold 42px ${fontNews}`; ctx.textAlign = "left";
-                ctx.fillText("BẢN TIN", 565, 208);
-                
-                // Cờ đỏ sao vàng nhỏ
-                ctx.fillStyle = red; ctx.fillRect(740, 175, 50, 35);
-                this.drawStar(765, 192.5, 9, gold);
+                // Tiêu đề Lễ Hội
+                ctx.fillStyle = c.title; ctx.textAlign = "left";
+                ctx.font = `bold 90px ${fonts.text}`; ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 340, 135);
 
-                // Text Lịch sử
-                ctx.fillStyle = textDark; ctx.font = `17px ${fontNews}`; ctx.textAlign = "left";
-                const newsText = "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, ngày nay nằm ở phường Đình Bảng, thành phố Từ Sơn. Đền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng Đình Bảng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua. Khi vua Lý Công Uẩn băng hà, Lý Thái Tông lên ngôi kế vị vua cha, ông đã cho sửa sang lại ngôi nhà xưa và chọn làm nơi thờ tự vua cha, từ đó Đền trở thành nơi thờ tự các vị vua nhà Lý sau khi băng hà. Nhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống văn hóa.";
-                this.wrapText(newsText, 565, 245, 275, 26);
-                
-                // Vector Đền cuối cột
-                this.drawVectorTemple(700, 680);
+                // Đường phân cách
+                this.drawDecorLines(180);
 
-                // ================== BANNER GIỮA (TỰ HÀO LÀ NGƯỜI VN) ==================
-                ctx.fillStyle = textDark; ctx.font = `italic 16px ${fontNews}`; ctx.textAlign = "center";
-                ctx.fillText("———— THIẾT KẾ BỞI ĐĂNG TÙNG PHOTOBOOTH ————", 280, 535);
+                // 4. KHU VỰC ẢNH & BẢN TIN (PHẦN THÂN)
+                // Tọa độ tính toán cực kỳ chi tiết: Left Col width: 680. Right Col (Sidebar): 400. Gap: 40.
                 
-                ctx.strokeRect(40, 550, 480, 110);
+                // CỘT TRÁI (LEFT COLUMN) - CHỨA 3 ẢNH
+                // Ảnh 1 (Ảnh chính to - 680x510)
+                ctx.fillStyle = c.text; ctx.fillRect(56, 216, 688, 518); // Viền ảnh
+                ctx.drawImage(State.capturedCanvases[0], 60, 220, 680, 510);
                 
-                // Dải cờ trái
-                ctx.fillStyle = red; ctx.fillRect(45, 555, 60, 100);
-                this.drawStar(75, 580, 12, gold); 
-                this.drawStar(75, 630, 12, gold);
-                ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.moveTo(55, 605); ctx.lineTo(95, 605); ctx.stroke(); ctx.setLineDash([]);
+                // Ảnh 2 & 3 (Dưới ảnh chính, chia đôi, mỗi ảnh 330x247.5, gap 20)
+                ctx.fillRect(56, 756, 338, 255);
+                ctx.drawImage(State.capturedCanvases[1], 60, 760, 330, 247.5);
                 
-                // Text Tự hào
-                ctx.fillStyle = red; ctx.font = `bold 34px ${fontNews}`;
-                ctx.fillText("TỰ HÀO LÀ NGƯỜI", 300, 595); 
-                ctx.fillText("VIỆT NAM", 300, 640);
+                ctx.fillRect(406, 756, 338, 255);
+                ctx.drawImage(State.capturedCanvases[2], 410, 760, 330, 247.5);
 
-                // ================== HAI ẢNH NHỎ DƯỚI ==================
-                ctx.fillStyle = textDark; 
-                ctx.fillRect(38, 738, 404, 304); ctx.drawImage(STATE.photos[1], 40, 740, 400, 300);
-                ctx.fillRect(458, 738, 404, 304); ctx.drawImage(STATE.photos[2], 460, 740, 400, 300);
-
-                // ================== FOOTER & QR ==================
-                ctx.fillStyle = textDark; ctx.font = `bold 26px ${fontNews}`; ctx.textAlign = "center";
-                ctx.fillText("Chào Mừng Đến Với Lễ Hội Đền Đô - Bắc Ninh", w / 2, 1120);
+                // Banner "Tự hào là người VN" dưới khu vực ảnh
+                ctx.font = `italic 20px ${fonts.text}`; ctx.textAlign = "center";
+                ctx.fillText("—— QUYCHE NETWORK & AN CAFE TÀI TRỢ ——", 400, 1070);
                 
-                this.drawFakeQR(w - 110, 1070, 70);
+                ctx.strokeRect(60, 1090, 680, 160);
+                // Khối cờ đỏ sao vàng lớn
+                ctx.fillStyle = c.title; ctx.fillRect(70, 1100, 100, 140);
+                this.drawStar(120, 1140, 20, c.accent); this.drawStar(120, 1200, 20, c.accent);
+                
+                ctx.fillStyle = c.title; ctx.textAlign = "center";
+                ctx.font = `bold 55px ${fonts.text}`; ctx.fillText("TỰ HÀO LÀ NGƯỜI", 410, 1160);
+                ctx.fillText("VIỆT NAM", 410, 1225);
+
+                // CỘT PHẢI (RIGHT COLUMN) - BẢN TIN KIỂU BÁO CHÍ CỔ
+                const rx = 760; // Tọa độ X bắt đầu của cột phải
+                const rw = 380; // Chiều rộng cột tin
+                
+                ctx.strokeStyle = c.text; ctx.lineWidth = 2;
+                ctx.strokeRect(rx, 220, rw, 1030); // Khung bao quanh
+                ctx.lineWidth = 1; ctx.strokeRect(rx+6, 226, rw-12, 1018); // Khung đôi
+
+                // Tiêu đề Bản Tin
+                ctx.fillStyle = c.text; ctx.textAlign = "left";
+                ctx.font = `bold 60px ${fonts.text}`; ctx.fillText("BẢN TIN", rx + 25, 300);
+                
+                // Icon Cờ trên tiêu đề
+                ctx.fillStyle = c.title; ctx.fillRect(rx + rw - 85, 250, 60, 40);
+                this.drawStar(rx + rw - 55, 270, 12, c.accent);
+
+                // Nội dung Lịch sử - Dùng hàm DrawTextStrictBounds siêu chuẩn
+                ctx.fillStyle = c.text;
+                ctx.font = `24px ${fonts.text}`;
+                const content = "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.\n\nĐền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua.\n\nNhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc.";
+                
+                // Gọi hàm bọc chữ, nó sẽ tự động tính toán dòng và không bao giờ bị cắt chữ
+                const endY = this.drawTextStrictBounds(content, rx + 25, 350, rw - 50, 36);
+
+                // Vẽ Biểu tượng Ngôi Đền vector (Chắc chắn nằm dưới text)
+                const templeY = endY + 80;
+                ctx.fillStyle = c.text;
+                ctx.fillRect(rx + rw/2 - 80, templeY, 160, 12); 
+                ctx.fillRect(rx + rw/2 - 60, templeY-40, 15, 40); ctx.fillRect(rx + rw/2 + 45, templeY-40, 15, 40);
+                ctx.beginPath(); ctx.moveTo(rx + rw/2 - 100, templeY-40); ctx.lineTo(rx + rw/2 + 100, templeY-40);
+                ctx.lineTo(rx + rw/2 + 60, templeY-70); ctx.lineTo(rx + rw/2 - 60, templeY-70); ctx.fill();
+                ctx.fillRect(rx + rw/2 - 25, templeY-100, 50, 30);
+                ctx.beginPath(); ctx.moveTo(rx + rw/2 - 50, templeY-100); ctx.lineTo(rx + rw/2 + 50, templeY-100);
+                ctx.lineTo(rx + rw/2 + 30, templeY-130); ctx.lineTo(rx + rw/2 - 30, templeY-130); ctx.fill();
+                ctx.strokeStyle = c.text; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.arc(rx + rw/2 - 100, templeY-55, 15, 0.5*Math.PI, 1.5*Math.PI); ctx.stroke();
+                ctx.beginPath(); ctx.arc(rx + rw/2 + 100, templeY-55, 15, 1.5*Math.PI, 0.5*Math.PI); ctx.stroke();
+
+                // 5. FOOTER (CHÂN TRANG)
+                this.drawDecorLines(1300);
+                
+                ctx.fillStyle = c.text; ctx.textAlign = "center";
+                ctx.font = `bold 42px ${fonts.text}`;
+                ctx.fillText("Chào Mừng Đến Với Di Tích Quốc Gia Đặc Biệt Lễ Hội Đền Đô", w / 2, 1420);
+                ctx.font = `italic 28px ${fonts.text}`;
+                ctx.fillText("Bắc Ninh, Ngày " + new Date().toLocaleDateString('vi-VN'), w / 2, 1470);
+
+                // Mã QR Tải Xuống
+                this.drawQR(w - 220, 1340, 140);
+                ctx.font = `bold 18px var(--font-ui)`;
+                ctx.fillText("QUÉT ĐỂ LƯU", w - 150, 1515);
             }
         };
 
-        // ==========================================
-        // 6. APPLICATION CONTROLLER
-        // ==========================================
+        // 6. TRÌNH ĐIỀU KHIỂN SỰ KIỆN (APP CONTROLLER)
         const App = {
-            init: function() {
-                BackgroundFX.init();
-                CameraManager.init();
+            init() {
                 this.bindEvents();
-            },
-            
-            bindEvents: function() {
-                DOM.btns.switchCam.addEventListener('click', () => CameraManager.toggleCamera());
+                this.initParticles();
+                Camera.init(); // Auto start camera
                 
-                DOM.btns.capture.addEventListener('click', () => {
-                    if (STATE.isCapturing) return;
-                    this.startCaptureSequence();
-                });
-
-                DOM.btns.retake.addEventListener('click', () => {
-                    STATE.photos = [];
-                    UIEngine.updateDots();
-                    CameraManager.updateCaptureButtonText();
-                    UIEngine.showScreen('camera');
-                });
-
-                DOM.btns.download.addEventListener('click', () => {
-                    const link = document.createElement('a');
-                    link.download = `Dang-Tung-Photobooth-${new Date().getTime()}.png`;
-                    link.href = DOM.finalCanvas.toDataURL('image/png', 1.0); // Xuất chất lượng gốc
-                    link.click();
-                    UIEngine.showToast("Đã tải bản in thành công!");
-                });
+                // Mặc định tạo chút âm thanh AudioContext để bypass browser policy
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                this.audioCtx = new AudioCtx();
             },
 
-            startCaptureSequence: function() {
-                STATE.isCapturing = true;
-                DOM.btns.capture.disabled = true;
-                DOM.btns.switchCam.disabled = true;
-                
-                let counter = CONFIG.countdownSeconds;
-                DOM.countdown.style.opacity = '1';
-                DOM.countdown.innerText = counter;
-                AudioEngine.playBeep();
+            beep(freq = 880, dur = 0.1, type = 'sine') {
+                if(!this.audioCtx) return;
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
+                osc.type = type; osc.frequency.value = freq;
+                osc.connect(gain); gain.connect(this.audioCtx.destination);
+                osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, this.audioCtx.currentTime + dur);
+                osc.stop(this.audioCtx.currentTime + dur);
+            },
 
-                const timer = setInterval(() => {
+            bindEvents() {
+                // Nút Đổi Camera
+                UI.els.btnSwitch.onclick = () => {
+                    State.facingMode = State.facingMode === 'user' ? 'environment' : 'user';
+                    Camera.init();
+                };
+
+                // Filter Sliders
+                UI.els.slBright.oninput = (e) => { State.filters.brightness = e.target.value; UI.els.vBright.innerText = e.target.value + '%'; Camera.applyVideoFilters(); };
+                UI.els.slCont.oninput = (e) => { State.filters.contrast = e.target.value; UI.els.vCont.innerText = e.target.value + '%'; Camera.applyVideoFilters(); };
+
+                // Nút Bấm Chụp
+                UI.els.btnCap.onclick = () => this.runCountdown();
+
+                // Nút Chụp Lại Từ Đầu
+                UI.els.btnRetake.onclick = () => {
+                    State.capturedCanvases = [];
+                    UI.updateProgress();
+                    UI.switchTab('camera');
+                };
+
+                // Nút Download
+                UI.els.btnDown.onclick = () => {
+                    const dataUrl = UI.els.finalCanvas.toDataURL('image/jpeg', 0.95);
+                    const a = document.createElement('a');
+                    a.download = `DangTung-Photobooth-${Date.now()}.jpg`;
+                    a.href = dataUrl; a.click();
+                    
+                    // Lưu vào gallery session
+                    State.galleryData.push(dataUrl);
+                    UI.showToast("Đã lưu vào máy & Thư viện!");
+                };
+            },
+
+            runCountdown() {
+                if (State.isProcessing) return;
+                State.isProcessing = true;
+                UI.els.btnCap.disabled = true;
+                UI.els.btnSwitch.disabled = true;
+                
+                let counter = CONFIG.countdownSecs;
+                UI.els.countdown.style.display = 'flex';
+                UI.els.countdown.innerText = counter;
+                this.beep(880, 0.1); // Beep
+
+                const iv = setInterval(() => {
                     counter--;
                     if (counter > 0) {
-                        DOM.countdown.innerText = counter;
-                        AudioEngine.playBeep();
+                        UI.els.countdown.innerText = counter;
+                        this.beep(880, 0.1);
                     } else {
-                        clearInterval(timer);
-                        DOM.countdown.style.opacity = '0';
-                        this.takeSnapshot();
+                        clearInterval(iv);
+                        UI.els.countdown.style.display = 'none';
+                        this.takePhoto();
                     }
                 }, 1000);
             },
 
-            takeSnapshot: function() {
-                AudioEngine.playShutter();
-                UIEngine.flashEffect();
+            takePhoto() {
+                this.beep(200, 0.1, 'square'); // Shutter sound
+                UI.triggerFlash();
                 
-                const canvas = CameraManager.captureFrame();
-                STATE.photos.push(canvas);
-                UIEngine.updateDots();
+                const frame = Camera.captureFrame();
+                State.capturedCanvases.push(frame);
                 
-                if (STATE.photos.length < CONFIG.maxPhotos) {
-                    STATE.isCapturing = false;
-                    DOM.btns.capture.disabled = false;
-                    DOM.btns.switchCam.disabled = false;
-                    CameraManager.updateCaptureButtonText();
-                    UIEngine.showToast(`Đã chụp ${STATE.photos.length}/${CONFIG.maxPhotos}. Đổi dáng nào!`, 2000);
+                State.isProcessing = false;
+                UI.els.btnSwitch.disabled = false;
+                UI.updateProgress();
+
+                if (State.capturedCanvases.length >= CONFIG.photosNeeded) {
+                    this.processFinal();
                 } else {
-                    this.processResult();
+                    UI.els.btnCap.disabled = false;
                 }
             },
 
-            processResult: function() {
-                // Future Implementation: Upload to Firebase Storage here.
-                UIEngine.showScreen('processing');
+            processFinal() {
+                UI.switchTab('processing');
                 
-                // Giả lập thời gian xử lý thuật toán ảnh để UX tốt hơn (1.5s)
-                setTimeout(() => {
-                    GraphicsEngine.renderPoster();
-                    UIEngine.showScreen('result');
-                    STATE.isCapturing = false;
-                    DOM.btns.switchCam.disabled = false;
-                    UIEngine.showToast("Bản in đã hoàn thiện!");
-                }, 1500);
+                // Chờ DOM cập nhật UI loading, sau đó Render nặng
+                setTimeout(async () => {
+                    await Graphics.renderFinalLayout();
+                    UI.switchTab('result');
+                    UI.showToast("Bản in của bạn đã sẵn sàng!");
+                }, 1200);
+            },
+
+            switchTab: (id) => UI.switchTab(id),
+
+            // Hiệu ứng hạt nền (Canvas Background)
+            initParticles() {
+                const canvas = document.getElementById('particleCanvas');
+                const ctx = canvas.getContext('2d');
+                let w, h, particles = [];
+                
+                const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+                window.addEventListener('resize', resize); resize();
+
+                for(let i=0; i<40; i++) {
+                    particles.push({
+                        x: Math.random() * w, y: Math.random() * h,
+                        r: Math.random() * 2 + 0.5,
+                        dy: Math.random() * -0.5 - 0.2,
+                        op: Math.random() * 0.5 + 0.1
+                    });
+                }
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, w, h);
+                    particles.forEach(p => {
+                        p.y += p.dy;
+                        if(p.y < 0) { p.y = h; p.x = Math.random() * w; }
+                        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                        ctx.fillStyle = `rgba(245, 158, 11, ${p.op})`; ctx.fill();
+                    });
+                    requestAnimationFrame(animate);
+                };
+                animate();
             }
         };
 
-        // Bootstrap App
-        window.addEventListener('load', () => App.init());
+        // 7. KHỞI CHẠY ỨNG DỤNG SAU KHI DOM SẴN SÀNG
+        window.addEventListener('DOMContentLoaded', () => App.init());
 
     </script>
 </body>
