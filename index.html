@@ -3,489 +3,1211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Đăng Tùng Photobooth | Lễ Hội Đền Đô - Professional Edition</title>
+    <meta name="description" content="Hệ thống trạm chụp ảnh Photobooth chuyên nghiệp thiết kế riêng cho sự kiện Lễ Hội Đền Đô bởi Đăng Tùng.">
+    <meta name="author" content="Đăng Tùng">
+    <meta name="theme-color" content="#090e17">
     
+    <title>Đăng Tùng Photobooth | Lễ Hội Đền Đô - Enterprise Edition</title>
+    
+    <!-- ==========================================================================
+         FONT TYPOGRAPHY SYSTEM
+         Sử dụng Cormorant Garamond cho báo chí và Montserrat cho UI hệ thống
+         ========================================================================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
+    <!-- ==========================================================================
+         ENTERPRISE CSS STYLESHEET
+         ========================================================================== -->
     <style>
-        /* ==========================================================================
-           1. CSS VARIABLES & THEME CONFIGURATION
-           ========================================================================== */
+        /* --- 1. THEME VARIABLES (DESIGN TOKENS) --- */
         :root {
-            /* Theme Ứng dụng */
-            --app-bg: #090e17;
-            --app-surface: rgba(15, 23, 42, 0.75);
-            --app-surface-hover: rgba(30, 41, 59, 0.85);
-            --app-primary: #dc2626;
-            --app-primary-hover: #b91c1c;
-            --app-accent: #f59e0b;
-            --app-text: #f8fafc;
-            --app-text-muted: #94a3b8;
-            --app-border: rgba(255, 255, 255, 0.1);
+            /* Palette: Dark UI (Giao diện điều khiển) */
+            --ui-bg-color: #090e17;
+            --ui-surface-color: rgba(15, 23, 42, 0.75);
+            --ui-surface-hover: rgba(30, 41, 59, 0.9);
+            --ui-surface-border: rgba(255, 255, 255, 0.08);
             
-            /* Theme Bản In (Màu sắc báo cổ/giấy craft) */
-            --print-paper: #F8F4E6; /* Giấy kem sáng dễ đọc */
-            --print-ink: #2C1E16;   /* Mực nâu đen, tương phản cao */
-            --print-red: #9B1C1C;   /* Đỏ đô trầm ấm */
-            --print-gold: #B48600;  /* Vàng kim loại */
+            /* Palette: Brand Colors (Thương hiệu) */
+            --brand-primary: #dc2626;
+            --brand-primary-hover: #b91c1c;
+            --brand-primary-active: #991b1b;
+            --brand-accent: #f59e0b;
+            --brand-accent-hover: #d97706;
+            
+            /* Palette: Text (Văn bản UI) */
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            
+            /* Palette: Print Art (Màu sắc bản in nghệ thuật) */
+            --print-paper-center: #FFF9EB;
+            --print-paper-edge: #E8D5B5;
+            --print-paper-dark: #D8B88C;
+            --print-ink: #3A2618;
+            --print-royal-red: #A61C1C;
+            --print-royal-gold: #C49A00;
+            --print-photo-border: #FFFFFF;
             
             /* Typography */
-            --font-ui: 'Montserrat', sans-serif;
-            --font-print: 'Cormorant Garamond', serif;
+            --font-ui: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-print: 'Cormorant Garamond', 'Times New Roman', serif;
             
-            /* Layout & Effects */
-            --radius-lg: 24px;
-            --radius-md: 16px;
+            /* Spacing & Layout */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            /* Borders & Shadows */
             --radius-sm: 8px;
-            --shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            --shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px rgba(245, 158, 11, 0.3);
+            
+            /* Transitions */
+            --transition-fast: all 0.15s ease-in-out;
+            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ==========================================================================
-           2. GLOBAL RESET
-           ========================================================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+        /* --- 2. GLOBAL RESET & BASE RULES --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: var(--font-ui);
-            background-color: var(--app-bg);
-            color: var(--app-text);
+            background-color: var(--ui-bg-color);
+            color: var(--text-primary);
             min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
+        /* Background Particle Canvas */
         #particleCanvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; opacity: 0.6;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
         }
 
-        /* ==========================================================================
-           3. UI COMPONENTS & LAYOUT
-           ========================================================================== */
+        /* --- 3. TYPOGRAPHY & HEADINGS --- */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-ui);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* --- 4. NAVIGATION BAR --- */
         .navbar {
-            width: 100%; padding: 1.5rem 2rem;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(9, 14, 23, 0.8); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--app-border); z-index: 50;
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(9, 14, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--ui-surface-border);
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
         }
 
-        .brand {
-            display: flex; align-items: center; gap: 1rem;
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
         }
-        .brand h1 {
-            font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            background: linear-gradient(to right, var(--app-accent), #fef08a);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .brand-subtitle { font-size: 0.85rem; color: var(--app-text-muted); font-weight: 500; }
 
-        .nav-links { display: flex; gap: 1rem; }
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            color: var(--brand-accent);
+            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+        }
+
+        .brand-text h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--brand-accent) 0%, #fef08a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2px;
+        }
+
+        .brand-text p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
         .nav-btn {
-            background: transparent; color: var(--app-text-muted); border: none;
-            padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-weight: 600;
-            cursor: pointer; transition: var(--transition); font-family: var(--font-ui);
-        }
-        .nav-btn.active { color: var(--app-accent); background: rgba(245, 158, 11, 0.1); }
-        .nav-btn:hover:not(.active) { color: var(--app-text); background: rgba(255,255,255,0.05); }
-
-        .main-container {
-            width: 100%; max-width: 1000px; padding: 2rem 1rem;
-            display: flex; flex-direction: column; align-items: center; flex: 1;
-        }
-
-        .tab-content { display: none; width: 100%; animation: fadeUp 0.5s ease-out; }
-        .tab-content.active { display: flex; flex-direction: column; align-items: center; }
-
-        /* ==========================================================================
-           4. CAMERA APP SECTION
-           ========================================================================== */
-        .app-panel {
-            width: 100%; max-width: 760px;
-            background: var(--app-surface); backdrop-filter: blur(20px);
-            border: 1px solid var(--app-border); border-radius: var(--radius-lg);
-            padding: 2rem; box-shadow: var(--shadow-glass); display: flex; flex-direction: column; gap: 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-family: var(--font-ui);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .status-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .photo-indicators { display: flex; gap: 0.75rem; }
-        .dot {
-            width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1);
-            border: 2px solid transparent; transition: var(--transition);
+        .nav-btn:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
         }
-        .dot.active { background: var(--app-primary); border-color: rgba(220, 38, 38, 0.4); box-shadow: 0 0 10px var(--app-primary); transform: scale(1.3); }
 
-        .viewfinder-container {
-            position: relative; width: 100%; aspect-ratio: 4/3; background: #000;
-            border-radius: var(--radius-md); overflow: hidden;
-            border: 2px solid rgba(245, 158, 11, 0.3); box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        .nav-btn.active {
+            color: var(--brand-accent);
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
+            box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.05);
+        }
+
+        /* --- 5. MAIN LAYOUT & PANELS --- */
+        .app-main {
+            width: 100%;
+            max-width: 1100px;
+            padding: var(--spacing-xl) var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .tab-section {
+            display: none;
+            width: 100%;
+            animation: slideUpFade var(--transition-slow);
+        }
+
+        .tab-section.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .glass-panel {
+            width: 100%;
+            background: var(--ui-surface-color);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--ui-surface-border);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-glass);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .panel-max-lg { max-width: 860px; }
+        .panel-max-md { max-width: 600px; }
+
+        /* --- 6. CAMERA MODULE (UI) --- */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .status-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-text i {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .progress-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            transition: var(--transition-normal);
+        }
+
+        .progress-dot.active {
+            background: var(--brand-primary);
+            border-color: rgba(220, 38, 38, 0.3);
+            box-shadow: 0 0 12px var(--brand-primary);
+            transform: scale(1.2);
+        }
+
+        .camera-viewport {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            background-color: #000;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        #liveVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+            transition: filter 0.2s ease-out;
+        }
+
+        .rule-of-thirds {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+            background-size: 33.333% 33.333%;
+        }
+
+        .timer-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .timer-number {
+            color: #ffffff;
+            font-size: 10rem;
+            font-weight: 900;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+            font-variant-numeric: tabular-nums;
+            animation: pulseText 1s infinite;
+        }
+
+        .shutter-flash {
+            position: absolute;
+            inset: 0;
+            background: #ffffff;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* --- 7. HARDWARE CONTROLS & SETTINGS --- */
+        .hardware-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            width: 100%;
+            align-items: start;
+        }
+
+        .settings-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--ui-surface-border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .settings-header {
+            font-size: 0.9rem;
+            color: var(--brand-accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .control-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        /* Custom Select Styling */
+        .custom-select {
+            appearance: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--ui-surface-border);
+            color: var(--text-primary);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            width: 100%;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .custom-select:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
+        .custom-select:focus { border-color: var(--brand-accent); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2); }
+        .custom-select option { background: var(--ui-bg-color); color: var(--text-primary); }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin: 6px 0;
         }
         
-        #videoElement {
-            width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);
-            transition: filter 0.3s;
-        }
-
-        .grid-lines {
-            position: absolute; inset: 0; pointer-events: none; z-index: 2;
-            background-image: linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px);
-            background-size: 33.33% 33.33%;
-        }
-
-        .countdown-overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center; z-index: 10;
-            color: white; font-size: 8rem; font-weight: 800; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
-        .flash-effect {
-            position: absolute; inset: 0; background: #fff; z-index: 20; opacity: 0; pointer-events: none;
-        }
-
-        .controls-panel {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%;
-        }
-
-        .filters-group {
-            display: flex; flex-direction: column; gap: 1rem; background: rgba(0,0,0,0.2);
-            padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--app-border);
-        }
-        .filter-ctrl { display: flex; flex-direction: column; gap: 0.5rem; }
-        .filter-ctrl label { font-size: 0.85rem; font-weight: 600; color: var(--app-text-muted); display: flex; justify-content: space-between; }
+        input[type=range]:focus { outline: none; }
         
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--app-accent); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.2); border-radius: 2px; }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            border: 1px solid rgba(0,0,0,0.3);
+            transition: var(--transition-fast);
+        }
+        
+        input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.15); }
+        
+        input[type=range]::-webkit-slider-thumb {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: var(--brand-accent);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+            border: 2px solid #fff;
+            transition: transform 0.1s;
+        }
+        
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
 
-        .btn-group { display: flex; flex-direction: column; gap: 1rem; justify-content: center; }
+        /* --- 8. BUTTON COMPONENTS --- */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            justify-content: center;
+        }
+
         .btn {
-            padding: 1rem 1.5rem; font-size: 1rem; font-weight: 600; font-family: var(--font-ui);
-            border: none; border-radius: 50px; cursor: pointer; transition: var(--transition);
-            display: flex; align-items: center; justify-content: center; gap: 0.75rem; text-transform: uppercase;
-        }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-        .btn svg { width: 22px; height: 22px; }
-
-        .btn-primary { background: var(--app-primary); color: white; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3); }
-        .btn-primary:hover:not(:disabled) { background: var(--app-primary-hover); transform: translateY(-2px); }
-        .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--app-border); }
-        .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
-        .btn-accent { background: var(--app-accent); color: #000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); }
-        .btn-accent:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-2px); }
-
-        /* ==========================================================================
-           5. PROCESSING & RESULT SECTION
-           ========================================================================== */
-        .processing-view {
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 4rem 0; text-align: center;
-        }
-        .spinner {
-            width: 60px; height: 60px; border: 4px solid rgba(245, 158, 11, 0.2);
-            border-top-color: var(--app-accent); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 24px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            font-family: var(--font-ui);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            outline: none;
         }
 
-        .result-mockup {
-            width: 100%; max-width: 550px; background: #fff; padding: 15px;
-            border-radius: 4px; box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
-            margin: 0 auto 2rem auto; transition: transform 0.3s ease;
-        }
-        .result-mockup:hover { transform: scale(1.02); }
-        
-        #finalCanvas {
-            width: 100%; height: auto; display: block; box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
-        /* ==========================================================================
-           6. GALLERY SECTION
-           ========================================================================== */
+        .btn svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.2px;
+        }
+
+        .btn-danger {
+            background-color: var(--brand-primary);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35);
+        }
+        .btn-danger:hover:not(:disabled) {
+            background-color: var(--brand-primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(220, 38, 38, 0.5);
+        }
+        .btn-danger:active:not(:disabled) { transform: translateY(-1px); }
+
+        .btn-outline {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+        }
+        .btn-outline:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-golden {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #000000;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+        .btn-golden:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(245, 158, 11, 0.5);
+            filter: brightness(1.1);
+        }
+
+        /* --- 9. PROCESSING LOADER --- */
+        .processing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: 400px;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(245, 158, 11, 0.15);
+            border-top-color: var(--brand-accent);
+            border-radius: 50%;
+            animation: spinLoader 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            margin-bottom: var(--spacing-xl);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.2);
+        }
+
+        .processing-container h2 {
+            color: var(--brand-accent);
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .processing-container p { color: var(--text-secondary); font-size: 1.1rem; }
+
+        /* --- 10. RESULT MOCKUP (BẢN IN) --- */
+        .result-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .canvas-wrapper {
+            background-color: #ffffff;
+            padding: 18px;
+            border-radius: 6px;
+            box-shadow: 
+                0 40px 80px rgba(0,0,0,0.8), 
+                0 0 0 1px rgba(255,255,255,0.05),
+                inset 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: var(--spacing-xl);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 100%;
+            width: 600px;
+        }
+
+        .canvas-wrapper:hover { transform: scale(1.02) translateY(-10px); }
+
+        #finalPrintCanvas {
+            width: 100%;
+            height: auto;
+            display: block;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* --- 11. GALLERY SYSTEM --- */
+        .gallery-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--ui-surface-border);
+            padding-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .gallery-stats {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--brand-accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
         .gallery-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem; width: 100%; padding: 1rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            width: 100%;
         }
-        .gallery-item {
-            position: relative; background: #fff; padding: 10px; border-radius: 4px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer; transition: var(--transition);
+
+        .gallery-card {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
         }
-        .gallery-item img { width: 100%; height: auto; display: block; }
-        .gallery-item:hover { transform: translateY(-5px) scale(1.03); z-index: 10; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        .empty-gallery { width: 100%; text-align: center; padding: 4rem 0; color: var(--app-text-muted); font-size: 1.2rem; }
 
-        .toast {
-            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: rgba(0,0,0,0.9); color: white; padding: 1rem 2rem; border-radius: 50px;
-            font-weight: 500; opacity: 0; transition: var(--transition); z-index: 9999;
-            border: 1px solid var(--app-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .gallery-card::before {
+            content: "Nhấn để xem kỹ";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
+        .gallery-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            z-index: 2;
+        }
+        
+        .gallery-card:hover::before { opacity: 1; }
 
-        @media (max-width: 768px) {
-            .controls-panel { grid-template-columns: 1fr; }
-            .brand h1 { font-size: 1.2rem; }
-            .app-panel { padding: 1rem; }
+        .gallery-card img { width: 100%; height: auto; display: block; border-radius: 2px; }
+
+        .gallery-empty {
+            grid-column: 1 / -1;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-tertiary);
+            background: rgba(0,0,0,0.2);
+            border-radius: var(--radius-md);
+            border: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .gallery-empty svg { width: 64px; height: 64px; opacity: 0.5; margin-bottom: 1rem; }
+
+        /* --- 12. TOAST NOTIFICATION --- */
+        .toast-system {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(150px);
+            background: rgba(15, 23, 42, 0.95);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transition: var(--transition-slow);
+            z-index: 9999;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .toast-system.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon { color: #10b981; }
+
+        /* --- 13. ANIMATIONS --- */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spinLoader {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shutterFlash {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- 14. RESPONSIVE DESIGN --- */
+        @media (max-width: 900px) {
+            .hardware-controls { grid-template-columns: 1fr; }
+            .canvas-wrapper { padding: 12px; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+        }
+
+        @media (max-width: 600px) {
+            .navbar { padding: var(--spacing-md); flex-direction: column; gap: var(--spacing-md); }
+            .brand-text h1 { font-size: 1.2rem; }
+            .app-main { padding: var(--spacing-md) var(--spacing-sm); }
+            .glass-panel { padding: var(--spacing-md); border-radius: var(--radius-md); }
+            .result-actions { flex-direction: column; width: 100%; }
+            .btn { width: 100%; }
+            .timer-number { font-size: 6rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Lớp phủ Background Đồ họa không gian -->
     <canvas id="particleCanvas"></canvas>
-    <div id="toast" class="toast">Hệ thống sẵn sàng</div>
+    
+    <!-- Hệ thống thông báo đẩy (Toast) -->
+    <div id="toastNotification" class="toast-system">
+        <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span id="toastMessage">Khởi tạo hệ thống thành công</span>
+    </div>
 
-    <nav class="navbar">
-        <div class="brand">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--app-accent)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <div>
+    <!-- ==========================================================================
+         TOP NAVIGATION BAR
+         ========================================================================== -->
+    <header class="navbar">
+        <div class="brand-container">
+            <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <div class="brand-text">
                 <h1>Đăng Tùng Photobooth</h1>
-                <div class="brand-subtitle">Trạm Lưu Trữ Lễ Hội Đền Đô</div>
+                <p>Enterprise Edition • Lễ Hội Đền Đô</p>
             </div>
         </div>
-        <div class="nav-links">
-            <button class="nav-btn active" onclick="App.switchTab('camera')">Phòng Chụp</button>
-            <button class="nav-btn" onclick="App.switchTab('gallery')">Thư Viện</button>
-        </div>
-    </nav>
+        <nav class="nav-menu">
+            <button class="nav-btn active" data-target="tab-camera" onclick="AppCtrl.switchTab('tab-camera')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path></svg>
+                Phòng Chụp
+            </button>
+            <button class="nav-btn" data-target="tab-gallery" onclick="AppCtrl.switchTab('tab-gallery')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                Thư Viện Ảnh
+            </button>
+        </nav>
+    </header>
 
-    <main class="main-container">
-        <section id="tab-camera" class="tab-content active">
-            <div class="app-panel">
-                <div class="status-header">
-                    <span id="statusText" style="color: var(--app-text-muted); font-size: 0.9rem; font-weight: 500;">Sẵn sàng khởi động Camera</span>
-                    <div class="photo-indicators">
-                        <div class="dot" id="dot1"></div>
-                        <div class="dot" id="dot2"></div>
-                        <div class="dot" id="dot3"></div>
+    <!-- ==========================================================================
+         MAIN APPLICATION AREA
+         ========================================================================== -->
+    <main class="app-main">
+        
+        <!-- ==========================================
+             TAB 1: CAMERA & CẤU HÌNH (CAPTURE STUDIO)
+             ========================================== -->
+        <section id="tab-camera" class="tab-section active">
+            <div class="glass-panel panel-max-lg">
+                
+                <!-- Thanh Trạng thái & Tiến độ -->
+                <div class="status-bar">
+                    <div class="status-text">
+                        <i></i> <span id="cameraStatusText">Đang tải cấu hình máy ảnh...</span>
+                    </div>
+                    <div class="progress-dots">
+                        <div class="progress-dot" id="progDot1"></div>
+                        <div class="progress-dot" id="progDot2"></div>
+                        <div class="progress-dot" id="progDot3"></div>
                     </div>
                 </div>
 
-                <div class="viewfinder-container" id="viewfinder">
-                    <video id="videoElement" autoplay playsinline></video>
-                    <div class="grid-lines"></div>
-                    <div class="countdown-overlay" id="countdownDisplay">3</div>
-                    <div class="flash-effect" id="flashEffect"></div>
+                <!-- Màn hình Live View -->
+                <div class="camera-viewport" id="viewportContainer">
+                    <video id="liveVideoFeed" autoplay playsinline muted></video>
+                    <div class="rule-of-thirds" id="gridOverlay"></div>
+                    <div class="timer-overlay" id="timerOverlay">
+                        <span class="timer-number" id="timerDisplay">3</span>
+                    </div>
+                    <div class="shutter-flash" id="shutterFlash"></div>
                 </div>
 
-                <div class="controls-panel">
-                    <div class="filters-group">
-                        <div class="filter-ctrl">
-                            <label><span>Độ Sáng (Brightness)</span> <span id="valBrightness">100%</span></label>
-                            <input type="range" id="slBrightness" min="50" max="150" value="100">
-                        </div>
-                        <div class="filter-ctrl">
-                            <label><span>Độ Tương Phản (Contrast)</span> <span id="valContrast">100%</span></label>
-                            <input type="range" id="slContrast" min="50" max="150" value="100">
-                        </div>
-                    </div>
+                <!-- Bảng điều khiển Phần cứng & Phần mềm -->
+                <div class="hardware-controls">
                     
-                    <div class="btn-group">
-                        <button id="btnSwitchCam" class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                            Đổi Camera
-                        </button>
-                        <button id="btnCapture" class="btn btn-primary" disabled>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-                            Tải Camera...
-                        </button>
+                    <!-- Cột 1: Cấu hình Thiết bị & Chụp -->
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            Thiết Lập Máy Ảnh
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="cameraSelect">Chọn Thiết Bị Ghi Hình</label>
+                            <select id="cameraSelect" class="custom-select">
+                                <option value="">Đang dò tìm thiết bị...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group" style="margin-top: 8px;">
+                            <label class="control-label" for="timerSelect">Hẹn Giờ Chụp (Countdown)</label>
+                            <select id="timerSelect" class="custom-select">
+                                <option value="3">3 Giây (Tiêu chuẩn)</option>
+                                <option value="5">5 Giây (Chụp nhóm)</option>
+                                <option value="10">10 Giây (Góc rộng)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Cột 2: Bộ lọc ảnh & Lưới -->
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                            Ma Trận Hình Ảnh
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">
+                                <span>Độ Sáng (Brightness)</span>
+                                <span class="control-value" id="valBright">100%</span>
+                            </label>
+                            <input type="range" id="sliderBright" min="50" max="150" value="100">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">
+                                <span>Độ Tương Phản (Contrast)</span>
+                                <span class="control-value" id="valContrast">100%</span>
+                            </label>
+                            <input type="range" id="sliderContrast" min="50" max="150" value="100">
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">
+                                <span>Làm Ấm / Cổ Điển (Sepia)</span>
+                                <span class="control-value" id="valSepia">0%</span>
+                            </label>
+                            <input type="range" id="sliderSepia" min="0" max="100" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Khu vực Nút Hành Động Lõi -->
+                <div class="action-buttons">
+                    <button id="btnTriggerCapture" class="btn btn-danger" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                        Khởi động Camera...
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 2: LOADING & PROCESSING
+             ========================================== -->
+        <section id="tab-processing" class="tab-section">
+            <div class="glass-panel panel-max-md processing-container">
+                <div class="loader-ring"></div>
+                <h2>Đang In Nghệ Thuật...</h2>
+                <p>Máy chủ đang áp dụng đổ bóng 3D, tính toán phân luồng Text Wrapping và Render High-Resolution.</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 3: RESULT & ACTIONS (BẢN IN HOÀN THIỆN)
+             ========================================== -->
+        <section id="tab-result" class="tab-section">
+            <div class="result-stage">
+                <!-- Khung hiển thị mô phỏng bản in thật -->
+                <div class="canvas-wrapper">
+                    <!-- Kích thước khủng 1200x1600 ẩn bên dưới, hiển thị responsive bằng CSS -->
+                    <canvas id="finalPrintCanvas" width="1200" height="1600"></canvas>
+                </div>
+                
+                <div class="result-actions">
+                    <button id="btnResetSession" class="btn btn-outline">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        Tạo Phiên Mới
+                    </button>
+                    <button id="btnSaveToDevice" class="btn btn-golden">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Tải & Lưu Vào Thư Viện
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 4: PERSISTENT GALLERY (THƯ VIỆN)
+             ========================================== -->
+        <section id="tab-gallery" class="tab-section">
+            <div class="glass-panel" style="max-width: 1100px;">
+                <div class="gallery-header">
+                    <h2>Nhật Ký Sự Kiện Lễ Hội Đền Đô</h2>
+                    <div class="gallery-stats" id="galleryCounter">Tổng: 0 ảnh</div>
+                </div>
+                
+                <div id="galleryGrid" class="gallery-grid">
+                    <!-- Javascript sẽ đổ data vào đây -->
+                    <div class="gallery-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <p>Dữ liệu trống. Hãy quay lại phòng chụp để tạo những bức ảnh nghệ thuật đầu tiên.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="tab-processing" class="tab-content">
-            <div class="app-panel processing-view">
-                <div class="spinner"></div>
-                <h2 style="color: var(--app-accent); font-size: 1.5rem; margin-bottom: 0.5rem;">Đang rửa bản in chuyên nghiệp...</h2>
-                <p style="color: var(--app-text-muted);">Áp dụng thuật toán Text Wrapping thông minh và Render High-Res.</p>
-            </div>
-        </section>
-
-        <section id="tab-result" class="tab-content">
-            <div class="result-mockup">
-                <canvas id="finalCanvas" width="1200" height="1600"></canvas>
-            </div>
-            
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-                <button id="btnRetake" class="btn btn-secondary">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    Chụp Phiên Mới
-                </button>
-                <button id="btnDownload" class="btn btn-accent">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Lưu Máy & Thêm Vào Thư Viện
-                </button>
-            </div>
-        </section>
-
-        <section id="tab-gallery" class="tab-content">
-            <div class="app-panel" style="max-width: 1000px; padding: 2rem;">
-                <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--app-border); padding-bottom: 1rem;">Nhật Ký Sự Kiện Lễ Hội Đền Đô</h2>
-                <div id="galleryContainer" class="gallery-grid">
-                    <div class="empty-gallery">Chưa có bức ảnh nào được chụp trong phiên làm việc này.</div>
-                </div>
-            </div>
-        </section>
     </main>
 
+    <!-- ==========================================================================
+         JAVASCRIPT - ENTERPRISE CORE LOGIC
+         ========================================================================== -->
     <script>
-        const CONFIG = {
-            photosNeeded: 3,
-            countdownSecs: 3,
-            layoutW: 1200,
-            layoutH: 1600,
-            fonts: { text: "'Cormorant Garamond', 'Times New Roman', serif" },
-            colors: { bg: '#F8F4E6', text: '#2C1E16', title: '#9B1C1C', accent: '#B48600' }
-        };
+        /**
+         * @fileoverview Đăng Tùng Photobooth - Enterprise Logic
+         * Cấu trúc Code tuân thủ mô hình OOP Strict, Module Pattern.
+         * Bao gồm: Config, Storage, Audio, Camera, Graphics, AppController.
+         */
 
-        const State = {
-            capturedCanvases: [],
-            facingMode: 'user',
-            stream: null,
-            filters: { brightness: 100, contrast: 100 },
-            isProcessing: false,
-            galleryData: []
-        };
+        "use strict";
 
-        const UI = {
-            els: {
-                video: document.getElementById('videoElement'),
-                viewfinder: document.getElementById('viewfinder'),
-                countdown: document.getElementById('countdownDisplay'),
-                flash: document.getElementById('flashEffect'),
-                finalCanvas: document.getElementById('finalCanvas'),
-                gallery: document.getElementById('galleryContainer'),
-                toast: document.getElementById('toast'),
-                statusText: document.getElementById('statusText'),
-                dots: [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')],
-                btnCap: document.getElementById('btnCapture'),
-                btnSwitch: document.getElementById('btnSwitchCam'),
-                btnRetake: document.getElementById('btnRetake'),
-                btnDown: document.getElementById('btnDownload'),
-                slBright: document.getElementById('slBrightness'),
-                slCont: document.getElementById('slContrast'),
-                vBright: document.getElementById('valBrightness'),
-                vCont: document.getElementById('valContrast'),
+        // ==========================================
+        // 1. APPLICATION CONFIGURATION
+        // ==========================================
+        const APP_CONFIG = {
+            rules: {
+                totalPhotosRequired: 3,
+                exportQuality: 0.95,     // JPEG High Quality
+                canvasWidth: 1200,       // Resolution W
+                canvasHeight: 1600,      // Resolution H
+                targetRatio: 4 / 3       // Tỷ lệ khung hình máy ảnh
             },
-
-            showToast(msg, ms = 3000) {
-                this.els.toast.innerText = msg;
-                this.els.toast.classList.add('show');
-                setTimeout(() => this.els.toast.classList.remove('show'), ms);
+            storageKey: 'DangTung_Gallery_v1',
+            fonts: {
+                royal: "'Cormorant Garamond', 'Times New Roman', serif"
             },
-
-            switchTab(tabId) {
-                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-                document.getElementById('tab-' + tabId).classList.add('active');
-                
-                const btns = document.querySelectorAll('.nav-btn');
-                if (tabId === 'camera') btns[0].classList.add('active');
-                if (tabId === 'gallery') {
-                    btns[1].classList.add('active');
-                    this.renderGallery();
-                }
-            },
-
-            updateProgress() {
-                const len = State.capturedCanvases.length;
-                this.els.dots.forEach((dot, idx) => {
-                    dot.className = idx < len ? 'dot active' : 'dot';
-                });
-                
-                if (len === 0) {
-                    this.els.btnCap.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Bấm Để Chụp (1/3)`;
-                    this.els.statusText.innerText = "Sẵn sàng tạo dáng!";
-                } else if (len < CONFIG.photosNeeded) {
-                    this.els.btnCap.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Chụp Kiểu Kế (${len + 1}/3)`;
-                    this.els.statusText.innerText = `Hoàn thành ${len}/3. Đổi dáng ngầu hơn nhé!`;
-                }
-            },
-
-            triggerFlash() {
-                this.els.flash.style.animation = 'none';
-                this.els.flash.offsetHeight;
-                this.els.flash.style.animation = 'flashAnim 0.5s ease-out forwards';
-            },
-
-            renderGallery() {
-                if (State.galleryData.length === 0) {
-                    this.els.gallery.innerHTML = '<div class="empty-gallery">Chưa có ảnh nào. Hãy qua phòng chụp ngay!</div>';
-                    return;
-                }
-                let html = '';
-                [...State.galleryData].reverse().forEach(src => {
-                    html += `<div class="gallery-item" onclick="window.open('${src}', '_blank')"><img src="${src}" alt="Photobooth"></div>`;
-                });
-                this.els.gallery.innerHTML = html;
+            palette: {
+                paperBgCenter: '#FFF9EB',
+                paperBgEdge: '#E8D5B5',
+                paperBgDark: '#D8B88C',
+                inkDark: '#3A2618',
+                redRoyal: '#A61C1C',
+                goldRoyal: '#C49A00',
+                photoWhite: '#FFFFFF'
             }
         };
 
-        const Camera = {
-            async init() {
-                if (State.stream) State.stream.getTracks().forEach(t => t.stop());
-                UI.els.btnCap.disabled = true;
+        // ==========================================
+        // 2. STATE MANAGEMENT
+        // ==========================================
+        const AppState = {
+            frames: [],                  // Mảng chứa các canvas đã chụp
+            currentDeviceId: null,       // ID của Camera đang dùng
+            stream: null,                // MediaStream object
+            isProcessing: false,         // Khoá an toàn khi đang xử lý
+            countdownTime: 3,            // Mặc định 3s
+            filters: {
+                bright: 100,
+                contrast: 100,
+                sepia: 0
+            },
+            savedGallery: []             // Dữ liệu base64 load từ LocalStorage
+        };
 
-                try {
-                    State.stream = await navigator.mediaDevices.getUserMedia({
-                        video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: State.facingMode },
-                        audio: false
-                    });
-                    
-                    UI.els.video.srcObject = State.stream;
-                    UI.els.video.style.transform = State.facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
-                    
-                    UI.els.video.onloadedmetadata = () => {
-                        UI.els.btnCap.disabled = false;
-                        UI.updateProgress();
-                    };
-                } catch (e) {
-                    UI.els.statusText.innerText = "Lỗi truy cập Camera. Cần cấp quyền!";
-                    UI.els.statusText.style.color = "var(--app-primary)";
-                    UI.showToast("Không tìm thấy Camera");
+        // ==========================================
+        // 3. UTILITY & STORAGE MODULE
+        // ==========================================
+        const Utils = {
+            /** Gợi ý DOM element nhanh */
+            el: (id) => document.getElementById(id),
+            
+            /** Trình quản lý LocalStorage an toàn */
+            Storage: {
+                save: (dataArray) => {
+                    try {
+                        localStorage.setItem(APP_CONFIG.storageKey, JSON.stringify(dataArray));
+                    } catch (e) {
+                        console.warn("Dung lượng LocalStorage đã đầy. Không thể lưu thêm ảnh.");
+                    }
+                },
+                load: () => {
+                    const data = localStorage.getItem(APP_CONFIG.storageKey);
+                    return data ? JSON.parse(data) : [];
                 }
             },
 
-            applyVideoFilters() {
-                const f = State.filters;
-                UI.els.video.style.filter = `brightness(${f.brightness}%) contrast(${f.contrast}%)`;
-            },
+            /** Hệ thống thông báo đẩy UI */
+            Toast: {
+                show: (message, type = 'success', duration = 3500) => {
+                    const toast = Utils.el('toastNotification');
+                    const text = Utils.el('toastMessage');
+                    const icon = document.querySelector('.toast-icon');
+                    
+                    text.innerText = message;
+                    if(type === 'error') {
+                        icon.style.color = '#ef4444'; // Đỏ
+                        toast.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                    } else {
+                        icon.style.color = '#10b981'; // Xanh
+                        toast.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    }
 
-            captureFrame() {
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), duration);
+                }
+            }
+        };
+
+        // ==========================================
+        // 4. AUDIO SYNTHESIZER ENGINE
+        // Tạo âm thanh không cần tải file ngoài
+        // ==========================================
+        class AudioEngine {
+            constructor() {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioCtx();
+            }
+
+            playTone(freq, duration, type = 'sine', volume = 0.5) {
+                if(this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc.type = type;
+                osc.frequency.value = freq;
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start();
+                gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + duration);
+                osc.stop(this.ctx.currentTime + duration);
+            }
+
+            beepTimer() { this.playTone(880, 0.15, 'sine', 0.4); }      // Tít... tít...
+            beepShutter() { this.playTone(150, 0.1, 'square', 0.6); }   // Tách!
+        }
+        const AudioSys = new AudioEngine();
+
+        // ==========================================
+        // 5. HARDWARE CAMERA MANAGER
+        // Quản lý thiết bị đa luồng
+        // ==========================================
+        class CameraManager {
+            constructor() {
+                this.videoEl = Utils.el('liveVideoFeed');
+                this.selectEl = Utils.el('cameraSelect');
+                this.btnCapture = Utils.el('btnTriggerCapture');
+            }
+
+            /** Yêu cầu quyền và liệt kê toàn bộ thiết bị */
+            async initializeSystem() {
+                try {
+                    // Xin quyền ban đầu bằng luồng trống để kích hoạt enumerateDevices
+                    await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                    await this.populateCameraList();
+                    await this.startStream();
+                } catch (err) {
+                    console.error("Camera Error: ", err);
+                    Utils.el('cameraStatusText').innerText = "Từ chối quyền Camera!";
+                    Utils.Toast.show("Không thể truy cập máy ảnh. Vui lòng cấp quyền trên trình duyệt.", "error");
+                }
+            }
+
+            async populateCameraList() {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                this.selectEl.innerHTML = '';
+                if(videoDevices.length === 0) {
+                    this.selectEl.innerHTML = '<option>Không tìm thấy thiết bị</option>';
+                    return;
+                }
+
+                videoDevices.forEach((device, index) => {
+                    const option = document.createElement('option');
+                    option.value = device.deviceId;
+                    option.text = device.label || `Máy ảnh chuyên dụng ${index + 1}`;
+                    this.selectEl.appendChild(option);
+                });
+
+                // Chọn thiết bị đầu tiên làm mặc định
+                AppState.currentDeviceId = videoDevices[0].deviceId;
+                
+                // Lắng nghe sự kiện đổi thiết bị
+                this.selectEl.addEventListener('change', (e) => {
+                    AppState.currentDeviceId = e.target.value;
+                    this.startStream();
+                });
+            }
+
+            async startStream() {
+                if (AppState.stream) {
+                    AppState.stream.getTracks().forEach(track => track.stop());
+                }
+
+                this.btnCapture.disabled = true;
+                
+                const constraints = {
+                    video: {
+                        deviceId: AppState.currentDeviceId ? { exact: AppState.currentDeviceId } : undefined,
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
+                    },
+                    audio: false
+                };
+
+                try {
+                    AppState.stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    this.videoEl.srcObject = AppState.stream;
+                    
+                    this.videoEl.onloadedmetadata = () => {
+                        this.btnCapture.disabled = false;
+                        Utils.el('cameraStatusText').innerText = "Hệ thống Quang học Ổn định";
+                        AppCtrl.updateUIState();
+                    };
+                } catch (e) {
+                    Utils.Toast.show("Không thể khởi động luồng dữ liệu từ máy ảnh này.", "error");
+                }
+            }
+
+            applyLiveFilters() {
+                const f = AppState.filters;
+                this.videoEl.style.filter = `brightness(${f.bright}%) contrast(${f.contrast}%) sepia(${f.sepia}%)`;
+            }
+
+            /** Tính toán Crop tỷ lệ 4:3 từ luồng Video và xuất Canvas High-Res */
+            captureHighResFrame() {
                 const tempCanvas = document.createElement('canvas');
-                const vW = UI.els.video.videoWidth;
-                const vH = UI.els.video.videoHeight;
-                const targetRatio = 4 / 3;
+                const vW = this.videoEl.videoWidth;
+                const vH = this.videoEl.videoHeight;
+                const target = APP_CONFIG.rules.targetRatio;
+                
                 let cropX = 0, cropY = 0, cropW = vW, cropH = vH;
 
-                if (vW / vH > targetRatio) {
-                    cropW = cropH * targetRatio;
+                if (vW / vH > target) {
+                    cropW = cropH * target;
                     cropX = (vW - cropW) / 2;
                 } else {
-                    cropH = cropW / targetRatio;
+                    cropH = cropW / target;
                     cropY = (vH - cropH) / 2;
                 }
 
-                tempCanvas.width = 1200; tempCanvas.height = 900;
+                // Độ phân giải thực lưu trữ (To hơn để in nét)
+                tempCanvas.width = 1200; 
+                tempCanvas.height = 900;
                 const ctx = tempCanvas.getContext('2d');
-                ctx.filter = `brightness(${State.filters.brightness}%) contrast(${State.filters.contrast}%)`;
-
-                if (State.facingMode === 'user') {
-                    ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
-                }
                 
-                ctx.drawImage(UI.els.video, cropX, cropY, cropW, cropH, 0, 0, tempCanvas.width, tempCanvas.height);
+                // Áp dụng bộ lọc quang học lên Pixel thật
+                ctx.filter = `brightness(${AppState.filters.bright}%) contrast(${AppState.filters.contrast}%) sepia(${AppState.filters.sepia}%)`;
+
+                // Xử lý Gương (Chỉ áp dụng nếu là Cam trước - giả định dựa trên tên thiết bị, tạm thời lật cứng cho Photobooth)
+                ctx.translate(tempCanvas.width, 0); 
+                ctx.scale(-1, 1);
+                
+                ctx.drawImage(this.videoEl, cropX, cropY, cropW, cropH, 0, 0, tempCanvas.width, tempCanvas.height);
                 return tempCanvas;
             }
-        };
+        }
+        const CamSys = new CameraManager();
 
-        const Graphics = {
-            ctx: UI.els.finalCanvas.getContext('2d'),
-            
+        // ==========================================
+        // 6. ENTERPRISE GRAPHICS RENDERER (Thuật toán vẽ)
+        // ==========================================
+        class GraphicsEngine {
+            constructor() {
+                this.canvas = Utils.el('finalPrintCanvas');
+                this.ctx = this.canvas.getContext('2d');
+            }
+
+            /** Thuật toán Text Wrapping Không Bao Giờ Lỗi Chữ */
             drawTextStrictBounds(text, x, y, maxWidth, lineHeight) {
                 const paragraphs = text.split('\n');
                 let currentY = y;
@@ -507,91 +1229,128 @@
                     currentY += lineHeight;
                 }
                 return currentY;
-            },
+            }
 
-            drawStar(cx, cy, r, color) {
+            drawVectorStar(cx, cy, r, color) {
                 this.ctx.beginPath(); this.ctx.moveTo(cx, cy - r);
                 for (let i = 0; i < 5; i++) {
                     this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i)) * r, cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i)) * r);
                     this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i+1)) * (r/2.2), cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i+1)) * (r/2.2));
                 }
                 this.ctx.closePath(); this.ctx.fillStyle = color; this.ctx.fill();
-            },
+            }
 
-            drawDecorLines(yPos) {
+            drawDecorDashedLines(yPos) {
                 this.ctx.beginPath();
                 this.ctx.setLineDash([8, 8]);
-                this.ctx.moveTo(60, yPos); this.ctx.lineTo(1140, yPos);
-                this.ctx.strokeStyle = CONFIG.colors.text; this.ctx.lineWidth = 1.5;
-                this.ctx.stroke(); this.ctx.setLineDash([]);
-            },
+                this.ctx.moveTo(60, yPos);
+                this.ctx.lineTo(1140, yPos);
+                this.ctx.strokeStyle = APP_CONFIG.palette.inkDark;
+                this.ctx.lineWidth = 1.5;
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+            }
 
-            async renderFinalLayout() {
+            drawPolaroidShadowFrame(imgObj, x, y, w, h) {
+                this.ctx.save();
+                // Hiệu ứng Shadow 3D Đỉnh cao
+                this.ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                this.ctx.shadowBlur = 30;
+                this.ctx.shadowOffsetX = 10;
+                this.ctx.shadowOffsetY = 15;
+                
+                // Viền trắng
+                this.ctx.fillStyle = APP_CONFIG.palette.photoWhite;
+                this.ctx.fillRect(x - 14, y - 14, w + 28, h + 28);
+                
+                this.ctx.shadowColor = 'transparent';
+                
+                // Nét cắt mỏng
+                this.ctx.strokeStyle = APP_CONFIG.palette.inkDark;
+                this.ctx.lineWidth = 1;
+                this.ctx.strokeRect(x - 2, y - 2, w + 4, h + 4);
+                
+                // Vẽ ảnh
+                this.ctx.drawImage(imgObj, x, y, w, h);
+                this.ctx.restore();
+            }
+
+            async compileFinalPoster() {
+                // Buộc trình duyệt đợi Font render
                 await document.fonts.ready;
                 const ctx = this.ctx;
-                const { layoutW: w, layoutH: h, fonts, colors: c } = CONFIG;
-                
-                ctx.fillStyle = c.bg; ctx.fillRect(0, 0, w, h);
-                
-                for(let i=0; i<5000; i++) {
+                const c = APP_CONFIG.palette;
+                const fontR = APP_CONFIG.fonts.royal;
+                const w = APP_CONFIG.rules.canvasWidth;
+                const h = APP_CONFIG.rules.canvasHeight;
+
+                // --- 1. BASE BACKGROUND ---
+                const grad = ctx.createRadialGradient(w/2, h/2, 100, w/2, h/2, h);
+                grad.addColorStop(0, c.paperBgCenter);
+                grad.addColorStop(0.7, c.paperBgEdge);
+                grad.addColorStop(1, c.paperBgDark);
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+
+                // Thêm nhiễu giấy siêu thực (Noise Texture)
+                for(let i=0; i<9000; i++) {
                     ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.03})`;
                     ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
                 }
 
-                ctx.strokeStyle = c.text; ctx.lineWidth = 2;
-                ctx.strokeRect(30, 30, w - 60, h - 60);
-                ctx.lineWidth = 1; ctx.strokeRect(36, 36, w - 72, h - 72);
+                // --- 2. DOUBLE BORDERS ---
+                ctx.strokeStyle = c.inkDark; 
+                ctx.lineWidth = 2.5; ctx.strokeRect(30, 30, w - 60, h - 60);
+                ctx.lineWidth = 1; ctx.strokeRect(38, 38, w - 76, h - 76);
 
+                // --- 3. HEADER ZONE ---
                 ctx.beginPath(); ctx.roundRect(60, 60, 240, 90, 20); ctx.stroke();
-                ctx.fillStyle = c.text; ctx.textAlign = "center";
-                ctx.font = `bold 28px ${fonts.text}`; ctx.fillText("Đăng Tùng", 180, 100);
-                ctx.font = `italic 22px ${fonts.text}`; ctx.fillText("Photobooth", 180, 135);
+                ctx.fillStyle = c.inkDark; ctx.textAlign = "center";
+                ctx.font = `bold 28px ${fontR}`; ctx.fillText("Đăng Tùng", 180, 100);
+                ctx.font = `italic 22px ${fontR}`; ctx.fillText("Photobooth", 180, 135);
 
-                ctx.fillStyle = c.title; ctx.textAlign = "left";
-                ctx.font = `bold 90px ${fonts.text}`; ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 340, 135);
+                // Hiệu ứng Bóng Chữ Sang Trọng
+                ctx.textAlign = "left";
+                ctx.font = `bold 90px ${fontR}`;
+                ctx.fillStyle = 'rgba(196, 154, 0, 0.35)'; // Bóng vàng
+                ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 345, 140);
+                ctx.fillStyle = c.redRoyal;
+                ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 340, 135);
 
-                this.drawDecorLines(180);
+                this.drawDecorDashedLines(180);
 
-                ctx.fillStyle = c.text; ctx.fillRect(56, 216, 688, 518);
-                ctx.drawImage(State.capturedCanvases[0], 60, 220, 680, 510);
-                
-                ctx.fillRect(56, 756, 338, 255);
-                ctx.drawImage(State.capturedCanvases[1], 60, 760, 330, 247.5);
-                
-                ctx.fillRect(406, 756, 338, 255);
-                ctx.drawImage(State.capturedCanvases[2], 410, 760, 330, 247.5);
+                // --- 4. PHOTO MOUNTING ZONE ---
+                this.drawPolaroidShadowFrame(AppState.frames[0], 60, 220, 680, 510);
+                this.drawPolaroidShadowFrame(AppState.frames[1], 60, 760, 330, 247.5);
+                this.drawPolaroidShadowFrame(AppState.frames[2], 410, 760, 330, 247.5);
 
-                // Đã bỏ dòng chữ tài trợ quyche netwrk an cf
+                // --- 5. BANNER KHẨU HIỆU ---
                 ctx.strokeRect(60, 1070, 680, 160);
-                ctx.fillStyle = c.title; ctx.fillRect(70, 1080, 100, 140);
-                this.drawStar(120, 1120, 20, c.accent); this.drawStar(120, 1180, 20, c.accent);
+                ctx.fillStyle = c.redRoyal; ctx.fillRect(70, 1080, 100, 140);
+                this.drawVectorStar(120, 1120, 20, c.goldRoyal);
+                this.drawVectorStar(120, 1180, 20, c.goldRoyal);
                 
-                ctx.fillStyle = c.title; ctx.textAlign = "center";
-                ctx.font = `bold 55px ${fonts.text}`; ctx.fillText("TỰ HÀO LÀ NGƯỜI", 410, 1140);
+                ctx.fillStyle = c.redRoyal; ctx.textAlign = "center";
+                ctx.font = `bold 55px ${fontR}`; ctx.fillText("TỰ HÀO LÀ NGƯỜI", 410, 1140);
                 ctx.fillText("VIỆT NAM", 410, 1205);
 
+                // --- 6. NEWS COLUMN (BẢN TIN) ---
                 const rx = 760; const rw = 380;
-                
-                ctx.strokeStyle = c.text; ctx.lineWidth = 2;
-                ctx.strokeRect(rx, 220, rw, 1030);
+                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 2; ctx.strokeRect(rx, 220, rw, 1030);
                 ctx.lineWidth = 1; ctx.strokeRect(rx+6, 226, rw-12, 1018);
 
-                ctx.fillStyle = c.text; ctx.textAlign = "left";
-                ctx.font = `bold 60px ${fonts.text}`; ctx.fillText("BẢN TIN", rx + 25, 300);
-                
-                ctx.fillStyle = c.title; ctx.fillRect(rx + rw - 85, 250, 60, 40);
-                this.drawStar(rx + rw - 55, 270, 12, c.accent);
+                ctx.fillStyle = c.inkDark; ctx.textAlign = "left";
+                ctx.font = `bold 60px ${fontR}`; ctx.fillText("BẢN TIN", rx + 25, 300);
+                ctx.fillStyle = c.redRoyal; ctx.fillRect(rx + rw - 85, 250, 60, 40);
+                this.drawVectorStar(rx + rw - 55, 270, 12, c.goldRoyal);
 
-                ctx.fillStyle = c.text;
-                ctx.font = `24px ${fonts.text}`;
-                const content = "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.\n\nĐền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua.\n\nNhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc.";
-                
-                // Vẽ văn bản
-                this.drawTextStrictBounds(content, rx + 25, 350, rw - 50, 36);
+                ctx.fillStyle = c.inkDark; ctx.font = `24px ${fontR}`;
+                const textHistory = "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.\n\nĐền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua.\n\nNhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc.";
+                this.drawTextStrictBounds(textHistory, rx + 25, 350, rw - 50, 36);
 
-                // Dời hình đền lùi xuống dưới sát đáy cột Bản tin
+                // Vector Ngôi Đền (Đã đẩy xuống tận đáy cột Bản tin)
                 const templeY = 1200; 
-                ctx.fillStyle = c.text;
+                ctx.fillStyle = c.inkDark;
                 ctx.fillRect(rx + rw/2 - 80, templeY, 160, 12); 
                 ctx.fillRect(rx + rw/2 - 60, templeY-40, 15, 40); ctx.fillRect(rx + rw/2 + 45, templeY-40, 15, 40);
                 ctx.beginPath(); ctx.moveTo(rx + rw/2 - 100, templeY-40); ctx.lineTo(rx + rw/2 + 100, templeY-40);
@@ -599,152 +1358,226 @@
                 ctx.fillRect(rx + rw/2 - 25, templeY-100, 50, 30);
                 ctx.beginPath(); ctx.moveTo(rx + rw/2 - 50, templeY-100); ctx.lineTo(rx + rw/2 + 50, templeY-100);
                 ctx.lineTo(rx + rw/2 + 30, templeY-130); ctx.lineTo(rx + rw/2 - 30, templeY-130); ctx.fill();
-                ctx.strokeStyle = c.text; ctx.lineWidth = 3;
+                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 3;
                 ctx.beginPath(); ctx.arc(rx + rw/2 - 100, templeY-55, 15, 0.5*Math.PI, 1.5*Math.PI); ctx.stroke();
                 ctx.beginPath(); ctx.arc(rx + rw/2 + 100, templeY-55, 15, 1.5*Math.PI, 0.5*Math.PI); ctx.stroke();
 
-                // Đã bỏ QR Code. Căn giữa lại chân trang.
-                this.drawDecorLines(1290);
-                
-                ctx.fillStyle = c.text; ctx.textAlign = "center";
-                ctx.font = `bold 42px ${fonts.text}`;
-                ctx.fillText("Chào Mừng Đến Với Di Tích Quốc Gia Đặc Biệt Lễ Hội Đền Đô", w / 2, 1420);
-                ctx.font = `italic 28px ${fonts.text}`;
-                ctx.fillText("Bắc Ninh, Ngày " + new Date().toLocaleDateString('vi-VN'), w / 2, 1480);
+                // --- 7. FOOTER CĂN GIỮA HOÀN HẢO ---
+                this.drawDecorDashedLines(1290);
+                ctx.fillStyle = c.inkDark; ctx.textAlign = "center";
+                ctx.font = `bold 45px ${fontR}`;
+                ctx.fillText("Chào Mừng Đến Với Di Tích Quốc Gia Đặc Biệt Lễ Hội Đền Đô", w / 2, 1410);
+                ctx.font = `italic 30px ${fontR}`;
+                ctx.fillText("Bắc Ninh, Ngày " + new Date().toLocaleDateString('vi-VN'), w / 2, 1475);
             }
-        };
+        }
+        const Engine = new GraphicsEngine();
 
-        const App = {
-            init() {
-                this.bindEvents();
-                this.initParticles();
-                Camera.init();
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                this.audioCtx = new AudioCtx();
-            },
-
-            beep(freq = 880, dur = 0.1, type = 'sine') {
-                if(!this.audioCtx) return;
-                const osc = this.audioCtx.createOscillator();
-                const gain = this.audioCtx.createGain();
-                osc.type = type; osc.frequency.value = freq;
-                osc.connect(gain); gain.connect(this.audioCtx.destination);
-                osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, this.audioCtx.currentTime + dur);
-                osc.stop(this.audioCtx.currentTime + dur);
-            },
-
-            bindEvents() {
-                UI.els.btnSwitch.onclick = () => {
-                    State.facingMode = State.facingMode === 'user' ? 'environment' : 'user';
-                    Camera.init();
-                };
-
-                UI.els.slBright.oninput = (e) => { State.filters.brightness = e.target.value; UI.els.vBright.innerText = e.target.value + '%'; Camera.applyVideoFilters(); };
-                UI.els.slCont.oninput = (e) => { State.filters.contrast = e.target.value; UI.els.vCont.innerText = e.target.value + '%'; Camera.applyVideoFilters(); };
-
-                UI.els.btnCap.onclick = () => this.runCountdown();
-
-                UI.els.btnRetake.onclick = () => {
-                    State.capturedCanvases = [];
-                    UI.updateProgress();
-                    UI.switchTab('camera');
-                };
-
-                UI.els.btnDown.onclick = () => {
-                    const dataUrl = UI.els.finalCanvas.toDataURL('image/jpeg', 0.95);
-                    const a = document.createElement('a');
-                    a.download = `DangTung-Photobooth-${Date.now()}.jpg`;
-                    a.href = dataUrl; a.click();
-                    State.galleryData.push(dataUrl);
-                    UI.showToast("Đã lưu vào máy & Thư viện!");
-                };
-            },
-
-            runCountdown() {
-                if (State.isProcessing) return;
-                State.isProcessing = true;
-                UI.els.btnCap.disabled = true;
-                UI.els.btnSwitch.disabled = true;
+        // ==========================================
+        // 7. MAIN APPLICATION CONTROLLER
+        // ==========================================
+        const AppCtrl = {
+            async boot() {
+                this.initBackgroundFX();
+                this.bindDOMEvents();
                 
-                let counter = CONFIG.countdownSecs;
-                UI.els.countdown.style.display = 'flex';
-                UI.els.countdown.innerText = counter;
-                this.beep(880, 0.1);
+                // Khôi phục dữ liệu bộ nhớ
+                AppState.savedGallery = Utils.Storage.load();
+                
+                await CamSys.initializeSystem();
+            },
 
-                const iv = setInterval(() => {
+            bindDOMEvents() {
+                // Filters
+                Utils.el('sliderBright').oninput = (e) => { AppState.filters.bright = e.target.value; Utils.el('valBright').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
+                Utils.el('sliderContrast').oninput = (e) => { AppState.filters.contrast = e.target.value; Utils.el('valContrast').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
+                Utils.el('sliderSepia').oninput = (e) => { AppState.filters.sepia = e.target.value; Utils.el('valSepia').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
+
+                // Cài đặt Timer
+                Utils.el('timerSelect').onchange = (e) => { AppState.countdownTime = parseInt(e.target.value); };
+
+                // Nhấn Chụp
+                Utils.el('btnTriggerCapture').onclick = () => this.handleCaptureSequence();
+
+                // Nhấn Chụp lại
+                Utils.el('btnResetSession').onclick = () => {
+                    AppState.frames = [];
+                    this.updateUIState();
+                    this.switchTab('tab-camera');
+                };
+
+                // Nhấn Lưu ảnh
+                Utils.el('btnSaveToDevice').onclick = () => {
+                    const dataUrl = Utils.el('finalPrintCanvas').toDataURL('image/jpeg', APP_CONFIG.rules.exportQuality);
+                    
+                    // Kích hoạt Tải xuống
+                    const a = document.createElement('a');
+                    a.download = `PhienBan_DangTung_Photobooth_${Date.now()}.jpg`;
+                    a.href = dataUrl; 
+                    a.click();
+                    
+                    // Lưu Cache LocalStorage
+                    AppState.savedGallery.push(dataUrl);
+                    Utils.Storage.save(AppState.savedGallery);
+                    
+                    Utils.Toast.show("Đã in và lưu vào Thư Viện hệ thống!");
+                };
+            },
+
+            updateUIState() {
+                const len = AppState.frames.length;
+                const req = APP_CONFIG.rules.totalPhotosRequired;
+                const btn = Utils.el('btnTriggerCapture');
+                const svgIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>`;
+
+                // Cập nhật đèn trạng thái
+                [1, 2, 3].forEach(i => {
+                    Utils.el(`progDot${i}`).className = i <= len ? 'progress-dot active' : 'progress-dot';
+                });
+
+                if (len === 0) {
+                    btn.innerHTML = `${svgIcon} Bấm Khởi Động (${len}/${req})`;
+                } else if (len < req) {
+                    btn.innerHTML = `${svgIcon} Chụp Góc Kế Tiếp (${len}/${req})`;
+                }
+            },
+
+            handleCaptureSequence() {
+                if (AppState.isProcessing) return;
+                AppState.isProcessing = true;
+                
+                const btn = Utils.el('btnTriggerCapture');
+                btn.disabled = true;
+                
+                let counter = AppState.countdownTime;
+                const overDisplay = Utils.el('timerOverlay');
+                const textDisplay = Utils.el('timerDisplay');
+                
+                overDisplay.style.display = 'flex';
+                textDisplay.innerText = counter;
+                AudioSys.beepTimer();
+
+                const timerInterval = setInterval(() => {
                     counter--;
                     if (counter > 0) {
-                        UI.els.countdown.innerText = counter;
-                        this.beep(880, 0.1);
+                        textDisplay.innerText = counter;
+                        AudioSys.beepTimer();
                     } else {
-                        clearInterval(iv);
-                        UI.els.countdown.style.display = 'none';
-                        this.takePhoto();
+                        clearInterval(timerInterval);
+                        overDisplay.style.display = 'none';
+                        this.executeSnap();
                     }
                 }, 1000);
             },
 
-            takePhoto() {
-                this.beep(200, 0.1, 'square');
-                UI.triggerFlash();
+            executeSnap() {
+                // Flash & Sound
+                AudioSys.beepShutter();
+                const flash = Utils.el('shutterFlash');
+                flash.style.animation = 'none';
+                flash.offsetHeight; 
+                flash.style.animation = 'shutterFlash 0.6s ease-out forwards';
                 
-                const frame = Camera.captureFrame();
-                State.capturedCanvases.push(frame);
+                // Cắt ảnh đưa vào bộ nhớ
+                const snapshot = CamSys.captureHighResFrame();
+                AppState.frames.push(snapshot);
                 
-                State.isProcessing = false;
-                UI.els.btnSwitch.disabled = false;
-                UI.updateProgress();
+                AppState.isProcessing = false;
+                this.updateUIState();
 
-                if (State.capturedCanvases.length >= CONFIG.photosNeeded) {
-                    this.processFinal();
+                if (AppState.frames.length >= APP_CONFIG.rules.totalPhotosRequired) {
+                    this.renderCompilation();
                 } else {
-                    UI.els.btnCap.disabled = false;
+                    Utils.el('btnTriggerCapture').disabled = false;
                 }
             },
 
-            processFinal() {
-                UI.switchTab('processing');
+            renderCompilation() {
+                this.switchTab('tab-processing');
+                
+                // Giả lập độ trễ xử lý thuật toán để thể hiện UI Loading chuyên nghiệp
                 setTimeout(async () => {
-                    await Graphics.renderFinalLayout();
-                    UI.switchTab('result');
-                    UI.showToast("Bản in của bạn đã sẵn sàng!");
-                }, 1200);
+                    await Engine.compileFinalPoster();
+                    this.switchTab('tab-result');
+                    Utils.Toast.show("Đã kết xuất thành công Bản in Nghệ thuật!");
+                }, 1500);
             },
 
-            switchTab: (id) => UI.switchTab(id),
+            switchTab(targetId) {
+                document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                
+                Utils.el(targetId).classList.add('active');
+                
+                const btnAttr = `[data-target="${targetId}"]`;
+                const btn = document.querySelector(btnAttr);
+                if(btn) btn.classList.add('active');
 
-            initParticles() {
-                const canvas = document.getElementById('particleCanvas');
+                if (targetId === 'tab-gallery') this.buildGalleryDOM();
+            },
+
+            buildGalleryDOM() {
+                const grid = Utils.el('galleryGrid');
+                Utils.el('galleryCounter').innerText = `Tổng: ${AppState.savedGallery.length} bản in`;
+
+                if (AppState.savedGallery.length === 0) {
+                    grid.innerHTML = `
+                        <div class="gallery-empty">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            <p>Dữ liệu trống. Máy chủ chưa ghi nhận bản in nào.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let htmlContent = '';
+                // Render ảnh mới nhất lên đầu (Reverse)
+                [...AppState.savedGallery].reverse().forEach(imgBase64 => {
+                    htmlContent += `
+                        <div class="gallery-card" onclick="window.open('${imgBase64}', '_blank')">
+                            <img src="${imgBase64}" loading="lazy" alt="Lễ Hội Đền Đô">
+                        </div>
+                    `;
+                });
+                grid.innerHTML = htmlContent;
+            },
+
+            /** Khởi tạo Đồ họa nền (Background Animation) */
+            initBackgroundFX() {
+                const canvas = Utils.el('particleCanvas');
                 const ctx = canvas.getContext('2d');
                 let w, h, particles = [];
                 
-                const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-                window.addEventListener('resize', resize); resize();
+                const onResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+                window.addEventListener('resize', onResize); onResize();
 
-                for(let i=0; i<40; i++) {
+                for(let i = 0; i < 60; i++) {
                     particles.push({
                         x: Math.random() * w, y: Math.random() * h,
-                        r: Math.random() * 2 + 0.5,
-                        dy: Math.random() * -0.5 - 0.2,
-                        op: Math.random() * 0.5 + 0.1
+                        radius: Math.random() * 2.5 + 0.5,
+                        dy: Math.random() * -0.6 - 0.2, // Bay lên trên
+                        opacity: Math.random() * 0.4 + 0.1
                     });
                 }
 
-                const animate = () => {
+                const animateLoop = () => {
                     ctx.clearRect(0, 0, w, h);
                     particles.forEach(p => {
                         p.y += p.dy;
                         if(p.y < 0) { p.y = h; p.x = Math.random() * w; }
-                        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                        ctx.fillStyle = `rgba(245, 158, 11, ${p.op})`; ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(245, 158, 11, ${p.opacity})`;
+                        ctx.fill();
                     });
-                    requestAnimationFrame(animate);
+                    requestAnimationFrame(animateLoop);
                 };
-                animate();
+                animateLoop();
             }
         };
 
-        window.addEventListener('DOMContentLoaded', () => App.init());
+        // KÍCH HOẠT HỆ THỐNG KHI DOM SẴN SÀNG
+        window.addEventListener('DOMContentLoaded', () => AppCtrl.boot());
 
     </script>
 </body>
