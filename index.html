@@ -14,7 +14,7 @@
         body {
             margin: 0;
             padding: 20px 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             background-color: var(--bg-dark);
             color: white;
             display: flex;
@@ -23,154 +23,60 @@
             min-height: 100vh;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
+        .header { text-align: center; margin-bottom: 20px; }
         .header h1 {
-            color: var(--gold);
-            margin: 0;
-            font-size: 32px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: var(--gold); margin: 0; font-size: 32px;
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
         .app-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #2a2a2a;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            border: 1px solid #444;
+            display: flex; flex-direction: column; align-items: center;
+            background: #2a2a2a; padding: 25px; border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); border: 1px solid #444;
             max-width: 95vw;
         }
 
         .view-screen {
             position: relative;
-            width: 680px;  /* Trùng với width của ảnh chính (Main) */
-            height: 510px; /* Trùng với height của ảnh chính */
-            background: #000;
-            border: 4px solid var(--gold);
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 680px; height: 510px;
+            background: #000; border: 4px solid var(--gold); border-radius: 10px;
+            overflow: hidden; display: flex; justify-content: center; align-items: center;
             margin-bottom: 25px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
         @media (max-width: 768px) {
-            .view-screen {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 4/3;
-            }
+            .view-screen { width: 100%; height: auto; aspect-ratio: 4/3; }
         }
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); /* Hiệu ứng gương */
-        }
-
-        /* Result Canvas ẩn đi lúc đầu, hiển thị sau khi chụp xong */
+        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        
         canvas#resultCanvas {
-            display: none;
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: none; max-width: 100%; height: auto;
+            border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        .controls {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
+        .controls { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        
         button {
-            padding: 14px 28px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            padding: 14px 28px; font-size: 18px; font-weight: bold; border: none;
+            border-radius: 8px; cursor: pointer; transition: all 0.2s ease-in-out;
+            text-transform: uppercase; font-family: inherit;
         }
         
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        #captureBtn {
-            background-color: var(--primary-red);
-            color: var(--gold);
-            border: 2px solid var(--gold);
-        }
+        #captureBtn { background-color: var(--primary-red); color: var(--gold); border: 2px solid var(--gold); }
+        #captureBtn:hover:not(:disabled) { background-color: #a00000; transform: translateY(-2px); }
 
-        #captureBtn:hover:not(:disabled) {
-            background-color: #a00000;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        }
+        #retakeBtn, #downloadBtn { display: none; }
+        #retakeBtn { background-color: #444; color: white; border: 1px solid #666; }
+        #downloadBtn { background-color: var(--gold); color: var(--primary-red); }
 
-        #retakeBtn, #downloadBtn {
-            display: none;
-        }
+        .status { margin-top: 20px; font-size: 20px; color: var(--gold); font-weight: bold; text-align: center; }
 
-        #retakeBtn {
-            background-color: #444;
-            color: white;
-            border: 1px solid #666;
-        }
-        
-        #retakeBtn:hover { background-color: #555; }
-
-        #downloadBtn {
-            background-color: var(--gold);
-            color: var(--primary-red);
-        }
-        
-        #downloadBtn:hover { filter: brightness(1.1); transform: translateY(-2px); }
-
-        .status {
-            margin-top: 20px;
-            font-size: 20px;
-            color: var(--gold);
-            font-weight: bold;
-            text-align: center;
-            min-height: 30px;
-        }
-
-        .photo-count {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .dot {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: #555;
-            border: 2px solid var(--gold);
-        }
-        .dot.active {
-            background: var(--primary-red);
-            box-shadow: 0 0 10px var(--primary-red);
-        }
+        .photo-count { display: flex; gap: 10px; margin-bottom: 15px; }
+        .dot { width: 15px; height: 15px; border-radius: 50%; background: #555; border: 2px solid var(--gold); }
+        .dot.active { background: var(--primary-red); box-shadow: 0 0 10px var(--primary-red); }
     </style>
 </head>
 <body>
@@ -180,7 +86,6 @@
     </div>
 
     <div class="app-container">
-        
         <div class="photo-count" id="photoIndicators">
             <div class="dot" id="dot1"></div>
             <div class="dot" id="dot2"></div>
@@ -189,6 +94,7 @@
 
         <div class="view-screen">
             <video id="video" autoplay playsinline></video>
+            <!-- Canvas chuẩn tỷ lệ 3:4 (900x1200) -->
             <canvas id="resultCanvas" width="900" height="1200"></canvas>
         </div>
 
@@ -214,90 +120,48 @@
 
         let photoData = [];
         let stream = null;
-        
-        // --- 1. TẢI FRAME ẢNH TRƯỚC ---
-        const frameImg = new Image();
-        // File này phải nằm cùng thư mục hoặc là link URL hợp lệ
-        frameImg.src = 'frame.png'; 
-        let frameLoaded = false;
-        
-        frameImg.onload = () => {
-            frameLoaded = true;
-            checkReadyStatus();
-        };
 
-        frameImg.onerror = () => {
-            statusText.innerText = "Lỗi: Không tìm thấy file frame.png!";
-            statusText.style.color = "red";
-        };
-
-        // --- 2. KHỞI ĐỘNG CAMERA ---
+        // Bật camera
         async function initCamera() {
             try {
-                // Ưu tiên camera trước (nếu chạy trên điện thoại/laptop)
                 stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: "user" },
                     audio: false
                 });
                 video.srcObject = stream;
                 
-                // Đợi video chạy mới cho phép chụp
                 video.onplaying = () => {
-                    checkReadyStatus();
+                    captureBtn.disabled = false;
+                    captureBtn.innerText = "Chụp Ảnh (1/3)";
+                    statusText.innerText = "Sẵn sàng! Hãy tạo dáng thật đẹp";
                 };
             } catch (err) {
-                console.error(err);
                 statusText.innerText = "Lỗi Camera. Hãy kiểm tra quyền truy cập!";
                 statusText.style.color = "red";
             }
         }
 
-        function checkReadyStatus() {
-            if (frameLoaded && video.readyState >= 3) {
-                captureBtn.disabled = false;
-                captureBtn.innerText = "Chụp Ảnh (1/3)";
-                statusText.innerText = "Chuẩn bị... Cười lên nào!";
-            }
-        }
-
-        // --- 3. XỬ LÝ CHỤP ẢNH ---
+        // Chụp ảnh
         function takePhoto() {
-            // Flash effect (hiệu ứng chớp nháy trắng màn hình)
-            const flash = document.createElement('div');
-            flash.style.position = 'absolute';
-            flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100%'; flash.style.height = '100%';
-            flash.style.backgroundColor = 'white';
-            flash.style.zIndex = '10';
-            flash.style.opacity = '1';
-            flash.style.transition = 'opacity 0.5s ease-out';
-            document.querySelector('.view-screen').appendChild(flash);
-            
-            setTimeout(() => flash.style.opacity = '0', 50);
-            setTimeout(() => flash.remove(), 500);
-
-            // Bắt khung hình hiện tại
             const tempCanvas = document.createElement('canvas');
-            // Cắt ra một tỷ lệ 4:3 từ video HD để ảnh không bị méo
             const videoRatio = video.videoWidth / video.videoHeight;
             const targetRatio = 4/3;
-            
             let sx = 0, sy = 0, sWidth = video.videoWidth, sHeight = video.videoHeight;
 
             if (videoRatio > targetRatio) {
-                // Video rộng hơn (ví dụ 16:9), cần cắt hai bên
                 sWidth = sHeight * targetRatio;
                 sx = (video.videoWidth - sWidth) / 2;
             }
 
-            tempCanvas.width = 800; // Độ phân giải ảnh capture
+            tempCanvas.width = 800; 
             tempCanvas.height = 600;
             const tempCtx = tempCanvas.getContext('2d');
             
-            // Xử lý lật gương (mirror)
+            // Lật gương
             tempCtx.translate(tempCanvas.width, 0);
             tempCtx.scale(-1, 1);
             
-            // Vẽ phần đã cắt lên tempCanvas
+            // Cắt crop ảnh 4:3 từ camera
             tempCtx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
             
             photoData.push(tempCanvas);
@@ -318,7 +182,78 @@
             });
         }
 
-        // --- 4. RENDER GHÉP ẢNH ---
+        // --- HÀM TỰ ĐỘNG VẼ POSTER TRUYỀN THỐNG BẰNG CODE JS ---
+        function drawRichBackground(context, width, height) {
+            // 1. Nền Gradient giấy cổ hoàng gia
+            let gradient = context.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, "#f4e3c5");
+            gradient.addColorStop(0.5, "#e6ce9e");
+            gradient.addColorStop(1, "#d1b373");
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, width, height);
+
+            // 2. Viền ngoài (Đỏ sẫm)
+            context.lineWidth = 18;
+            context.strokeStyle = "#7c0a02";
+            context.strokeRect(15, 15, width - 30, height - 30);
+
+            // 3. Viền trong (Vàng Gold)
+            context.lineWidth = 4;
+            context.strokeStyle = "#b58d3d";
+            context.strokeRect(35, 35, width - 70, height - 70);
+
+            // 4. Logo / Chữ Tiêu đề
+            context.fillStyle = "#7c0a02";
+            context.font = "bold 70px 'Times New Roman', serif";
+            context.textAlign = "center";
+            context.fillText("LỄ HỘI ĐỀN ĐÔ", width / 2, 130);
+            
+            context.font = "italic 24px 'Times New Roman', serif";
+            context.fillStyle = "#553a1f";
+            context.fillText("Di tích Quốc gia đặc biệt - Từ Sơn, Bắc Ninh", width / 2, 175);
+
+            // 5. Tiêu đề nhỏ (Photobooth) góc trái
+            context.fillStyle = "#b58d3d";
+            context.fillRect(45, 45, 120, 35);
+            context.fillStyle = "#7c0a02";
+            context.font = "bold 16px Arial";
+            context.fillText("PHOTOBOOTH", 105, 68);
+
+            // 6. Khu vực Text giữa
+            context.fillStyle = "#7c0a02";
+            context.font = "bold 45px 'Times New Roman', serif";
+            context.fillText("TỰ HÀO LÀ NGƯỜI VIỆT NAM", width / 2, 790);
+
+            // 7. Chân trang
+            context.fillStyle = "#7c0a02";
+            context.font = "bold 32px 'Times New Roman', serif";
+            context.fillText("BẢN TIN 🇻🇳", width / 2, 1140);
+        }
+
+        // Vẽ ảnh người dùng vào khung có viền 3D
+        function drawFramedPhoto(context, img, x, y, w, h) {
+            // Đổ bóng (Shadow)
+            context.shadowColor = "rgba(0,0,0,0.5)";
+            context.shadowBlur = 15;
+            context.shadowOffsetX = 5;
+            context.shadowOffsetY = 5;
+
+            // Viền ngoài (Màu đỏ sẫm)
+            context.fillStyle = "#7c0a02";
+            context.fillRect(x - 10, y - 10, w + 20, h + 20);
+            
+            // Tắt shadow cho các lớp bên trong
+            context.shadowColor = "transparent";
+
+            // Viền trong (Màu vàng kim)
+            context.fillStyle = "#d4af37";
+            context.fillRect(x - 4, y - 4, w + 8, h + 8);
+
+            // Vẽ ảnh thật
+            context.drawImage(img, x, y, w, h);
+        }
+
+        // Render toàn bộ
         function generateFinalPoster() {
             video.style.display = 'none';
             resultCanvas.style.display = 'block';
@@ -327,20 +262,15 @@
             downloadBtn.style.display = 'inline-block';
             statusText.innerText = "Hoàn thành! Bạn có thể tải ảnh về 🇻🇳";
 
-            // Xóa canvas
-            ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+            // 1. Vẽ nền trang trí
+            drawRichBackground(ctx, resultCanvas.width, resultCanvas.height);
 
-            // BƯỚC A: Vẽ 3 ảnh chụp nằm ở LỚP DƯỚI CÙNG
-            // Tọa độ này khớp với các lỗ hổng của frame.png
-            ctx.drawImage(photoData[0], 110, 240, 680, 510); // Ảnh 1 (Main)
-            ctx.drawImage(photoData[1], 110, 830, 320, 240); // Ảnh 2 (Sub 1)
-            ctx.drawImage(photoData[2], 470, 830, 320, 240); // Ảnh 3 (Sub 2)
-
-            // BƯỚC B: Vẽ Frame (khung có lỗ thủng trong suốt) lên LỚP TRÊN CÙNG
-            ctx.drawImage(frameImg, 0, 0, resultCanvas.width, resultCanvas.height);
+            // 2. Vẽ 3 bức ảnh đè lên trên nền (Có khung viền bao quanh)
+            drawFramedPhoto(ctx, photoData[0], 115, 230, 670, 500); // Ảnh 1 (Main)
+            drawFramedPhoto(ctx, photoData[1], 115, 830, 315, 235); // Ảnh 2 (Sub 1)
+            drawFramedPhoto(ctx, photoData[2], 470, 830, 315, 235); // Ảnh 3 (Sub 2)
         }
 
-        // --- 5. SỰ KIỆN NÚT BẤM ---
         captureBtn.addEventListener('click', takePhoto);
 
         retakeBtn.addEventListener('click', () => {
@@ -352,21 +282,18 @@
             retakeBtn.style.display = 'none';
             downloadBtn.style.display = 'none';
             captureBtn.innerText = 'Chụp Ảnh (1/3)';
-            statusText.innerText = "Chuẩn bị... Cười lên nào!";
+            statusText.innerText = "Sẵn sàng! Hãy tạo dáng thật đẹp";
         });
 
         downloadBtn.addEventListener('click', () => {
-            // Lấy thời gian hiện tại làm tên file
             const dateStr = new Date().toISOString().replace(/[:.]/g, '-');
             const link = document.createElement('a');
             link.download = `Photobooth-DenDo-${dateStr}.png`;
-            link.href = resultCanvas.toDataURL('image/png', 1.0); // Xuất chất lượng cao nhất
+            link.href = resultCanvas.toDataURL('image/png', 1.0); 
             link.click();
         });
 
-        // Chạy Camera khi mở trang
         window.addEventListener('load', initCamera);
-
     </script>
 </body>
 </html>
