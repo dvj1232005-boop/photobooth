@@ -1,623 +1,2217 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Hệ thống trạm chụp ảnh Photobooth chuyên nghiệp thiết kế riêng cho sự kiện Lễ Hội Đền Đô bởi Đăng Tùng.">
-    <meta name="author" content="Đăng Tùng">
-    <meta name="theme-color" content="#090e17">
-    
-    <title>Đăng Tùng Photobooth | Lễ Hội Đền Đô - Enterprise Edition</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AN CAFÉ WorkShift">
+<meta name="theme-color" content="#140d09">
+<title>AN CAFÉ — WorkShift Pro</title>
 
-    <style>
-        /* --- 1. THEME VARIABLES --- */
-        :root {
-            --ui-bg-color: #090e17;
-            --ui-surface-color: rgba(15, 23, 42, 0.75);
-            --ui-surface-border: rgba(255, 255, 255, 0.08);
-            
-            --brand-primary: #dc2626;
-            --brand-primary-hover: #b91c1c;
-            --brand-accent: #f59e0b;
-            
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
-            
-            --print-paper-center: #FFF9EB;
-            --print-paper-edge: #E8D5B5;
-            --print-paper-dark: #D8B88C;
-            --print-ink: #3A2618;
-            --print-royal-red: #A61C1C;
-            --print-royal-gold: #C49A00;
-            --print-photo-border: #FFFFFF;
-            
-            --font-ui: 'Montserrat', -apple-system, sans-serif;
-            --font-print: 'Cormorant Garamond', 'Times New Roman', serif;
-            
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
-            --spacing-xl: 32px;
-            
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 20px;
-            --radius-xl: 28px;
-            
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            --shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            
-            --transition-fast: all 0.15s ease-in-out;
-            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
-        /* --- 2. GLOBAL RESET --- */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-ui); background-color: var(--ui-bg-color); color: var(--text-primary);
-            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; position: relative; line-height: 1.5;
-            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-        }
+<style>
+/* =====================================================================
+   AN CAFÉ — WORKSHIFT PRO
+   Art direction: Premium Fantasy Tavern / Guild Board
+   Global light direction: upper-left. Every bevel, highlight and cast
+   shadow in this sheet obeys it.
+   ===================================================================== */
 
-        #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.5; }
+/* ---------- 01 · MATERIAL TOKENS ------------------------------------ */
+:root{
+  /* type */
+  --font-display:'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-ui:'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
 
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-ui); font-weight: 700; color: var(--text-primary); }
+  --fs-sign:19px;
+  --fs-h1:22px;
+  --fs-h2:15px;
+  --fs-body:14px;
+  --fs-small:12.5px;
+  --fs-micro:11px;
 
-        /* --- 3. NAVIGATION BAR --- */
-        .navbar {
-            width: 100%; padding: var(--spacing-md) var(--spacing-xl); display: flex; justify-content: space-between; align-items: center;
-            background: rgba(9, 14, 23, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--ui-surface-border); z-index: 100; box-shadow: var(--shadow-sm);
-        }
-        .brand-container { display: flex; align-items: center; gap: var(--spacing-md); }
-        .brand-icon { width: 36px; height: 36px; color: var(--brand-accent); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5)); }
-        .brand-text h1 { font-size: 1.5rem; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(90deg, var(--brand-accent) 0%, #fef08a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2px; }
-        .brand-text p { font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px; }
+  /* geometry */
+  --r-xs:3px; --r-sm:5px; --r-md:8px; --r-lg:12px;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:22px; --sp-6:30px;
 
-        .nav-menu { display: flex; gap: var(--spacing-sm); }
-        .nav-btn {
-            background: transparent; color: var(--text-secondary); border: 1px solid transparent; padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition-normal);
-            font-family: var(--font-ui); display: flex; align-items: center; gap: 6px;
-        }
-        .nav-btn:hover:not(.active) { color: var(--text-primary); background: rgba(255, 255, 255, 0.05); }
-        .nav-btn.active { color: var(--brand-accent); background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.05); }
+  /* material textures (baked noise) */
+  --tex-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.72' numOctaves='4' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+  --tex-fibre:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23f)' opacity='0.42'/%3E%3C/svg%3E");
+  --tex-stone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='3' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23s)' opacity='0.55'/%3E%3C/svg%3E");
+  --tex-dust:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='19'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23d)' opacity='0.35'/%3E%3C/svg%3E");
+}
 
-        /* --- 4. MAIN LAYOUT --- */
-        .app-main { width: 100%; max-width: 1100px; padding: var(--spacing-xl) var(--spacing-md); display: flex; flex-direction: column; align-items: center; flex: 1; }
-        .tab-section { display: none; width: 100%; animation: slideUpFade var(--transition-slow); }
-        .tab-section.active { display: flex; flex-direction: column; align-items: center; }
-        
-        .glass-panel {
-            width: 100%; background: var(--ui-surface-color); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--ui-surface-border); border-radius: var(--radius-xl); padding: var(--spacing-xl);
-            box-shadow: var(--shadow-glass); display: flex; flex-direction: column; gap: var(--spacing-lg);
-        }
-        .panel-max-lg { max-width: 860px; } .panel-max-md { max-width: 600px; }
+/* ---------- DARK · evening tavern ---------------------------------- */
+:root[data-theme="dark"]{
+  --room-far:#0d0907;
+  --room-near:#1a110c;
+  --room-floor:#120c09;
 
-        /* --- 5. CAMERA MODULE --- */
-        .status-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-bottom: var(--spacing-sm); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .status-text { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-        .status-text i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #10b981; box-shadow: 0 0 8px #10b981; }
-        .progress-dots { display: flex; gap: var(--spacing-sm); }
-        .progress-dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 2px solid transparent; transition: var(--transition-normal); }
-        .progress-dot.active { background: var(--brand-primary); border-color: rgba(220, 38, 38, 0.3); box-shadow: 0 0 12px var(--brand-primary); transform: scale(1.2); }
+  --wood-shadow:#160d08;
+  --wood-deep:#2a1a10;
+  --wood-base:#3a2417;
+  --wood-face:#4a3020;
+  --wood-lit:#6b4728;
+  --wood-edge:#0e0805;
 
-        .camera-viewport {
-            position: relative; width: 100%; aspect-ratio: 4/3; background-color: #000; border-radius: var(--radius-lg);
-            overflow: hidden; border: 2px solid rgba(245, 158, 11, 0.2); box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 10px 20px rgba(0,0,0,0.4);
-        }
-        #liveVideoFeed { width: 100%; height: 100%; object-fit: cover; transition: filter 0.2s ease-out; }
-        .rule-of-thirds { position: absolute; inset: 0; pointer-events: none; z-index: 5; background-image: linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px); background-size: 33.333% 33.333%; }
-        .timer-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 10; }
-        .timer-number { color: #ffffff; font-size: 10rem; font-weight: 900; text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9); font-variant-numeric: tabular-nums; animation: pulseText 1s infinite; }
-        .shutter-flash { position: absolute; inset: 0; background: #ffffff; z-index: 20; opacity: 0; pointer-events: none; }
+  --brass-shadow:#4b3616;
+  --brass-dark:#7a5e2c;
+  --brass-mid:#b08d4f;
+  --brass-lit:#e2c88b;
+  --brass-spec:#f6e9c0;
 
-        /* --- 6. CONTROLS --- */
-        .hardware-controls { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); width: 100%; align-items: start; }
-        .settings-card { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--ui-surface-border); border-radius: var(--radius-md); padding: var(--spacing-md); display: flex; flex-direction: column; gap: var(--spacing-md); }
-        .settings-header { font-size: 0.9rem; color: var(--brand-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-        
-        .control-group { display: flex; flex-direction: column; gap: 6px; }
-        .control-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
-        .control-value { color: var(--text-primary); font-weight: 600; font-family: monospace; }
-        
-        .custom-select { appearance: none; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--ui-surface-border); color: var(--text-primary); padding: 10px 12px; border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 0.9rem; width: 100%; cursor: pointer; outline: none; transition: var(--transition-fast); }
-        .custom-select:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
-        .custom-select:focus { border-color: var(--brand-accent); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2); }
-        .custom-select option { background: var(--ui-bg-color); color: var(--text-primary); }
+  --parch-edge:#9a8358;
+  --parch-shade:#d3c19c;
+  --parch-base:#e7dac0;
+  --parch-lit:#f6eeda;
+  --ink:#2e2012;
+  --ink-soft:#6d5a42;
 
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 6px 0; }
-        input[type=range]:focus { outline: none; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: rgba(255, 255, 255, 0.1); border-radius: 3px; border: 1px solid rgba(0,0,0,0.3); transition: var(--transition-fast); }
-        input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.15); }
-        input[type=range]::-webkit-slider-thumb { height: 18px; width: 18px; border-radius: 50%; background: var(--brand-accent); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 0 10px rgba(245, 158, 11, 0.6); border: 2px solid #fff; transition: transform 0.1s; }
-        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+  --stone-deep:#171b25;
+  --stone-base:#252a38;
+  --stone-face:#30374a;
+  --stone-lit:#464f68;
 
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; font-size: 1.05rem; font-weight: 600; font-family: var(--font-ui); border: none; border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition-normal); position: relative; overflow: hidden; outline: none; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-        .btn svg { width: 22px; height: 22px; stroke-width: 2.2px; }
-        
-        .btn-danger { background-color: var(--brand-primary); color: #ffffff; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35); }
-        .btn-danger:hover:not(:disabled) { background-color: var(--brand-primary-hover); transform: translateY(-3px); box-shadow: 0 12px 25px rgba(220, 38, 38, 0.5); }
-        .btn-outline { background-color: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px); }
-        .btn-outline:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
-        .btn-golden { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); }
-        .btn-golden:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(245, 158, 11, 0.5); filter: brightness(1.1); }
-        .btn-icon-only { padding: 10px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+  --accent-cyan:#79aec4;
+  --accent-emerald:#7fa87c;
+  --accent-ember:#c05a4a;
+  --accent-violet:#9a84b8;
+  --accent-amber:#d3a35e;
 
-        /* --- 7. PROCESSING & RESULT --- */
-        .processing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; min-height: 400px; }
-        .loader-ring { width: 80px; height: 80px; border: 6px solid rgba(245, 158, 11, 0.15); border-top-color: var(--brand-accent); border-radius: 50%; animation: spinLoader 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; margin-bottom: var(--spacing-xl); box-shadow: 0 0 30px rgba(245, 158, 11, 0.2); }
-        .processing-container h2 { color: var(--brand-accent); font-size: 1.8rem; margin-bottom: var(--spacing-sm); }
-        .processing-container p { color: var(--text-secondary); font-size: 1.1rem; }
+  --text:#f2e9db;
+  --text-soft:#c2b4a0;
+  --text-mute:#8d7f6e;
 
-        .result-stage { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .canvas-wrapper { background-color: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05), inset 0 2px 4px rgba(0,0,0,0.05); margin-bottom: var(--spacing-xl); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 100%; width: 600px; }
-        .canvas-wrapper:hover { transform: scale(1.02) translateY(-10px); }
-        #finalPrintCanvas { width: 100%; height: auto; display: block; box-shadow: inset 0 0 20px rgba(0,0,0,0.15); border-radius: 2px; }
-        .result-actions { display: flex; gap: var(--spacing-md); flex-wrap: wrap; justify-content: center; }
+  --candle:rgba(214,152,72,.16);
+  --sh-1:0 1px 2px rgba(0,0,0,.5), 0 2px 5px rgba(0,0,0,.3);
+  --sh-2:0 3px 6px -1px rgba(0,0,0,.55), 0 10px 22px -10px rgba(0,0,0,.75);
+  --sh-3:0 6px 14px -4px rgba(0,0,0,.6), 0 22px 48px -20px rgba(0,0,0,.85);
+  --bevel-up:inset 0 1px 0 rgba(255,235,200,.16), inset 1px 0 0 rgba(255,235,200,.09);
+  --bevel-down:inset 0 -1px 0 rgba(0,0,0,.55), inset -1px 0 0 rgba(0,0,0,.38);
+  --grain-blend:overlay;
+  --grain-op:.5;
+}
 
-        /* --- 8. GALLERY --- */
-        .gallery-header { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--ui-surface-border); padding-bottom: var(--spacing-md); margin-bottom: var(--spacing-lg); }
-        .gallery-stats { background: rgba(245, 158, 11, 0.1); color: var(--brand-accent); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--spacing-lg); width: 100%; }
-        .gallery-card { background: #ffffff; padding: 12px; border-radius: 6px; box-shadow: var(--shadow-md); cursor: pointer; transition: var(--transition-normal); position: relative; overflow: hidden; }
-        .gallery-card::before { content: "Nhấn để xem kỹ"; position: absolute; inset: 0; background: rgba(0,0,0,0.6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; opacity: 0; transition: opacity 0.2s; z-index: 10; }
-        .gallery-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-lg); z-index: 2; }
-        .gallery-card:hover::before { opacity: 1; }
-        .gallery-card img { width: 100%; height: auto; display: block; border-radius: 2px; }
-        .gallery-empty { grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; color: var(--text-tertiary); background: rgba(0,0,0,0.2); border-radius: var(--radius-md); border: 1px dashed rgba(255,255,255,0.1); }
-        .gallery-empty svg { width: 64px; height: 64px; opacity: 0.5; margin-bottom: 1rem; }
+/* ---------- LIGHT · daylight tavern -------------------------------- */
+:root[data-theme="light"]{
+  --room-far:#3b2b20;
+  --room-near:#55402f;
+  --room-floor:#43301f;
 
-        /* --- 9. TOAST & ANIMATIONS --- */
-        .toast-system { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(150px); background: rgba(15, 23, 42, 0.95); color: #ffffff; padding: 14px 28px; border-radius: 50px; font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 12px; opacity: 0; transition: var(--transition-slow); z-index: 9999; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
-        .toast-system.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast-icon { color: #10b981; }
+  --wood-shadow:#3a2415;
+  --wood-deep:#573823;
+  --wood-base:#6d4829;
+  --wood-face:#7f5733;
+  --wood-lit:#a5764a;
+  --wood-edge:#2e1c0f;
 
-        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes spinLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes shutterFlash { 0% { opacity: 1; } 100% { opacity: 0; } }
-        @keyframes pulseText { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+  --brass-shadow:#7a5c25;
+  --brass-dark:#a5813c;
+  --brass-mid:#d3ac66;
+  --brass-lit:#f4e0aa;
+  --brass-spec:#fff6d9;
 
-        /* --- 10. RESPONSIVE --- */
-        @media (max-width: 900px) { .hardware-controls { grid-template-columns: 1fr; } .canvas-wrapper { padding: 12px; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
-        @media (max-width: 600px) { .navbar { padding: var(--spacing-md); flex-direction: column; gap: var(--spacing-md); } .brand-text h1 { font-size: 1.2rem; } .app-main { padding: var(--spacing-md) var(--spacing-sm); } .glass-panel { padding: var(--spacing-md); border-radius: var(--radius-md); } .result-actions { flex-direction: column; width: 100%; } .btn { width: 100%; } .timer-number { font-size: 6rem; } }
-    </style>
+  --parch-edge:#b49f73;
+  --parch-shade:#e6d8b8;
+  --parch-base:#f6edd8;
+  --parch-lit:#fffaf0;
+  --ink:#3a2814;
+  --ink-soft:#7d6a50;
+
+  --stone-deep:#2c3243;
+  --stone-base:#3e465c;
+  --stone-face:#4d5670;
+  --stone-lit:#6b7691;
+
+  --accent-cyan:#8fc3d8;
+  --accent-emerald:#8fbb88;
+  --accent-ember:#d06853;
+  --accent-violet:#ac95c9;
+  --accent-amber:#e2b269;
+
+  --text:#fdf7ec;
+  --text-soft:#e3d6c2;
+  --text-mute:#bda98f;
+
+  --candle:rgba(255,205,130,.18);
+  --sh-1:0 1px 2px rgba(30,16,6,.35), 0 2px 5px rgba(30,16,6,.2);
+  --sh-2:0 3px 6px -1px rgba(30,16,6,.4), 0 10px 22px -10px rgba(30,16,6,.55);
+  --sh-3:0 6px 14px -4px rgba(30,16,6,.45), 0 22px 48px -20px rgba(30,16,6,.6);
+  --bevel-up:inset 0 1px 0 rgba(255,245,220,.28), inset 1px 0 0 rgba(255,245,220,.16);
+  --bevel-down:inset 0 -1px 0 rgba(0,0,0,.4), inset -1px 0 0 rgba(0,0,0,.26);
+  --grain-blend:soft-light;
+  --grain-op:.4;
+}
+
+/* ---------- 02 · BASE ----------------------------------------------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
+
+body{
+  font-family:var(--font-ui);
+  font-size:var(--fs-body);
+  line-height:1.5;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(120% 70% at 18% -8%, var(--candle) 0%, transparent 58%),
+    radial-gradient(90% 55% at 88% 14%, rgba(180,110,60,.07) 0%, transparent 60%),
+    linear-gradient(176deg, var(--room-far) 0%, var(--room-near) 52%, var(--room-floor) 100%);
+  background-attachment:fixed;
+}
+
+/* the room behind the boards: plank wall + soft depth blur */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,.028) 0 1px,
+      rgba(0,0,0,.05) 1px 2px,
+      transparent 2px 78px),
+    repeating-linear-gradient(0deg,
+      rgba(0,0,0,.14) 0 2px,
+      transparent 2px 132px);
+  opacity:.65;
+  filter:blur(.4px);
+  mask-image:linear-gradient(180deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.35) 60%, transparent 100%);
+}
+/* vignette + air dust */
+body::after{
+  content:'';position:fixed;inset:0;z-index:3;pointer-events:none;
+  background-image:var(--tex-dust);
+  background-size:160px 160px;
+  opacity:.055;
+  mix-blend-mode:overlay;
+  box-shadow:inset 0 0 160px 40px rgba(0,0,0,.55);
+}
+
+#bg-canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:2;pointer-events:none}
+
+.app-wrapper{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;
+  min-height:100vh;width:100%;max-width:430px;margin:0 auto;
+  padding:0 14px;
+  padding-top:max(14px, env(safe-area-inset-top));
+  padding-bottom:max(20px, env(safe-area-inset-bottom));
+}
+
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.pixel-art{image-rendering:pixelated;image-rendering:crisp-edges}
+.hidden{display:none !important}
+
+input,select,textarea,button{font-family:var(--font-ui);font-size:16px}
+:focus-visible{outline:2px solid var(--brass-lit);outline-offset:2px}
+
+/* ---------- 03 · MATERIAL SURFACES ---------------------------------- */
+/* Wood: grain texture over a directional gradient, lit from upper-left */
+.mat-wood{
+  position:relative;
+  background-color:var(--wood-base);
+  background-image:
+    var(--tex-grain),
+    linear-gradient(158deg, var(--wood-lit) 0%, var(--wood-face) 26%, var(--wood-base) 58%, var(--wood-deep) 100%);
+  background-size:260px 260px, auto;
+  background-blend-mode:var(--grain-blend), normal;
+  border:1px solid var(--wood-edge);
+  box-shadow:var(--bevel-up), var(--bevel-down), var(--sh-2);
+}
+.mat-wood::after{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(110% 80% at 14% 0%, rgba(255,222,176,.10) 0%, transparent 62%);
+}
+
+/* Stone: coarse noise, cooler, sits deeper in the room */
+.mat-stone{
+  background-color:var(--stone-base);
+  background-image:
+    var(--tex-stone),
+    linear-gradient(160deg, var(--stone-face) 0%, var(--stone-base) 48%, var(--stone-deep) 100%);
+  background-size:220px 220px, auto;
+  background-blend-mode:var(--grain-blend), normal;
+  border:1px solid rgba(0,0,0,.55);
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-1);
+}
+
+/* Parchment: fibre grain, edge darkening, slight curvature */
+.mat-parch{
+  position:relative;
+  background-color:var(--parch-base);
+  background-image:
+    var(--tex-fibre),
+    radial-gradient(130% 110% at 20% 4%, var(--parch-lit) 0%, var(--parch-base) 46%, var(--parch-shade) 100%);
+  background-size:200px 200px, auto;
+  background-blend-mode:multiply, normal;
+  color:var(--ink);
+  box-shadow:
+    inset 0 0 22px rgba(126,94,52,.20),
+    inset 0 1px 0 rgba(255,255,255,.55),
+    var(--sh-2);
+}
+
+/* Brass: banded gradient with a specular line along the lit edge */
+.mat-brass{
+  background-image:linear-gradient(162deg,
+    var(--brass-lit) 0%, var(--brass-mid) 22%, var(--brass-dark) 52%,
+    var(--brass-mid) 74%, var(--brass-shadow) 100%);
+  box-shadow:
+    inset 0 1px 0 var(--brass-spec),
+    inset 0 -1px 0 rgba(0,0,0,.45),
+    var(--sh-1);
+}
+
+/* ---------- 04 · TAVERN SIGN (header) ------------------------------- */
+.header{display:flex;flex-direction:column;gap:var(--sp-2);padding:var(--sp-3) 0 var(--sp-4)}
+
+.signboard{
+  position:relative;
+  border-radius:var(--r-md);
+  padding:var(--sp-3) var(--sp-3);
+  margin-top:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);
+  box-shadow:var(--bevel-up), var(--bevel-down), var(--sh-3);
+}
+/* iron brackets the sign hangs from */
+.signboard::before{
+  content:'';position:absolute;top:-13px;left:26px;right:26px;height:13px;
+  background:
+    linear-gradient(180deg, transparent 0 5px, rgba(0,0,0,.35) 5px 6px, transparent 6px),
+    linear-gradient(90deg,
+      transparent 0 calc(50% - 60px),
+      var(--brass-dark) calc(50% - 60px) calc(50% - 57px),
+      transparent calc(50% - 57px) calc(50% + 57px),
+      var(--brass-dark) calc(50% + 57px) calc(50% + 60px),
+      transparent calc(50% + 60px));
+  pointer-events:none;
+}
+
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;min-width:0}
+.brand:active .crest{transform:translateY(1px)}
+
+.crest{
+  width:44px;height:44px;flex-shrink:0;border-radius:var(--r-sm);
+  display:grid;place-items:center;
+  background-image:linear-gradient(160deg, var(--brass-lit) 0%, var(--brass-mid) 30%, var(--brass-dark) 62%, var(--brass-shadow) 100%);
+  box-shadow:
+    inset 0 1px 0 var(--brass-spec),
+    inset 0 -2px 3px rgba(0,0,0,.45),
+    0 2px 4px rgba(0,0,0,.45);
+  transition:transform .12s ease;
+}
+.crest svg{filter:drop-shadow(0 1px 0 rgba(255,245,215,.35))}
+
+.brand-name{
+  font-family:var(--font-display);
+  font-size:var(--fs-sign);
+  font-weight:800;
+  letter-spacing:.055em;
+  line-height:1.05;
+  color:var(--brass-lit);
+  /* carved into the wood: dark cut below, light catch above */
+  text-shadow:
+    0 -1px 0 rgba(0,0,0,.75),
+    0 1px 0 rgba(255,228,178,.20),
+    0 2px 3px rgba(0,0,0,.55);
+  white-space:nowrap;
+}
+.brand-sub{
+  font-size:var(--fs-micro);
+  font-weight:500;
+  letter-spacing:.14em;
+  color:var(--text-mute);
+  text-transform:uppercase;
+  margin-top:2px;
+}
+
+.sign-tools{display:flex;align-items:center;gap:7px;flex-shrink:0}
+
+.tool-btn, .lang-select{
+  height:36px;border-radius:var(--r-sm);
+  border:1px solid rgba(0,0,0,.5);
+  background-image:linear-gradient(170deg, var(--wood-face) 0%, var(--wood-base) 55%, var(--wood-deep) 100%);
+  color:var(--brass-lit);
+  box-shadow:var(--bevel-up), var(--bevel-down), 0 2px 3px rgba(0,0,0,.35);
+  cursor:pointer;
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+.tool-btn{width:36px;display:grid;place-items:center}
+.tool-btn:active, .lang-select:active{transform:translateY(1px);box-shadow:inset 0 2px 4px rgba(0,0,0,.5)}
+
+.lang-select{
+  padding:0 6px;font-size:12px !important;font-weight:600;letter-spacing:.04em;
+  appearance:none;-webkit-appearance:none;text-align:center;outline:none;
+}
+.lang-select option{background:var(--wood-deep);color:var(--text)}
+
+/* the bell rings once, when there is something to say */
+.bell-once svg{animation:bell-swing 1.1s ease-out 1 .8s;transform-origin:top center}
+@keyframes bell-swing{
+  0%{transform:rotate(0)} 18%{transform:rotate(11deg)} 38%{transform:rotate(-8deg)}
+  58%{transform:rotate(5deg)} 78%{transform:rotate(-3deg)} 100%{transform:rotate(0)}
+}
+
+/* clock strip — an engraved brass rail under the sign */
+.clock-rail{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:7px 12px;border-radius:var(--r-sm);
+  background-image:linear-gradient(170deg, var(--stone-face) 0%, var(--stone-base) 50%, var(--stone-deep) 100%);
+  border:1px solid rgba(0,0,0,.55);
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-1);
+  font-size:var(--fs-micro);
+  letter-spacing:.06em;
+  color:var(--text-soft);
+}
+.clock-rail .mono{color:var(--brass-lit);font-weight:700;font-size:12px;letter-spacing:.04em}
+.ember{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 35% 30%, #ffd79a, var(--accent-amber) 60%, #8a5a20);
+  box-shadow:0 0 6px rgba(211,163,94,.6);
+  animation:ember-breathe 4.5s ease-in-out infinite;
+}
+@keyframes ember-breathe{0%,100%{opacity:.55} 50%{opacity:1}}
+
+/* ---------- 05 · BOARDS (cards) ------------------------------------- */
+.card{
+  position:relative;
+  border-radius:var(--r-lg);
+  padding:var(--sp-3);
+  margin-bottom:var(--sp-4);
+  background-color:var(--wood-base);
+  background-image:
+    var(--tex-grain),
+    linear-gradient(158deg, var(--wood-lit) 0%, var(--wood-face) 22%, var(--wood-base) 56%, var(--wood-deep) 100%);
+  background-size:260px 260px, auto;
+  background-blend-mode:var(--grain-blend), normal;
+  border:1px solid var(--wood-edge);
+  box-shadow:
+    inset 0 1px 0 rgba(255,228,180,.16),
+    inset 1px 0 0 rgba(255,228,180,.08),
+    inset 0 -2px 0 rgba(0,0,0,.5),
+    var(--sh-3);
+}
+.card::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(120% 70% at 10% -6%, rgba(255,222,176,.11) 0%, transparent 60%);
+}
+.card > *{position:relative;z-index:1}
+
+/* ---------- 06 · QUEST NOTICE (parchment hero) ---------------------- */
+.notice{
+  position:relative;
+  margin:2px 2px var(--sp-4);
+  padding:var(--sp-4) var(--sp-4) var(--sp-3);
+  border-radius:2px;
+  text-align:center;
+  /* torn-ish edges: the paper is not a perfect rectangle */
+  clip-path:polygon(0 1.5%, 12% 0, 38% 1.2%, 63% .2%, 88% 1.4%, 100% 0,
+                    99.4% 34%, 100% 68%, 99.2% 100%,
+                    74% 98.8%, 47% 100%, 21% 98.6%, 0 99.6%,
+                    .7% 66%, 0 33%);
+  background-color:var(--parch-base);
+  background-image:
+    var(--tex-fibre),
+    radial-gradient(130% 120% at 22% 2%, var(--parch-lit) 0%, var(--parch-base) 42%, var(--parch-shade) 92%, var(--parch-edge) 100%);
+  background-size:200px 200px, auto;
+  background-blend-mode:multiply, normal;
+  color:var(--ink);
+  box-shadow:
+    inset 0 0 26px rgba(120,88,48,.22),
+    inset 0 1px 0 rgba(255,255,255,.5);
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.45)) drop-shadow(0 12px 22px rgba(0,0,0,.4));
+}
+/* a faint crease down the sheet */
+.notice::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,
+    transparent 0 46%, rgba(120,90,50,.09) 49%, rgba(255,255,255,.28) 50.5%, transparent 54%);
+}
+/* brass pin holding the sheet to the board */
+.pin{
+  position:absolute;top:-7px;left:50%;transform:translateX(-50%);
+  width:15px;height:15px;border-radius:50%;z-index:3;
+  background:radial-gradient(circle at 34% 28%, var(--brass-spec) 0%, var(--brass-mid) 45%, var(--brass-shadow) 100%);
+  box-shadow:0 2px 3px rgba(0,0,0,.55), inset 0 -1px 2px rgba(0,0,0,.4);
+}
+
+.guild-eyebrow{
+  font-family:var(--font-display);
+  font-size:var(--fs-micro);
+  font-weight:700;
+  letter-spacing:.32em;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+}
+.notice-title{
+  font-family:var(--font-display);
+  font-size:var(--fs-h1);
+  font-weight:800;
+  line-height:1.16;
+  color:var(--ink);
+  letter-spacing:.012em;
+  text-shadow:0 1px 0 rgba(255,255,255,.55);
+}
+.notice-rule{
+  width:74px;height:9px;margin:9px auto 10px;
+  background:
+    linear-gradient(90deg, transparent, var(--parch-edge) 22%, var(--parch-edge) 78%, transparent) center/100% 1px no-repeat,
+    radial-gradient(circle, var(--ink-soft) 0 2px, transparent 2.5px) center/9px 9px no-repeat;
+  opacity:.65;
+}
+.notice-week{font-size:var(--fs-small);color:var(--ink-soft);margin-bottom:10px}
+
+.site-link{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 15px;border-radius:999px;
+  font-size:var(--fs-small);font-weight:600;letter-spacing:.02em;
+  text-decoration:none;color:#3a2a10;
+  background-image:linear-gradient(168deg, var(--brass-lit) 0%, var(--brass-mid) 48%, var(--brass-dark) 100%);
+  border:1px solid rgba(70,48,14,.55);
+  box-shadow:inset 0 1px 0 var(--brass-spec), inset 0 -1px 0 rgba(0,0,0,.3), 0 2px 4px rgba(0,0,0,.4);
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+.site-link:active{transform:translateY(1px);box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}
+
+.slogan{min-height:20px;margin-top:11px;display:flex;justify-content:center;align-items:center;padding:0 6px}
+.slogan-text{
+  font-family:var(--font-display);font-style:italic;font-size:var(--fs-small);
+  color:var(--ink-soft);line-height:1.45;
+}
+.caret{display:inline-block;width:7px;height:13px;margin-left:3px;background:var(--ink-soft);opacity:.7;animation:caret 1.05s steps(1) infinite;vertical-align:-1px}
+@keyframes caret{0%,50%{opacity:.7}51%,100%{opacity:0}}
+
+/* ---------- 07 · BOARD STATUS (brass plate) ------------------------- */
+.status-plate{
+  display:flex;align-items:center;gap:var(--sp-3);
+  padding:10px var(--sp-3);
+  border-radius:var(--r-sm);
+  margin-bottom:var(--sp-3);
+  border:1px solid rgba(0,0,0,.55);
+  background-image:linear-gradient(168deg, var(--stone-face) 0%, var(--stone-base) 52%, var(--stone-deep) 100%);
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-1);
+}
+.status-sigil{
+  width:38px;height:38px;flex-shrink:0;border-radius:var(--r-xs);
+  display:grid;place-items:center;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(0,0,0,.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1), inset 0 -2px 4px rgba(0,0,0,.45);
+}
+.status-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+.status-title{
+  font-family:var(--font-display);font-size:var(--fs-h2);font-weight:700;
+  letter-spacing:.03em;line-height:1.2;
+}
+.status-desc{font-size:var(--fs-small);color:var(--text-mute);line-height:1.35}
+
+.status-plate.is-open .status-sigil{color:var(--accent-emerald);box-shadow:inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 12px rgba(127,168,124,.22)}
+.status-plate.is-open .status-title{color:var(--accent-emerald)}
+.status-plate.is-locked .status-sigil{color:var(--accent-ember);box-shadow:inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 12px rgba(192,90,74,.24)}
+.status-plate.is-locked .status-title{color:var(--accent-ember)}
+
+/* ---------- 08 · IDENTITY PLATE ------------------------------------- */
+.identity{
+  padding:11px var(--sp-3) var(--sp-3);
+  border-radius:var(--r-sm);
+  margin-bottom:var(--sp-3);
+  border:1px solid rgba(0,0,0,.5);
+  background-image:linear-gradient(168deg, var(--stone-face) 0%, var(--stone-base) 52%, var(--stone-deep) 100%);
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-1);
+}
+.field-label{
+  display:flex;align-items:center;gap:7px;
+  font-size:var(--fs-micro);font-weight:600;letter-spacing:.1em;
+  color:var(--brass-mid);margin-bottom:8px;
+}
+.field-label svg{opacity:.85}
+.input-shell{position:relative}
+.input-shell svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--brass-dark);pointer-events:none;z-index:2}
+.field{
+  width:100%;padding:11px 12px 11px 36px;
+  border-radius:var(--r-xs);
+  border:1px solid rgba(0,0,0,.6);
+  background:linear-gradient(180deg, rgba(0,0,0,.4), rgba(0,0,0,.2));
+  color:var(--text);
+  font-size:15px !important;font-weight:500;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.5), inset 0 -1px 0 rgba(255,255,255,.05);
+  outline:none;transition:border-color .15s, box-shadow .15s;
+}
+.field::placeholder{color:var(--text-mute);opacity:.75}
+.field:focus{
+  border-color:var(--brass-dark);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.5), 0 0 0 2px rgba(176,141,79,.22);
+}
+
+/* ---------- 09 · QUEST BOARD (7 day cards) -------------------------- */
+.board-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+  margin:0 2px 9px;
+}
+.board-head h3{
+  font-family:var(--font-display);font-size:var(--fs-h2);font-weight:700;
+  letter-spacing:.04em;color:var(--brass-lit);
+  text-shadow:0 -1px 0 rgba(0,0,0,.6), 0 1px 0 rgba(255,228,178,.14);
+}
+.board-head span{font-size:var(--fs-micro);color:var(--text-mute);letter-spacing:.06em}
+
+.board-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:var(--sp-4)}
+
+.day-card{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;gap:9px;
+  padding:9px;
+  border-radius:var(--r-md);
+  border:1px solid var(--wood-edge);
+  background-color:var(--wood-deep);
+  background-image:
+    var(--tex-grain),
+    linear-gradient(162deg, var(--wood-face) 0%, var(--wood-base) 40%, var(--wood-deep) 100%);
+  background-size:260px 260px, auto;
+  background-blend-mode:var(--grain-blend), normal;
+  box-shadow:
+    inset 0 1px 0 rgba(255,228,180,.14),
+    inset 0 -1px 0 rgba(0,0,0,.5),
+    var(--sh-1);
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.day-card:hover{box-shadow:inset 0 1px 0 rgba(255,228,180,.2), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-2)}
+.day-card.is-set{border-color:var(--brass-shadow)}
+.day-card.is-set::before{
+  content:'';position:absolute;left:9px;right:9px;top:-1px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg, transparent, var(--brass-mid), transparent);
+}
+
+.day-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.day-name{
+  font-family:var(--font-display);font-size:13.5px;font-weight:700;
+  color:var(--text);letter-spacing:.015em;line-height:1.1;
+  text-shadow:0 1px 1px rgba(0,0,0,.6);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.day-chip{
+  flex-shrink:0;
+  font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.04em;
+  padding:2px 5px;border-radius:var(--r-xs);
+  color:var(--brass-lit);
+  background:rgba(0,0,0,.3);
+  border:1px solid rgba(0,0,0,.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+/* the little window into the AN CAFÉ world */
+.scene{
+  position:relative;height:66px;border-radius:var(--r-xs);overflow:hidden;
+  border:1px solid rgba(0,0,0,.6);
+  background:#181d2a;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.6), inset 0 -1px 0 rgba(255,255,255,.05);
+}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.scene::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(255,226,180,.07), transparent 42%),
+    linear-gradient(0deg, rgba(0,0,0,.28), transparent 46%);
+}
+
+.shift-slot{display:flex;flex-direction:column;gap:5px;margin-top:auto}
+.slot-label{
+  font-size:9.5px;font-weight:600;letter-spacing:.14em;
+  color:var(--text-mute);padding-left:1px;
+}
+
+/* ---------- 10 · SHIFT SELECTOR ------------------------------------- */
+.dropdown{position:relative;width:100%}
+
+.dd-trigger{
+  display:flex;align-items:center;gap:8px;
+  width:100%;padding:8px 9px;
+  border-radius:var(--r-xs);
+  border:1px solid rgba(0,0,0,.6);
+  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(0,0,0,.34));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08), inset 0 -2px 4px rgba(0,0,0,.4);
+  cursor:pointer;user-select:none;
+  transition:transform .09s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.dd-trigger:active{transform:translateY(1px)}
+.dropdown.open .dd-trigger{border-color:var(--brass-dark);box-shadow:inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 2px rgba(176,141,79,.2)}
+.dropdown.open .dd-caret{transform:rotate(180deg)}
+
+.dd-mark{
+  width:20px;height:20px;flex-shrink:0;border-radius:3px;
+  display:grid;place-items:center;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(0,0,0,.45);
+  color:var(--text-mute);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.dd-text{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1;text-align:left}
+.dd-code{
+  font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.02em;
+  color:var(--text-soft);line-height:1.1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dd-time{
+  font-family:var(--font-mono);font-size:9.5px;font-weight:500;
+  color:var(--text-mute);line-height:1.1;letter-spacing:-.01em;
+}
+.dd-time:empty{display:none}
+.dd-caret{flex-shrink:0;color:var(--brass-dark);transition:transform .16s ease}
+
+/* selected identities — muted material, not neon */
+.dd-trigger.set-c1{background:linear-gradient(180deg, rgba(121,174,196,.20), rgba(18,34,42,.5));border-color:rgba(121,174,196,.45)}
+.dd-trigger.set-c1 .dd-code, .dd-trigger.set-c1 .dd-mark{color:var(--accent-cyan)}
+.dd-trigger.set-c2{background:linear-gradient(180deg, rgba(211,163,94,.20), rgba(44,30,12,.5));border-color:rgba(211,163,94,.45)}
+.dd-trigger.set-c2 .dd-code, .dd-trigger.set-c2 .dd-mark{color:var(--accent-amber)}
+.dd-trigger.set-c3{background:linear-gradient(180deg, rgba(154,132,184,.20), rgba(32,24,44,.5));border-color:rgba(154,132,184,.45)}
+.dd-trigger.set-c3 .dd-code, .dd-trigger.set-c3 .dd-mark{color:var(--accent-violet)}
+.dd-trigger.set-f{background:linear-gradient(180deg, rgba(127,168,124,.20), rgba(20,34,22,.5));border-color:rgba(127,168,124,.45)}
+.dd-trigger.set-f .dd-code, .dd-trigger.set-f .dd-mark{color:var(--accent-emerald)}
+.dd-trigger.set-double{background:linear-gradient(180deg, rgba(192,90,74,.22), rgba(44,18,14,.5));border-color:rgba(192,90,74,.5)}
+.dd-trigger.set-double .dd-code, .dd-trigger.set-double .dd-mark{color:var(--accent-ember)}
+
+.dd-panel{
+  position:absolute;top:calc(100% + 6px);left:-2px;right:-2px;z-index:200;
+  padding:5px;border-radius:var(--r-sm);
+  border:1px solid rgba(0,0,0,.65);
+  background-color:var(--wood-deep);
+  background-image:
+    var(--tex-grain),
+    linear-gradient(170deg, var(--wood-face) 0%, var(--wood-deep) 70%, var(--wood-shadow) 100%);
+  background-size:260px 260px, auto;
+  background-blend-mode:var(--grain-blend), normal;
+  box-shadow:inset 0 1px 0 rgba(255,228,180,.16), var(--sh-3);
+  max-height:238px;overflow-y:auto;overscroll-behavior:contain;
+  display:none;
+  transform-origin:top center;
+  animation:panel-open .16s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes panel-open{from{opacity:0;transform:translateY(-5px) scaleY(.94)}to{opacity:1;transform:none}}
+.dropdown.open .dd-panel{display:block}
+
+.dd-heading{
+  font-size:9.5px;font-weight:600;letter-spacing:.16em;
+  color:var(--brass-mid);padding:5px 7px 6px;
+  border-bottom:1px solid rgba(0,0,0,.45);
+  box-shadow:0 1px 0 rgba(255,255,255,.05);
+  margin-bottom:4px;
+}
+.dd-option{
+  display:flex;align-items:center;gap:8px;
+  padding:7px;border-radius:var(--r-xs);
+  cursor:pointer;border-left:2px solid transparent;
+  transition:background .12s ease, border-color .12s ease;
+}
+.dd-option:hover{background:rgba(255,226,180,.08);border-left-color:var(--brass-mid)}
+.dd-option[data-active="1"]{background:rgba(176,141,79,.16);border-left-color:var(--brass-lit)}
+.dd-option .o-mark{
+  width:20px;height:20px;flex-shrink:0;border-radius:3px;display:grid;place-items:center;
+  background:rgba(0,0,0,.34);border:1px solid rgba(0,0,0,.5);
+}
+.o-body{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
+.o-code{font-family:var(--font-mono);font-size:11.5px;font-weight:700;color:var(--text);line-height:1.15}
+.o-time{font-family:var(--font-mono);font-size:9.5px;color:var(--text-mute);line-height:1.15}
+.o-check{color:var(--brass-lit);opacity:0;flex-shrink:0}
+.dd-option[data-active="1"] .o-check{opacity:1}
+.o-c1{color:var(--accent-cyan)} .o-c2{color:var(--accent-amber)} .o-c3{color:var(--accent-violet)}
+.o-f{color:var(--accent-emerald)} .o-d{color:var(--accent-ember)} .o-off{color:var(--text-mute)}
+
+/* ---------- 11 · ACTIONS -------------------------------------------- */
+.btn{
+  width:100%;padding:13px var(--sp-4);
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  border-radius:var(--r-sm);cursor:pointer;
+  font-family:var(--font-display);
+  font-size:15px;font-weight:700;letter-spacing:.035em;
+  border:1px solid rgba(0,0,0,.6);
+  transition:transform .09s ease, box-shadow .09s ease, filter .15s ease;
+}
+.btn-primary{
+  color:#fdf1e2;
+  background-image:linear-gradient(170deg, #d0705c 0%, var(--accent-ember) 34%, #9c4136 78%, #7d3128 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,210,190,.4),
+    inset 0 -2px 0 rgba(0,0,0,.4),
+    0 3px 0 -1px rgba(0,0,0,.45),
+    var(--sh-2);
+  text-shadow:0 1px 2px rgba(60,16,10,.6);
+}
+.btn-primary:hover:not(:disabled){filter:brightness(1.06)}
+.btn-primary:active:not(:disabled){transform:translateY(2px);box-shadow:inset 0 2px 6px rgba(0,0,0,.5)}
+.btn-primary:disabled{
+  cursor:not-allowed;color:var(--text-mute);
+  background-image:linear-gradient(170deg, var(--stone-face), var(--stone-deep));
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5);
+  text-shadow:none;
+}
+.btn-ghost{
+  margin-top:9px;color:var(--brass-lit);font-size:13.5px;
+  background-image:linear-gradient(170deg, var(--wood-face) 0%, var(--wood-base) 50%, var(--wood-deep) 100%);
+  box-shadow:var(--bevel-up), var(--bevel-down), 0 2px 4px rgba(0,0,0,.4);
+}
+.btn-ghost:hover{filter:brightness(1.08)}
+.btn-ghost:active{transform:translateY(2px);box-shadow:inset 0 2px 5px rgba(0,0,0,.5)}
+
+/* ---------- 12 · GUILD MANAGEMENT ----------------------------------- */
+#managerBox{min-height:270px}
+
+#loginSection{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--sp-3);padding:var(--sp-6) var(--sp-3) 62px;text-align:center;
+}
+.seal{
+  width:66px;height:66px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 26%, var(--brass-lit) 0%, var(--brass-mid) 40%, var(--brass-dark) 70%, var(--brass-shadow) 100%);
+  box-shadow:inset 0 2px 0 var(--brass-spec), inset 0 -3px 6px rgba(0,0,0,.5), 0 4px 10px rgba(0,0,0,.5);
+}
+.login-title{
+  font-family:var(--font-display);font-size:var(--fs-h1);font-weight:700;
+  color:var(--brass-lit);letter-spacing:.03em;
+  text-shadow:0 -1px 0 rgba(0,0,0,.6), 0 1px 0 rgba(255,228,178,.15);
+}
+.login-sub{font-size:var(--fs-small);color:var(--text-mute);max-width:250px;line-height:1.45}
+.swipe-hint{
+  position:absolute;left:0;right:0;bottom:22px;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  font-size:var(--fs-small);font-weight:600;letter-spacing:.06em;
+  color:var(--brass-mid);pointer-events:none;
+}
+.swipe-hint svg{animation:nudge 2.6s ease-in-out infinite}
+@keyframes nudge{0%,72%,100%{transform:translateX(0);opacity:.55} 84%{transform:translateX(6px);opacity:1}}
+.swipe-zone{position:absolute;inset:0;z-index:10;touch-action:none;cursor:grab}
+.swipe-zone:active{cursor:grabbing}
+
+.admin-head{
+  display:flex;align-items:center;justify-content:space-between;gap:9px;
+  padding-bottom:10px;margin-bottom:var(--sp-3);
+  border-bottom:1px solid rgba(0,0,0,.45);
+  box-shadow:0 1px 0 rgba(255,228,180,.08);
+}
+.admin-head h2{
+  font-family:var(--font-display);font-size:17px;font-weight:700;
+  color:var(--brass-lit);letter-spacing:.04em;
+  text-shadow:0 -1px 0 rgba(0,0,0,.6), 0 1px 0 rgba(255,228,178,.14);
+}
+.admin-head p{font-size:var(--fs-micro);color:var(--text-mute);letter-spacing:.08em;margin-top:1px}
+.btn-exit{
+  flex-shrink:0;padding:8px 11px;border-radius:var(--r-xs);cursor:pointer;
+  font-size:var(--fs-micro);font-weight:600;letter-spacing:.04em;
+  color:#fbe9e2;border:1px solid rgba(0,0,0,.55);
+  background-image:linear-gradient(170deg, #b8564a, #8a3a30);
+  box-shadow:inset 0 1px 0 rgba(255,200,185,.3), inset 0 -1px 0 rgba(0,0,0,.4), 0 2px 3px rgba(0,0,0,.4);
+}
+.btn-exit:active{transform:translateY(1px);box-shadow:inset 0 2px 4px rgba(0,0,0,.45)}
+
+/* engraved wooden plaques */
+.plaques{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:var(--sp-3)}
+.plaque{
+  position:relative;padding:13px 10px 11px;border-radius:var(--r-sm);text-align:center;
+  border:1px solid var(--wood-edge);
+  background-color:var(--wood-deep);
+  background-image:var(--tex-grain), linear-gradient(162deg, var(--wood-face) 0%, var(--wood-base) 45%, var(--wood-deep) 100%);
+  background-size:260px 260px, auto;
+  background-blend-mode:var(--grain-blend), normal;
+  box-shadow:inset 0 1px 0 rgba(255,228,180,.15), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-1);
+}
+.plaque::before,.plaque::after{
+  content:'';position:absolute;top:6px;width:5px;height:5px;border-radius:50%;
+  background:radial-gradient(circle at 34% 28%, var(--brass-spec), var(--brass-dark) 70%, var(--brass-shadow));
+  box-shadow:0 1px 1px rgba(0,0,0,.5);
+}
+.plaque::before{left:7px} .plaque::after{right:7px}
+.plaque-val{
+  font-family:var(--font-mono);font-size:29px;font-weight:700;line-height:1;
+  color:var(--brass-lit);
+  text-shadow:0 -1px 0 rgba(0,0,0,.8), 0 1px 0 rgba(255,228,178,.2);
+}
+.plaque-label{
+  font-size:var(--fs-micro);color:var(--text-mute);letter-spacing:.09em;margin-top:6px;
+}
+
+.runes{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:var(--sp-3)}
+.rune{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  padding:10px 4px;border-radius:var(--r-xs);cursor:pointer;
+  font-size:10px;font-weight:600;letter-spacing:.03em;text-align:center;line-height:1.15;
+  color:var(--text-soft);
+  border:1px solid rgba(0,0,0,.55);
+  background-image:linear-gradient(170deg, var(--stone-face) 0%, var(--stone-base) 52%, var(--stone-deep) 100%);
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5), 0 2px 3px rgba(0,0,0,.35);
+  transition:transform .09s ease, box-shadow .09s ease, filter .15s ease;
+}
+.rune:hover{filter:brightness(1.12)}
+.rune:active{transform:translateY(2px);box-shadow:inset 0 2px 5px rgba(0,0,0,.5)}
+.rune svg{width:17px;height:17px}
+.rune.r-open svg{color:var(--accent-emerald)}
+.rune.r-lock svg{color:var(--accent-amber)}
+.rune.r-copy svg{color:var(--accent-cyan)}
+.rune.r-clear svg{color:var(--accent-ember)}
+
+/* priority notice */
+.decree{
+  position:relative;padding:11px 12px;border-radius:var(--r-sm);margin-bottom:var(--sp-3);
+  border:1px solid rgba(0,0,0,.5);border-left:3px solid var(--accent-ember);
+  background-image:linear-gradient(170deg, var(--stone-face) 0%, var(--stone-base) 55%, var(--stone-deep) 100%);
+  box-shadow:var(--bevel-up), inset 0 -1px 0 rgba(0,0,0,.5), var(--sh-1);
+}
+.decree-title{
+  font-family:var(--font-display);font-size:13.5px;font-weight:700;
+  color:var(--brass-lit);margin-bottom:9px;display:flex;align-items:center;gap:7px;
+}
+.decree-member{display:flex;flex-direction:column;gap:7px;margin-bottom:9px}
+.decree-member:last-child{margin-bottom:0}
+.decree-name{font-size:var(--fs-small);font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
+.tag{
+  font-size:9px;font-weight:700;letter-spacing:.09em;padding:2px 6px;border-radius:999px;
+  color:#fbe6e0;background:linear-gradient(170deg,#b8564a,#8a3a30);
+  box-shadow:inset 0 1px 0 rgba(255,200,185,.3);
+}
+.decree-shifts{display:flex;flex-wrap:wrap;gap:6px}
+.decree-cell{
+  display:flex;align-items:center;gap:5px;padding:4px 7px;border-radius:var(--r-xs);
+  background:rgba(0,0,0,.28);border:1px solid rgba(0,0,0,.45);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+.decree-day{font-size:10px;font-weight:600;color:var(--text-mute);letter-spacing:.04em}
+
+/* roster */
+.roster{
+  border-radius:var(--r-sm);overflow:hidden;
+  border:1px solid var(--wood-edge);
+  box-shadow:var(--sh-2);
+}
+.roster-scroll{overflow-x:auto;max-height:330px;overscroll-behavior:contain}
+table{width:100%;border-collapse:collapse}
+thead th{
+  position:sticky;top:0;z-index:2;
+  padding:9px 10px;text-align:left;white-space:nowrap;
+  font-size:var(--fs-micro);font-weight:600;letter-spacing:.1em;
+  color:var(--brass-lit);
+  background-image:linear-gradient(170deg, var(--wood-face), var(--wood-deep));
+  border-bottom:1px solid var(--brass-shadow);
+  box-shadow:inset 0 1px 0 rgba(255,228,180,.14);
+}
+tbody td{
+  padding:8px 10px;vertical-align:top;
+  font-size:var(--fs-small);color:var(--ink);
+  border-bottom:1px solid rgba(154,131,88,.4);
+  background-color:var(--parch-base);
+  background-image:var(--tex-fibre);
+  background-size:200px 200px;
+  background-blend-mode:multiply;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background-color:var(--parch-shade)}
+tbody tr:hover td{background-color:var(--parch-lit)}
+td.day-col{font-weight:600;white-space:nowrap;width:82px}
+
+.staff-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 7px;margin:0 5px 5px 0;border-radius:var(--r-xs);
+  background:rgba(255,255,255,.4);
+  border:1px solid rgba(120,94,56,.35);
+  box-shadow:0 1px 1px rgba(90,66,32,.14);
+}
+.staff-name{font-size:var(--fs-small);font-weight:600;color:var(--ink)}
+.empty-note{padding:26px 16px;text-align:center;color:var(--ink-soft);font-style:italic;background:var(--parch-base)}
+
+/* shift badges */
+.badge{
+  display:inline-flex;align-items:center;
+  font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.02em;
+  padding:2px 6px;border-radius:3px;border:1px solid transparent;
+}
+.badge-c1{background:rgba(121,174,196,.22);color:#2f5d70;border-color:rgba(60,110,132,.45)}
+.badge-c2{background:rgba(211,163,94,.24);color:#6b4a18;border-color:rgba(140,102,38,.45)}
+.badge-c3{background:rgba(154,132,184,.24);color:#4d3b68;border-color:rgba(104,84,140,.45)}
+.badge-f{background:rgba(127,168,124,.24);color:#3b5c39;border-color:rgba(84,124,82,.45)}
+.badge-double{background:rgba(192,90,74,.22);color:#7c3226;border-color:rgba(150,66,52,.45)}
+/* badges on dark ground (decree) read inverted */
+.decree-cell .badge-c1{color:var(--accent-cyan);background:rgba(121,174,196,.16)}
+.decree-cell .badge-c2{color:var(--accent-amber);background:rgba(211,163,94,.16)}
+.decree-cell .badge-c3{color:var(--accent-violet);background:rgba(154,132,184,.16)}
+.decree-cell .badge-f{color:var(--accent-emerald);background:rgba(127,168,124,.16)}
+.decree-cell .badge-double{color:var(--accent-ember);background:rgba(192,90,74,.18)}
+
+.skeleton{
+  border-radius:var(--r-sm);
+  background:linear-gradient(100deg, rgba(255,255,255,.03) 30%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.03) 70%);
+  background-size:220% 100%;
+  animation:sweep 1.5s ease-in-out infinite;
+  border:1px solid rgba(0,0,0,.4);
+}
+@keyframes sweep{0%{background-position:120% 0}100%{background-position:-20% 0}}
+
+/* ---------- 13 · MODAL & TOASTS ------------------------------------- */
+.modal{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:rgba(10,6,4,.72);
+  backdrop-filter:blur(2px);
+}
+.modal-sheet{
+  position:relative;width:100%;max-width:340px;padding:24px 20px 20px;text-align:center;
+  border-radius:3px;
+  background-color:var(--parch-base);
+  background-image:var(--tex-fibre), radial-gradient(130% 120% at 22% 2%, var(--parch-lit) 0%, var(--parch-base) 45%, var(--parch-shade) 100%);
+  background-size:200px 200px, auto;
+  background-blend-mode:multiply, normal;
+  color:var(--ink);
+  box-shadow:inset 0 0 26px rgba(120,88,48,.22), 0 18px 50px -12px rgba(0,0,0,.7);
+  animation:sheet-in .2s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes sheet-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.modal-close{
+  position:absolute;top:9px;right:9px;width:28px;height:28px;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;
+  color:#4a3418;border:1px solid rgba(90,66,30,.4);
+  background:linear-gradient(170deg, var(--brass-lit), var(--brass-dark));
+  box-shadow:inset 0 1px 0 var(--brass-spec), 0 1px 2px rgba(0,0,0,.35);
+}
+.modal-icon{
+  width:44px;height:44px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 26%, var(--brass-lit), var(--brass-mid) 45%, var(--brass-dark) 100%);
+  box-shadow:inset 0 1px 0 var(--brass-spec), 0 2px 5px rgba(0,0,0,.35);
+  color:#3f2c10;
+}
+.modal-sheet h3{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:9px}
+.modal-sheet p{font-size:13px;line-height:1.55;color:var(--ink-soft);text-align:left}
+.modal-sheet strong{color:var(--accent-ember)}
+
+.toasts{
+  position:fixed;top:16px;left:14px;right:14px;z-index:99999;
+  display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;
+}
+.toast{
+  display:flex;align-items:center;gap:10px;
+  width:100%;max-width:360px;padding:10px 13px;
+  border-radius:var(--r-sm);
+  font-size:13px;font-weight:500;color:var(--text);
+  border:1px solid rgba(0,0,0,.6);border-left:3px solid var(--brass-mid);
+  background-image:linear-gradient(170deg, var(--wood-face) 0%, var(--wood-base) 48%, var(--wood-deep) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,228,180,.14), var(--sh-3);
+  opacity:0;transform:translateY(-14px);
+  transition:opacity .22s ease, transform .22s cubic-bezier(.2,.8,.3,1);
+}
+.toast.show{opacity:1;transform:none}
+.toast-ok{border-left-color:var(--accent-emerald)} .toast-ok svg{color:var(--accent-emerald)}
+.toast-err{border-left-color:var(--accent-ember)} .toast-err svg{color:var(--accent-ember)}
+.toast-warn{border-left-color:var(--accent-amber)} .toast-warn svg{color:var(--accent-amber)}
+.toast svg{flex-shrink:0}
+
+footer{
+  position:relative;z-index:10;text-align:center;padding:6px 0 22px;
+  font-size:var(--fs-micro);color:var(--text-mute);letter-spacing:.06em;
+}
+footer strong{color:var(--brass-mid);font-weight:600}
+
+/* ---------- 14 · RESPONSIVE ART DIRECTION --------------------------- */
+/* the wide Sunday card becomes a horizontal quest strip */
+.day-card.is-wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:11px;padding:10px 11px}
+.day-card.is-wide .scene{order:-1;width:96px;height:58px;flex-shrink:0}
+.day-card.is-wide .day-top{flex-direction:column;align-items:flex-start;gap:3px;width:auto;flex-shrink:0}
+.day-card.is-wide .shift-slot{margin-top:0;flex:1;min-width:0}
+
+@media (min-width:560px){
+  .app-wrapper{max-width:620px;padding:0 24px}
+  :root{--fs-h1:26px}
+  .board-grid{grid-template-columns:repeat(3,1fr)}
+  .day-card.is-wide{grid-column:span 1;flex-direction:column;align-items:stretch;padding:9px}
+  .day-card.is-wide .scene{order:0;width:auto;height:66px}
+  .day-card.is-wide .day-top{flex-direction:row;align-items:center;width:100%}
+  .scene{height:76px}
+}
+@media (min-width:900px){
+  .app-wrapper{max-width:940px;padding:0 32px}
+  :root{--fs-h1:30px; --fs-sign:22px}
+  .board-grid{grid-template-columns:repeat(4,1fr)}
+  .card{padding:var(--sp-5)}
+  .notice{padding:var(--sp-6) var(--sp-5) var(--sp-5)}
+  .scene{height:92px}
+  .plaques{grid-template-columns:repeat(4,1fr)}
+  #submitBtn, #managerBtn{max-width:440px;margin-left:auto;margin-right:auto}
+  body::before{opacity:1}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
 </head>
 <body>
 
-    <canvas id="particleCanvas"></canvas>
-    
-    <div id="toastNotification" class="toast-system">
-        <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        <span id="toastMessage">Khởi tạo hệ thống thành công</span>
+<canvas id="bg-canvas"></canvas>
+
+<div class="app-wrapper" id="app">
+
+  <header class="header">
+    <div class="signboard mat-wood">
+      <div class="brand">
+        <div class="crest">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 8h11v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z" fill="#3a2a12" stroke="#2a1c0a" stroke-width="1"/>
+            <path d="M16 10h2.5a2.5 2.5 0 0 1 0 5H16" stroke="#2a1c0a" stroke-width="1.6" fill="none"/>
+            <path d="M7 10h7v5a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-5z" fill="#6b4a1e" opacity=".9"/>
+            <path d="M8.5 6.2c0-1 1-1.4 1-2.4M11.5 6.2c0-1 1-1.4 1-2.4" stroke="#2a1c0a" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">AN CAFÉ</div>
+          <div class="brand-sub">WorkShift Pro</div>
+        </div>
+      </div>
+
+      <div class="sign-tools">
+        <select id="langSelect" class="lang-select" aria-label="Language">
+          <option value="vi">VI</option>
+          <option value="en">EN</option>
+          <option value="zh">ZH</option>
+          <option value="ko">KO</option>
+          <option value="ja">JA</option>
+        </select>
+        <button class="tool-btn bell-once" id="supportBtn" aria-label="Notices">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3.5v1.7M6.8 10.2a5.2 5.2 0 0 1 10.4 0v4.3l1.8 2H5l1.8-2v-4.3z"/>
+            <path d="M10.3 19.5a1.8 1.8 0 0 0 3.4 0"/>
+          </svg>
+        </button>
+        <button class="tool-btn" id="themeBtn" aria-label="Theme">
+          <svg id="moonIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.7 6.7 0 0 0 9.7 9.7z"/>
+          </svg>
+          <svg id="sunIcon" class="hidden" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10l1.4 1.4M5.6 18.4l1.4-1.4m10-10l1.4-1.4"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <header class="navbar">
-        <div class="brand-container">
-            <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                <circle cx="12" cy="13" r="4"></circle>
-            </svg>
-            <div class="brand-text">
-                <h1>Đăng Tùng Photobooth</h1>
-                <p>Enterprise Edition • Lễ Hội Đền Đô</p>
-            </div>
+    <div class="clock-rail">
+      <span class="ember"></span>
+      <span data-i18n="realtime">Đồng bộ realtime</span>
+      <span class="mono" id="realTime">--:--:--</span>
+    </div>
+  </header>
+
+  <div id="supportModal" class="modal hidden">
+    <div class="modal-sheet">
+      <button class="modal-close" id="closeSupportBtn" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-icon">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 14.5a2.5 2.5 0 0 1-2.5 2.5H7.5L3 21V5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5z"/>
+        </svg>
+      </div>
+      <h3 data-i18n="supportTitle">Trung Tâm Thông Báo</h3>
+      <p data-i18n="supportDesc"></p>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toasts"></div>
+
+  <!-- ============ QUEST BOARD ============ -->
+  <main class="card" id="userCard">
+    <section class="notice">
+      <span class="pin"></span>
+      <div class="guild-eyebrow">AN CAFÉ GUILD</div>
+      <h1 class="notice-title" data-i18n="title">Đăng Ký Ca Làm</h1>
+      <div class="notice-rule"></div>
+      <p class="notice-week" data-i18n="weekLabel">Tuần làm việc hiện tại</p>
+      <a href="https://ancafe.vn" target="_blank" rel="noopener" class="site-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/>
+        </svg>
+        <span data-i18n="visitSite">Ghé thăm ancafe.vn</span>
+      </a>
+      <div class="slogan"><span id="typewriter-text" class="slogan-text"></span><span class="caret"></span></div>
+    </section>
+
+    <div id="lockStatus">
+      <div class="skeleton" style="height:60px;margin-bottom:12px"></div>
+    </div>
+
+    <div class="identity">
+      <label class="field-label" for="name">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round">
+          <path d="M12 3l7.5 3.6v5.2c0 4.6-3.2 8.3-7.5 9.4-4.3-1.1-7.5-4.8-7.5-9.4V6.6L12 3z"/>
+        </svg>
+        <span data-i18n="employeeId">Tên nhân sự</span>
+      </label>
+      <div class="input-shell">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="3.4"/><path d="M5 20c.6-3.6 3.5-5.6 7-5.6s6.4 2 7 5.6"/>
+        </svg>
+        <input type="text" id="name" class="field" placeholder="Ví dụ: AnCafe..." data-i18n-placeholder="placeholder" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="board-head">
+      <h3 data-i18n="schedule">Lịch làm việc tuần này</h3>
+      <span data-i18n="boardHint">Chọn ca cho từng ngày</span>
+    </div>
+    <div id="form" class="board-grid"></div>
+
+    <button id="submitBtn" class="btn btn-primary" data-i18n="confirmBtn">Xác Nhận Đăng Ký</button>
+    <button id="managerBtn" class="btn btn-ghost" data-i18n="managerBtn">Khu Vực Quản Lý</button>
+  </main>
+
+  <!-- ============ GUILD MANAGEMENT ============ -->
+  <main class="card hidden" id="managerBox">
+    <div id="loginSection">
+      <div class="seal">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3f2c10" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="login-title" data-i18n="secureAccess">Khu Vực Quản Lý</h2>
+        <p class="login-sub" data-i18n="highPrivilege">Chỉ dành cho quản lý ca của AN CAFÉ</p>
+      </div>
+      <canvas id="swipeTrailCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none"></canvas>
+      <div class="swipe-hint">
+        <span data-i18n="swipeHint">Vuốt sang phải để mở khóa</span>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </div>
+      <div class="swipe-zone" id="swipeZone"></div>
+    </div>
+
+    <div id="adminPanel" class="hidden">
+      <div class="admin-head">
+        <div>
+          <h2 data-i18n="dashboard">Bảng Điều Hành</h2>
+          <p>AN CAFÉ GUILD</p>
         </div>
-        <nav class="nav-menu">
-            <button class="nav-btn active" data-target="tab-camera" onclick="AppCtrl.switchTab('tab-camera')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path></svg>
-                Phòng Chụp
-            </button>
-            <button class="nav-btn" data-target="tab-gallery" onclick="AppCtrl.switchTab('tab-gallery')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                Thư Viện Ảnh
-            </button>
-        </nav>
-    </header>
+        <button id="logoutBtn" class="btn-exit" data-i18n="lockSys">Thoát</button>
+      </div>
 
-    <main class="app-main">
-        
-        <section id="tab-camera" class="tab-section active">
-            <div class="glass-panel panel-max-lg">
-                <div class="status-bar">
-                    <div class="status-text"><i></i> <span id="cameraStatusText">Đang tải cấu hình máy ảnh...</span></div>
-                    <div class="progress-dots">
-                        <div class="progress-dot" id="progDot1"></div>
-                        <div class="progress-dot" id="progDot2"></div>
-                        <div class="progress-dot" id="progDot3"></div>
-                    </div>
-                </div>
+      <div class="plaques">
+        <div class="plaque">
+          <div class="plaque-val" id="totalUsers">0</div>
+          <div class="plaque-label" data-i18n="totalEmp">Tổng nhân sự</div>
+        </div>
+        <div class="plaque">
+          <div class="plaque-val" id="totalShifts">0</div>
+          <div class="plaque-label" data-i18n="totalShifts">Ca đã đăng ký</div>
+        </div>
+      </div>
 
-                <div class="camera-viewport" id="viewportContainer">
-                    <video id="liveVideoFeed" autoplay playsinline muted></video>
-                    <div class="rule-of-thirds" id="gridOverlay"></div>
-                    <div class="timer-overlay" id="timerOverlay"><span class="timer-number" id="timerDisplay">3</span></div>
-                    <div class="shutter-flash" id="shutterFlash"></div>
-                </div>
+      <div class="runes">
+        <div class="rune r-open" id="unlockBtn" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.7"/></svg>
+          <span data-i18n="openShift">Mở lịch</span>
+        </div>
+        <div class="rune r-lock" id="lockBtn" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+          <span data-i18n="lock">Khóa lịch</span>
+        </div>
+        <div class="rune r-copy" id="copyBtn" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+          <span data-i18n="export">Sao chép</span>
+        </div>
+        <div class="rune r-clear" id="clearBtn" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16M9.5 6.5V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5v2"/><path d="M6.5 6.5V19a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V6.5"/></svg>
+          <span data-i18n="cleanup">Xóa dữ liệu</span>
+        </div>
+      </div>
 
-                <div class="hardware-controls">
-                    <div class="settings-card">
-                        <div class="settings-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                            Thiết Lập Máy Ảnh
-                        </div>
-                        
-                        <div class="control-group">
-                            <label class="control-label" for="cameraSelect">Thiết Bị / Camera Điện Thoại</label>
-                            <div style="display: flex; gap: 8px;">
-                                <select id="cameraSelect" class="custom-select" style="flex: 1;">
-                                    <option value="">Đang dò tìm thiết bị...</option>
-                                </select>
-                                <button id="btnToggleCamMobile" class="btn btn-outline btn-icon-only" title="Đảo Camera Trước/Sau" style="padding: 0 14px;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="control-group" style="margin-top: 8px;">
-                            <label class="control-label" for="timerSelect">Hẹn Giờ Chụp (Countdown)</label>
-                            <select id="timerSelect" class="custom-select">
-                                <option value="3">3 Giây (Tiêu chuẩn)</option>
-                                <option value="5">5 Giây (Chụp nhóm)</option>
-                                <option value="10">10 Giây (Góc rộng)</option>
-                            </select>
-                        </div>
-                    </div>
+      <div id="priorityAdminContainer"></div>
 
-                    <div class="settings-card">
-                        <div class="settings-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-                            Ma Trận Hình Ảnh
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label"><span>Độ Sáng (Brightness)</span><span class="control-value" id="valBright">100%</span></label>
-                            <input type="range" id="sliderBright" min="50" max="150" value="100">
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label"><span>Độ Tương Phản (Contrast)</span><span class="control-value" id="valContrast">100%</span></label>
-                            <input type="range" id="sliderContrast" min="50" max="150" value="100">
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label"><span>Làm Ấm / Cổ Điển (Sepia)</span><span class="control-value" id="valSepia">0%</span></label>
-                            <input type="range" id="sliderSepia" min="0" max="100" value="0">
-                        </div>
-                    </div>
-                </div>
+      <div class="roster">
+        <div id="excelTable" class="roster-scroll"></div>
+      </div>
+    </div>
+  </main>
+</div>
 
-                <div class="action-buttons" style="align-items: center;">
-                    <button id="btnTriggerCapture" class="btn btn-danger" disabled style="min-width: 250px;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
-                        Khởi động Camera...
-                    </button>
-                </div>
+<footer>© 2026 <strong>DangTung</strong> · AN CAFÉ WorkShift Pro</footer>
+
+<script type="module">
+/* =====================================================================
+   AN CAFÉ WorkShift Pro — application layer
+   Data architecture unchanged: Firebase RTDB, dangKy/*, settings/lock
+   ===================================================================== */
+
+/* --- iOS pinch/double-tap zoom guard ------------------------------- */
+document.addEventListener('touchmove', e => {
+  if (e.scale !== 1 || e.touches.length > 1) e.preventDefault();
+}, { passive:false });
+let lastTouchEnd = 0;
+document.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) e.preventDefault();
+  lastTouchEnd = now;
+}, false);
+
+/* --- 1. i18n -------------------------------------------------------- */
+const i18n = {
+  vi:{
+    realtime:"Đồng bộ realtime", title:"Đăng Ký Ca Làm", weekLabel:"Tuần làm việc hiện tại",
+    visitSite:"Ghé thăm ancafe.vn", employeeId:"Tên nhân sự", placeholder:"Ví dụ: AnCafe...",
+    schedule:"Lịch làm việc tuần này", boardHint:"Chọn ca cho từng ngày", shiftLabel:"CA LÀM",
+    chooseShift:"Chọn ca làm", confirmBtn:"Xác Nhận Đăng Ký", managerBtn:"Khu Vực Quản Lý",
+    secureAccess:"Khu Vực Quản Lý", highPrivilege:"Chỉ dành cho quản lý ca của AN CAFÉ",
+    swipeHint:"Vuốt sang phải để mở khóa", dashboard:"Bảng Điều Hành", lockSys:"Thoát",
+    totalEmp:"Tổng nhân sự", totalShifts:"Ca đã đăng ký", openShift:"Mở lịch", lock:"Khóa lịch",
+    export:"Sao chép", cleanup:"Xóa dữ liệu",
+    dayFullName_T2:"Thứ Hai", dayFullName_T3:"Thứ Ba", dayFullName_T4:"Thứ Tư", dayFullName_T5:"Thứ Năm",
+    dayFullName_T6:"Thứ Sáu", dayFullName_T7:"Thứ Bảy", dayFullName_CN:"Chủ Nhật",
+    dayShort_T2:"T2", dayShort_T3:"T3", dayShort_T4:"T4", dayShort_T5:"T5", dayShort_T6:"T6", dayShort_T7:"T7", dayShort_CN:"CN",
+    off:"Nghỉ", offHint:"Không nhận ca",
+    sysLocked:"Bảng đăng ký đã khóa", stopReg:"Hiện không nhận đăng ký ca mới",
+    sysOpen:"Bảng đăng ký đang mở", sysOnline:"Đăng ký ca cho tuần này",
+    emptyData:"Chưa có ai đăng ký ca trong tuần này.", dayTitle:"Ngày", listTitle:"Nhân sự đăng ký",
+    needName:"Nhập tên nhân sự trước khi gửi.", needShift:"Chọn ít nhất một ca trước khi gửi.",
+    saved:"Đã lưu lịch làm việc.", copied:"Đã sao chép bảng lịch.", copyFail:"Không sao chép được.",
+    opened:"Đã mở bảng đăng ký.", locked:"Đã khóa bảng đăng ký.", cleared:"Đã xóa toàn bộ dữ liệu.",
+    badPin:"Mã PIN không đúng.", welcome:"Xin chào, quản lý.", loading:"Đang tải dữ liệu...",
+    overwrite:name => `"${name}" đã có lịch trong tuần này. Ghi đè bằng lịch mới?`,
+    confirmOpen:"Mở bảng đăng ký cho nhân sự?", confirmLock:"Khóa bảng đăng ký?",
+    confirmClear:"Xóa toàn bộ lịch đã đăng ký? Hành động này không thể hoàn tác.",
+    pinPrompt:"Nhập mã PIN để xác nhận:", priority:"Ưu tiên em Tùng nhé chị!!!",
+    supportTitle:"Trung Tâm Thông Báo",
+    supportDesc:"Nếu bạn gặp khó khăn khi đăng ký ca hoặc thấy điểm chưa hợp lý của hệ thống, hãy nhắn cho <strong>host PhuongAnh</strong>. Phản hồi sẽ được xử lý ngay."
+  },
+  en:{
+    realtime:"Live sync", title:"Shift Registration", weekLabel:"Current work week",
+    visitSite:"Visit ancafe.vn", employeeId:"Staff name", placeholder:"Example: AnCafe...",
+    schedule:"This week's schedule", boardHint:"Pick a shift for each day", shiftLabel:"SHIFT",
+    chooseShift:"Choose a shift", confirmBtn:"Confirm Registration", managerBtn:"Management Area",
+    secureAccess:"Management Area", highPrivilege:"For AN CAFÉ shift managers only",
+    swipeHint:"Swipe right to unlock", dashboard:"Control Board", lockSys:"Exit",
+    totalEmp:"Total staff", totalShifts:"Registered shifts", openShift:"Open board", lock:"Lock board",
+    export:"Copy data", cleanup:"Clear data",
+    dayFullName_T2:"Monday", dayFullName_T3:"Tuesday", dayFullName_T4:"Wednesday", dayFullName_T5:"Thursday",
+    dayFullName_T6:"Friday", dayFullName_T7:"Saturday", dayFullName_CN:"Sunday",
+    dayShort_T2:"Mon", dayShort_T3:"Tue", dayShort_T4:"Wed", dayShort_T5:"Thu", dayShort_T6:"Fri", dayShort_T7:"Sat", dayShort_CN:"Sun",
+    off:"Off", offHint:"No shift",
+    sysLocked:"Board is locked", stopReg:"New registrations are closed",
+    sysOpen:"Board is open", sysOnline:"Register your shifts for this week",
+    emptyData:"No one has registered a shift this week.", dayTitle:"Day", listTitle:"Registered staff",
+    needName:"Enter your name before submitting.", needShift:"Pick at least one shift before submitting.",
+    saved:"Schedule saved.", copied:"Schedule copied.", copyFail:"Could not copy.",
+    opened:"Board opened.", locked:"Board locked.", cleared:"All data cleared.",
+    badPin:"Wrong PIN.", welcome:"Welcome, manager.", loading:"Loading data...",
+    overwrite:name => `"${name}" already has a schedule this week. Overwrite it?`,
+    confirmOpen:"Open the board for staff?", confirmLock:"Lock the board?",
+    confirmClear:"Delete every registered shift? This cannot be undone.",
+    pinPrompt:"Enter PIN to confirm:", priority:"Priority: Tùng",
+    supportTitle:"Notice Board",
+    supportDesc:"If you hit a problem registering a shift or spot something wrong in the system, message <strong>host PhuongAnh</strong>. Reports are handled right away."
+  },
+  zh:{
+    realtime:"实时同步", title:"排班登记", weekLabel:"本周工作周",
+    visitSite:"访问 ancafe.vn", employeeId:"员工姓名", placeholder:"示例：AnCafe...",
+    schedule:"本周排班表", boardHint:"为每天选择班次", shiftLabel:"班次",
+    chooseShift:"选择班次", confirmBtn:"确认登记", managerBtn:"管理区域",
+    secureAccess:"管理区域", highPrivilege:"仅限 AN CAFÉ 排班管理员",
+    swipeHint:"向右滑动解锁", dashboard:"控制台", lockSys:"退出",
+    totalEmp:"员工总数", totalShifts:"已登记班次", openShift:"开放登记", lock:"锁定登记",
+    export:"复制数据", cleanup:"清除数据",
+    dayFullName_T2:"星期一", dayFullName_T3:"星期二", dayFullName_T4:"星期三", dayFullName_T5:"星期四",
+    dayFullName_T6:"星期五", dayFullName_T7:"星期六", dayFullName_CN:"星期日",
+    dayShort_T2:"周一", dayShort_T3:"周二", dayShort_T4:"周三", dayShort_T5:"周四", dayShort_T6:"周五", dayShort_T7:"周六", dayShort_CN:"周日",
+    off:"休息", offHint:"不排班",
+    sysLocked:"登记已锁定", stopReg:"暂不接受新的登记",
+    sysOpen:"登记已开放", sysOnline:"可登记本周班次",
+    emptyData:"本周还没有人登记班次。", dayTitle:"日期", listTitle:"登记员工",
+    needName:"请先填写姓名。", needShift:"请至少选择一个班次。",
+    saved:"排班已保存。", copied:"已复制排班表。", copyFail:"复制失败。",
+    opened:"已开放登记。", locked:"已锁定登记。", cleared:"数据已清除。",
+    badPin:"PIN 码错误。", welcome:"欢迎，管理员。", loading:"加载中...",
+    overwrite:name => `“${name}” 本周已有排班，是否覆盖？`,
+    confirmOpen:"开放登记？", confirmLock:"锁定登记？",
+    confirmClear:"删除所有已登记班次？此操作无法撤销。",
+    pinPrompt:"请输入 PIN 码确认：", priority:"优先：Tùng",
+    supportTitle:"通知中心",
+    supportDesc:"如果登记班次时遇到问题，或发现系统异常，请联系 <strong>host PhuongAnh</strong>，我们会立即处理。"
+  },
+  ko:{
+    realtime:"실시간 동기화", title:"근무 등록", weekLabel:"이번 주 근무",
+    visitSite:"ancafe.vn 방문", employeeId:"직원 이름", placeholder:"예: AnCafe...",
+    schedule:"이번 주 근무표", boardHint:"요일마다 근무를 선택하세요", shiftLabel:"근무",
+    chooseShift:"근무 선택", confirmBtn:"등록 확인", managerBtn:"관리 구역",
+    secureAccess:"관리 구역", highPrivilege:"AN CAFÉ 근무 관리자 전용",
+    swipeHint:"오른쪽으로 밀어 잠금 해제", dashboard:"관리 보드", lockSys:"나가기",
+    totalEmp:"전체 직원", totalShifts:"등록된 근무", openShift:"등록 열기", lock:"등록 잠금",
+    export:"데이터 복사", cleanup:"데이터 삭제",
+    dayFullName_T2:"월요일", dayFullName_T3:"화요일", dayFullName_T4:"수요일", dayFullName_T5:"목요일",
+    dayFullName_T6:"금요일", dayFullName_T7:"토요일", dayFullName_CN:"일요일",
+    dayShort_T2:"월", dayShort_T3:"화", dayShort_T4:"수", dayShort_T5:"목", dayShort_T6:"금", dayShort_T7:"토", dayShort_CN:"일",
+    off:"휴무", offHint:"근무 없음",
+    sysLocked:"등록이 잠겼습니다", stopReg:"새 등록을 받지 않습니다",
+    sysOpen:"등록이 열려 있습니다", sysOnline:"이번 주 근무를 등록하세요",
+    emptyData:"이번 주 등록된 근무가 없습니다.", dayTitle:"요일", listTitle:"등록 직원",
+    needName:"먼저 이름을 입력하세요.", needShift:"근무를 하나 이상 선택하세요.",
+    saved:"근무표가 저장되었습니다.", copied:"근무표를 복사했습니다.", copyFail:"복사하지 못했습니다.",
+    opened:"등록을 열었습니다.", locked:"등록을 잠갔습니다.", cleared:"데이터를 삭제했습니다.",
+    badPin:"PIN이 올바르지 않습니다.", welcome:"관리자님, 환영합니다.", loading:"불러오는 중...",
+    overwrite:name => `"${name}" 님은 이미 이번 주 근무가 있습니다. 덮어쓸까요?`,
+    confirmOpen:"등록을 열까요?", confirmLock:"등록을 잠글까요?",
+    confirmClear:"등록된 모든 근무를 삭제할까요? 되돌릴 수 없습니다.",
+    pinPrompt:"확인하려면 PIN을 입력하세요:", priority:"우선: Tùng",
+    supportTitle:"공지 센터",
+    supportDesc:"근무 등록 중 문제가 있거나 시스템 오류를 발견하면 <strong>host PhuongAnh</strong> 에게 알려주세요. 바로 처리하겠습니다."
+  },
+  ja:{
+    realtime:"リアルタイム同期", title:"シフト登録", weekLabel:"今週の勤務",
+    visitSite:"ancafe.vn を見る", employeeId:"スタッフ名", placeholder:"例：AnCafe...",
+    schedule:"今週のシフト表", boardHint:"曜日ごとにシフトを選択", shiftLabel:"シフト",
+    chooseShift:"シフトを選択", confirmBtn:"登録を確定", managerBtn:"管理エリア",
+    secureAccess:"管理エリア", highPrivilege:"AN CAFÉ のシフト管理者専用",
+    swipeHint:"右にスワイプしてロック解除", dashboard:"管理ボード", lockSys:"終了",
+    totalEmp:"スタッフ数", totalShifts:"登録シフト", openShift:"受付開始", lock:"受付停止",
+    export:"データをコピー", cleanup:"データ削除",
+    dayFullName_T2:"月曜日", dayFullName_T3:"火曜日", dayFullName_T4:"水曜日", dayFullName_T5:"木曜日",
+    dayFullName_T6:"金曜日", dayFullName_T7:"土曜日", dayFullName_CN:"日曜日",
+    dayShort_T2:"月", dayShort_T3:"火", dayShort_T4:"水", dayShort_T5:"木", dayShort_T6:"金", dayShort_T7:"土", dayShort_CN:"日",
+    off:"休み", offHint:"シフトなし",
+    sysLocked:"受付を停止中", stopReg:"新規の登録は受け付けていません",
+    sysOpen:"受付中", sysOnline:"今週のシフトを登録できます",
+    emptyData:"今週の登録はまだありません。", dayTitle:"曜日", listTitle:"登録スタッフ",
+    needName:"先に名前を入力してください。", needShift:"シフトを1つ以上選んでください。",
+    saved:"シフトを保存しました。", copied:"シフト表をコピーしました。", copyFail:"コピーできませんでした。",
+    opened:"受付を開始しました。", locked:"受付を停止しました。", cleared:"データを削除しました。",
+    badPin:"PINが違います。", welcome:"管理者さん、ようこそ。", loading:"読み込み中...",
+    overwrite:name => `「${name}」は今週すでに登録があります。上書きしますか？`,
+    confirmOpen:"受付を開始しますか？", confirmLock:"受付を停止しますか？",
+    confirmClear:"登録済みのシフトをすべて削除しますか？元に戻せません。",
+    pinPrompt:"確認のためPINを入力してください：", priority:"優先：Tùng",
+    supportTitle:"お知らせ",
+    supportDesc:"シフト登録で困ったときや不具合を見つけたときは <strong>host PhuongAnh</strong> までご連絡ください。すぐに対応します。"
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'vi';
+const t = key => {
+  const v = (i18n[currentLang] && i18n[currentLang][key]) ?? i18n.vi[key];
+  return v === undefined ? key : v;
+};
+document.getElementById('langSelect').value = currentLang;
+
+/* --- 2. Firebase (unchanged) ---------------------------------------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyCK6yfVr9VBMGwhbvYMXkJqMoRjo4Om2LM",
+  databaseURL:"https://an-quy-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* --- 3. Domain model ------------------------------------------------ */
+const DAYS = ["T2","T3","T4","T5","T6","T7","CN"];
+
+/* ids unchanged — display gains real clock times */
+const SHIFTS = [
+  { id:"C1",          time:"07:00 — 12:30", class:"badge-c1",     sel:"set-c1",     tone:"o-c1", glyph:"sun"   },
+  { id:"C2",          time:"12:30 — 18:00", class:"badge-c2",     sel:"set-c2",     tone:"o-c2", glyph:"half"  },
+  { id:"C3",          time:"18:00 — 23:00", class:"badge-c3",     sel:"set-c3",     tone:"o-c3", glyph:"moon"  },
+  { id:"F1",          time:"07:00 — 15:00", class:"badge-f",      sel:"set-f",      tone:"o-f",  glyph:"bar"   },
+  { id:"F2",          time:"15:00 — 23:30", class:"badge-f",      sel:"set-f",      tone:"o-f",  glyph:"bar"   },
+  { id:"2C(C1+C2)",   time:"07:00 — 18:00", class:"badge-double", sel:"set-double", tone:"o-d",  glyph:"dbl"   },
+  { id:"2C(C2+C3)",   time:"12:30 — 23:00", class:"badge-double", sel:"set-double", tone:"o-d",  glyph:"dbl"   }
+];
+const shiftById = id => SHIFTS.find(s => s.id === id);
+
+const GLYPH = {
+  sun:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6L7 7m10 10l1.4 1.4M5.6 18.4L7 17m10-10l1.4-1.4"/></svg>',
+  half:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M12 5a7 7 0 0 1 0 14z" fill="currentColor" stroke="none"/></svg>',
+  moon:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M19.5 13.6A7.6 7.6 0 1 1 10.4 4.5a6 6 0 0 0 9.1 9.1z"/></svg>',
+  bar:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16"/><path d="M4 7h16M4 17h16" opacity=".45"/></svg>',
+  dbl:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>',
+  off:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 12h12"/></svg>'
+};
+
+/* --- 4. Day scenes: one world, one palette, one light direction ------
+   Shared 8-colour pixel palette. Light always falls from upper-left.  */
+const PAL = {
+  night:'#1d2231', dusk:'#2f3348', warm:'#d6a35e', glow:'#f0cd8e',
+  wood:'#4a3020', woodDark:'#2b1a10', cream:'#e7dac0', brass:'#b08d4f',
+  leaf:'#6d8f6a', deep:'#141824', ember:'#c05a4a'
+};
+const scene = body => `<svg class="pixel-art" viewBox="0 0 48 22" preserveAspectRatio="xMidYMid slice">${body}</svg>`;
+
+const SCENES = {
+  /* Monday — the café opens at sunrise */
+  T2: scene(`
+    <rect width="48" height="22" fill="${PAL.dusk}"/>
+    <rect y="4" width="48" height="4" fill="#4a4258"/>
+    <rect y="8" width="48" height="5" fill="#7d6459"/>
+    <rect x="17" y="5" width="13" height="8" fill="${PAL.warm}"/>
+    <rect x="19" y="3" width="9" height="2" fill="${PAL.glow}"/>
+    <rect y="13" width="48" height="9" fill="${PAL.woodDark}"/>
+    <rect y="13" width="48" height="1" fill="${PAL.wood}"/>
+    <rect x="6" y="14" width="8" height="6" fill="${PAL.cream}"/>
+    <rect x="6" y="14" width="8" height="2" fill="#fff6e6"/>
+    <rect x="7" y="16" width="6" height="2" fill="#9c7440"/>
+    <rect x="14" y="16" width="2" height="3" fill="${PAL.cream}"/>
+    <rect x="5" y="20" width="10" height="1" fill="#1b100a"/>
+    <rect x="8" y="11" width="1" height="3" fill="#fff" opacity=".25"/>
+    <rect x="11" y="10" width="1" height="4" fill="#fff" opacity=".16"/>
+    <rect x="33" y="14" width="7" height="6" fill="#5b3a1f"/>
+    <rect x="33" y="14" width="7" height="1" fill="${PAL.brass}"/>
+    <rect x="35" y="16" width="3" height="2" fill="#3d2513"/>
+    <rect x="42" y="16" width="4" height="4" fill="${PAL.leaf}"/>
+  `),
+  /* Tuesday — market run for beans */
+  T3: scene(`
+    <rect width="48" height="22" fill="${PAL.night}"/>
+    <rect y="11" width="48" height="11" fill="#2a2032"/>
+    <rect x="2" y="2" width="44" height="4" fill="${PAL.cream}"/>
+    <rect x="2" y="2" width="44" height="1" fill="#fff6e6"/>
+    <rect x="6" y="2" width="5" height="4" fill="${PAL.ember}"/>
+    <rect x="16" y="2" width="5" height="4" fill="${PAL.ember}"/>
+    <rect x="26" y="2" width="5" height="4" fill="${PAL.ember}"/>
+    <rect x="36" y="2" width="5" height="4" fill="${PAL.ember}"/>
+    <rect x="3" y="6" width="2" height="14" fill="${PAL.wood}"/>
+    <rect x="43" y="6" width="2" height="14" fill="${PAL.woodDark}"/>
+    <rect x="8" y="12" width="32" height="8" fill="${PAL.wood}"/>
+    <rect x="8" y="12" width="32" height="1" fill="#6b4a2c"/>
+    <rect x="11" y="14" width="6" height="5" fill="#5b3a1f"/>
+    <rect x="20" y="14" width="6" height="5" fill="#5b3a1f"/>
+    <rect x="29" y="14" width="6" height="5" fill="#5b3a1f"/>
+    <rect x="12" y="9" width="4" height="3" fill="${PAL.leaf}"/>
+    <rect x="21" y="9" width="4" height="3" fill="${PAL.leaf}"/>
+    <rect x="30" y="9" width="4" height="3" fill="${PAL.brass}"/>
+    <rect y="20" width="48" height="2" fill="#191322"/>
+  `),
+  /* Wednesday — inside the tavern */
+  T4: scene(`
+    <rect width="48" height="22" fill="#241a14"/>
+    <rect width="48" height="11" fill="#2c1f16"/>
+    <rect x="21" y="1" width="6" height="7" fill="${PAL.brass}"/>
+    <rect x="22" y="2" width="4" height="5" fill="${PAL.glow}"/>
+    <rect x="23" y="0" width="2" height="1" fill="#5a4526"/>
+    <rect x="16" y="8" width="16" height="4" fill="${PAL.warm}" opacity=".16"/>
+    <rect y="15" width="48" height="7" fill="${PAL.woodDark}"/>
+    <rect y="15" width="48" height="1" fill="${PAL.wood}"/>
+    <rect x="3" y="8" width="11" height="9" fill="#5b3a1f"/>
+    <rect x="3" y="10" width="11" height="1" fill="${PAL.brass}"/>
+    <rect x="3" y="15" width="11" height="1" fill="${PAL.brass}"/>
+    <rect x="3" y="8" width="2" height="9" fill="#6d4826"/>
+    <rect x="34" y="10" width="8" height="7" fill="${PAL.cream}"/>
+    <rect x="34" y="10" width="8" height="2" fill="#fff6e6"/>
+    <rect x="35" y="12" width="6" height="2" fill="#9c7440"/>
+    <rect x="42" y="12" width="2" height="3" fill="${PAL.cream}"/>
+    <rect x="18" y="13" width="9" height="4" fill="#3d2a1a"/>
+    <rect x="18" y="13" width="9" height="1" fill="#5b3a1f"/>
+    <rect x="9" y="5" width="1" height="3" fill="#fff" opacity=".12"/>
+  `),
+  /* Thursday — the roastery */
+  T5: scene(`
+    <rect width="48" height="22" fill="${PAL.night}"/>
+    <rect y="14" width="48" height="8" fill="${PAL.woodDark}"/>
+    <rect y="14" width="48" height="1" fill="${PAL.wood}"/>
+    <rect x="4" y="4" width="18" height="2" fill="#3d2a1a"/>
+    <rect x="6" y="1" width="3" height="3" fill="${PAL.brass}"/>
+    <rect x="12" y="1" width="3" height="3" fill="${PAL.cream}" opacity=".7"/>
+    <rect x="18" y="2" width="3" height="2" fill="${PAL.leaf}"/>
+    <rect x="19" y="3" width="11" height="3" fill="${PAL.brass}"/>
+    <rect x="19" y="3" width="11" height="1" fill="#d8bb7e"/>
+    <rect x="21" y="6" width="7" height="8" fill="#5b3a1f"/>
+    <rect x="21" y="6" width="2" height="8" fill="#6d4826"/>
+    <rect x="23" y="8" width="3" height="4" fill="${PAL.woodDark}"/>
+    <rect x="24" y="9" width="1" height="2" fill="${PAL.ember}"/>
+    <rect x="30" y="8" width="4" height="2" fill="${PAL.brass}"/>
+    <rect x="33" y="6" width="2" height="2" fill="${PAL.brass}"/>
+    <rect x="37" y="10" width="7" height="4" fill="#3d2a1a"/>
+    <rect x="38" y="11" width="1" height="1" fill="#8a6a3c"/>
+    <rect x="41" y="12" width="1" height="1" fill="#8a6a3c"/>
+    <rect x="6" y="9" width="7" height="5" fill="#4a3a2a"/>
+    <rect x="6" y="9" width="7" height="1" fill="#6d5a42"/>
+  `),
+  /* Friday — evening café, lantern lit */
+  T6: scene(`
+    <rect width="48" height="22" fill="#1a1c2c"/>
+    <rect x="4" y="2" width="1" height="1" fill="#fff" opacity=".5"/>
+    <rect x="40" y="3" width="1" height="1" fill="#fff" opacity=".4"/>
+    <rect x="31" y="1" width="1" height="1" fill="#fff" opacity=".3"/>
+    <rect x="23" y="0" width="2" height="3" fill="#4b4436"/>
+    <rect x="19" y="3" width="10" height="8" fill="${PAL.brass}"/>
+    <rect x="21" y="4" width="6" height="6" fill="${PAL.glow}"/>
+    <rect x="23" y="5" width="2" height="3" fill="#fff6e6"/>
+    <rect x="19" y="3" width="10" height="1" fill="#d8bb7e"/>
+    <rect x="13" y="11" width="22" height="4" fill="${PAL.warm}" opacity=".16"/>
+    <rect y="14" width="48" height="8" fill="#241a14"/>
+    <rect y="14" width="48" height="1" fill="${PAL.wood}"/>
+    <rect x="5" y="15" width="8" height="5" fill="${PAL.cream}"/>
+    <rect x="5" y="15" width="8" height="2" fill="#fff6e6"/>
+    <rect x="6" y="17" width="6" height="1" fill="#9c7440"/>
+    <rect x="36" y="16" width="7" height="4" fill="#5b3a1f"/>
+    <rect x="36" y="16" width="7" height="1" fill="#6d4826"/>
+    <rect x="21" y="16" width="6" height="4" fill="#3d2a1a"/>
+  `),
+  /* Saturday — a full house */
+  T7: scene(`
+    <rect width="48" height="22" fill="#2a2032"/>
+    <rect y="13" width="48" height="9" fill="#241a14"/>
+    <rect y="13" width="48" height="1" fill="${PAL.wood}"/>
+    <rect x="2" y="1" width="44" height="2" fill="#3a2b1c"/>
+    <rect x="7" y="3" width="3" height="3" fill="${PAL.warm}"/>
+    <rect x="23" y="3" width="3" height="3" fill="${PAL.warm}"/>
+    <rect x="38" y="3" width="3" height="3" fill="${PAL.warm}"/>
+    <rect x="4" y="9" width="9" height="8" fill="${PAL.cream}"/>
+    <rect x="4" y="9" width="9" height="2" fill="#fff6e6"/>
+    <rect x="5" y="11" width="7" height="2" fill="#9c7440"/>
+    <rect x="13" y="11" width="2" height="4" fill="${PAL.cream}"/>
+    <rect x="19" y="7" width="9" height="8" fill="${PAL.cream}"/>
+    <rect x="19" y="7" width="9" height="2" fill="#fff6e6"/>
+    <rect x="20" y="9" width="7" height="2" fill="#9c7440"/>
+    <rect x="17" y="9" width="2" height="4" fill="${PAL.cream}"/>
+    <rect x="34" y="9" width="9" height="8" fill="${PAL.cream}"/>
+    <rect x="34" y="9" width="9" height="2" fill="#fff6e6"/>
+    <rect x="35" y="11" width="7" height="2" fill="#9c7440"/>
+    <rect x="43" y="11" width="2" height="4" fill="${PAL.cream}"/>
+    <rect x="30" y="5" width="2" height="2" fill="${PAL.glow}"/>
+    <rect x="15" y="4" width="2" height="2" fill="${PAL.glow}"/>
+  `),
+  /* Sunday — closed sign, one candle still burning */
+  CN: scene(`
+    <rect width="48" height="22" fill="#161a28"/>
+    <rect x="36" y="2" width="7" height="7" fill="${PAL.cream}" opacity=".8"/>
+    <rect x="34" y="3" width="3" height="5" fill="#161a28"/>
+    <rect x="6" y="2" width="1" height="1" fill="#fff" opacity=".45"/>
+    <rect x="20" y="4" width="1" height="1" fill="#fff" opacity=".3"/>
+    <rect y="15" width="48" height="7" fill="#221912"/>
+    <rect y="15" width="48" height="1" fill="${PAL.wood}"/>
+    <rect x="9" y="4" width="16" height="9" fill="#3d2a1a"/>
+    <rect x="9" y="4" width="16" height="1" fill="#5b3a1f"/>
+    <rect x="11" y="6" width="12" height="4" fill="${PAL.cream}" opacity=".78"/>
+    <rect x="12" y="7" width="10" height="1" fill="#3d2a1a"/>
+    <rect x="12" y="9" width="6" height="1" fill="#3d2a1a"/>
+    <rect x="16" y="2" width="2" height="2" fill="#5a4526"/>
+    <rect x="29" y="11" width="3" height="6" fill="${PAL.cream}"/>
+    <rect x="30" y="8" width="1" height="3" fill="${PAL.glow}"/>
+    <rect x="30" y="7" width="1" height="1" fill="#fff6e6"/>
+    <rect x="26" y="6" width="9" height="11" fill="${PAL.warm}" opacity=".12"/>
+    <rect x="3" y="16" width="5" height="4" fill="#5b3a1f"/>
+  `)
+};
+
+/* --- 5. Clock -------------------------------------------------------- */
+const clockEl = document.getElementById('realTime');
+const tickClock = () => { clockEl.textContent = new Date().toLocaleTimeString('vi-VN', { hour12:false }); };
+setInterval(tickClock, 1000); tickClock();
+
+/* --- 6. Ambient dust ------------------------------------------------- */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let motes = [];
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function sizeCanvas(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', () => { sizeCanvas(); seedMotes(); });
+sizeCanvas();
+
+function seedMotes(){
+  motes = [];
+  const count = Math.min(Math.round(innerWidth * innerHeight / 42000), 26);
+  for (let i = 0; i < count; i++){
+    motes.push({
+      x: Math.random() * innerWidth,
+      y: Math.random() * innerHeight,
+      r: Math.random() * 1.3 + .5,
+      vx: (Math.random() - .5) * .10,
+      vy: -(Math.random() * .16 + .04),
+      a: Math.random() * .3 + .12,
+      ph: Math.random() * Math.PI * 2
+    });
+  }
+}
+seedMotes();
+
+function driftMotes(ts){
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  for (const m of motes){
+    m.x += m.vx; m.y += m.vy;
+    if (m.y < -6){ m.y = innerHeight + 6; m.x = Math.random() * innerWidth; }
+    if (m.x < -6) m.x = innerWidth + 6;
+    if (m.x > innerWidth + 6) m.x = -6;
+    const flicker = m.a * (0.65 + 0.35 * Math.sin(ts / 900 + m.ph));
+    const g = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r * 3.2);
+    g.addColorStop(0, `rgba(226,190,132,${flicker})`);
+    g.addColorStop(1, 'rgba(226,190,132,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(m.x, m.y, m.r * 3.2, 0, Math.PI * 2); ctx.fill();
+  }
+  requestAnimationFrame(driftMotes);
+}
+if (!reduceMotion) requestAnimationFrame(driftMotes);
+
+/* --- 7. Theme -------------------------------------------------------- */
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('theme') || 'dark';
+root.setAttribute('data-theme', savedTheme);
+paintThemeIcon(savedTheme);
+
+document.getElementById('themeBtn').onclick = () => {
+  const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  paintThemeIcon(next);
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', next === 'dark' ? '#140d09' : '#3b2b20');
+};
+function paintThemeIcon(theme){
+  document.getElementById('moonIcon').classList.toggle('hidden', theme === 'dark');
+  document.getElementById('sunIcon').classList.toggle('hidden', theme === 'light');
+}
+
+/* --- 8. Slogan ------------------------------------------------------- */
+const SLOGANS = [
+  "Nơi chốn thoải mái. Cảm giác thân thuộc.",
+  "Hương vị đậm đà. Khởi nguồn sáng tạo.",
+  "Góc nhỏ an yên giữa lòng thành phố.",
+  "Thưởng thức cà phê. Kết nối đam mê."
+];
+const typeEl = document.getElementById('typewriter-text');
+let sIdx = 0, cIdx = 0, deleting = false;
+(function typeLoop(){
+  const line = SLOGANS[sIdx];
+  cIdx += deleting ? -1 : 1;
+  typeEl.textContent = line.slice(0, cIdx);
+  let delay = deleting ? 22 : 52;
+  if (!deleting && cIdx === line.length){ delay = 2600; deleting = true; }
+  else if (deleting && cIdx === 0){ deleting = false; sIdx = (sIdx + 1) % SLOGANS.length; delay = 450; }
+  setTimeout(typeLoop, delay);
+})();
+
+/* --- 9. Toasts ------------------------------------------------------- */
+const TOAST_ICON = {
+  ok:'<path d="M20 6L9 17l-5-5"/>',
+  err:'<path d="M18 6L6 18M6 6l12 12"/>',
+  warn:'<path d="M12 8v5m0 4h.01M10.3 3.9L2.5 17.5A2 2 0 0 0 4.2 20.5h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>'
+};
+function showToast(msg, kind = 'ok'){
+  const map = { success:'ok', error:'err', warning:'warn' };
+  kind = map[kind] || kind;
+  const el = document.createElement('div');
+  el.className = `toast toast-${kind}`;
+  el.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${TOAST_ICON[kind]}</svg><span></span>`;
+  el.querySelector('span').textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  requestAnimationFrame(() => el.classList.add('show'));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2800);
+}
+
+/* --- 10. Notices modal ---------------------------------------------- */
+const supportModal = document.getElementById('supportModal');
+document.getElementById('supportBtn').onclick = () => supportModal.classList.remove('hidden');
+document.getElementById('closeSupportBtn').onclick = () => supportModal.classList.add('hidden');
+supportModal.addEventListener('click', e => { if (e.target === supportModal) supportModal.classList.add('hidden'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') supportModal.classList.add('hidden'); });
+
+/* --- 11. Build the quest board -------------------------------------- */
+const boardEl = document.getElementById('form');
+
+function optionRow(day, shift){
+  const isOff = !shift;
+  const id = isOff ? '' : shift.id;
+  const code = isOff ? t('off') : shift.id;
+  const time = isOff ? t('offHint') : shift.time;
+  const tone = isOff ? 'o-off' : shift.tone;
+  const glyph = isOff ? GLYPH.off : GLYPH[shift.glyph];
+  return `<div class="dd-option" role="option" data-day="${day}" data-value="${id}" data-off="${isOff ? 1 : 0}">
+      <span class="o-mark ${tone}">${glyph}</span>
+      <span class="o-body"><span class="o-code">${code}</span><span class="o-time">${time}</span></span>
+      <span class="o-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+    </div>`;
+}
+
+function buildBoard(){
+  boardEl.innerHTML = DAYS.map(day => {
+    const wide = day === 'CN' ? ' is-wide' : '';
+    const options = [optionRow(day, null), ...SHIFTS.map(s => optionRow(day, s))].join('');
+    return `
+      <article class="day-card${wide}" id="card_${day}">
+        <div class="day-top">
+          <span class="day-name" id="fullDayText_${day}">${t('dayFullName_' + day)}</span>
+          <span class="day-chip" id="shortDayText_${day}">${t('dayShort_' + day)}</span>
+        </div>
+        <div class="scene">${SCENES[day] || ''}</div>
+        <div class="shift-slot">
+          <span class="slot-label" id="slotLabel_${day}">${t('shiftLabel')}</span>
+          <div class="dropdown" id="dropdown_${day}">
+            <div class="dd-trigger" role="button" tabindex="0" aria-haspopup="listbox" data-day="${day}">
+              <span class="dd-mark" id="mark_${day}">${GLYPH.off}</span>
+              <span class="dd-text">
+                <span class="dd-code" id="text_${day}">${t('off')}</span>
+                <span class="dd-time" id="time_${day}"></span>
+              </span>
+              <svg class="dd-caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </div>
-        </section>
-
-        <section id="tab-processing" class="tab-section">
-            <div class="glass-panel panel-max-md processing-container">
-                <div class="loader-ring"></div>
-                <h2>Đang In Nghệ Thuật...</h2>
-                <p>Máy chủ đang áp dụng đổ bóng 3D, tính toán phân luồng Text Wrapping và Render High-Resolution.</p>
+            <div class="dd-panel" role="listbox">
+              <div class="dd-heading" id="ddHeading_${day}">${t('chooseShift')}</div>
+              ${options}
             </div>
-        </section>
+            <input type="hidden" id="${day}" value="">
+          </div>
+        </div>
+      </article>`;
+  }).join('');
+}
+buildBoard();
 
-        <section id="tab-result" class="tab-section">
-            <div class="result-stage">
-                <div class="canvas-wrapper"><canvas id="finalPrintCanvas" width="1200" height="1600"></canvas></div>
-                <div class="result-actions">
-                    <button id="btnResetSession" class="btn btn-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Tạo Phiên Mới</button>
-                    <button id="btnSaveToDevice" class="btn btn-golden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Tải & Lưu Vào Thư Viện</button>
-                </div>
-            </div>
-        </section>
+/* delegated interaction — trigger opens, option selects */
+boardEl.addEventListener('click', e => {
+  const trigger = e.target.closest('.dd-trigger');
+  if (trigger){ window.toggleDropdown(trigger.dataset.day); return; }
+  const option = e.target.closest('.dd-option');
+  if (option){
+    const label = option.dataset.off === '1' ? t('off') : option.dataset.value;
+    window.selectShift(option.dataset.day, option.dataset.value, label);
+  }
+});
+boardEl.addEventListener('keydown', e => {
+  const trigger = e.target.closest('.dd-trigger');
+  if (trigger && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); window.toggleDropdown(trigger.dataset.day); }
+});
 
-        <section id="tab-gallery" class="tab-section">
-            <div class="glass-panel" style="max-width: 1100px;">
-                <div class="gallery-header">
-                    <h2>Nhật Ký Sự Kiện Lễ Hội Đền Đô</h2>
-                    <div class="gallery-stats" id="galleryCounter">Tổng: 0 ảnh</div>
-                </div>
-                <div id="galleryGrid" class="gallery-grid">
-                    <div class="gallery-empty">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                        <p>Dữ liệu trống. Hãy quay lại phòng chụp để tạo những bức ảnh nghệ thuật đầu tiên.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+window.toggleDropdown = function(day){
+  document.querySelectorAll('.dropdown').forEach(el => {
+    if (el.id !== 'dropdown_' + day){ el.classList.remove('open'); el.closest('.day-card').style.zIndex = '1'; }
+  });
+  const dd = document.getElementById('dropdown_' + day);
+  if (!dd) return;
+  const card = dd.closest('.day-card');
+  const open = dd.classList.toggle('open');
+  card.style.zIndex = open ? '40' : '1';
+};
 
-    <script>
-        "use strict";
+window.selectShift = function(day, value, label){
+  const dd = document.getElementById('dropdown_' + day);
+  if (!dd) return;
+  const shift = shiftById(value);
+  const input = document.getElementById(day);
+  input.value = value;
 
-        const APP_CONFIG = {
-            rules: { totalPhotosRequired: 3, exportQuality: 0.95, canvasWidth: 1200, canvasHeight: 1600, targetRatio: 4 / 3 },
-            storageKey: 'DangTung_Gallery_v1',
-            fonts: { royal: "'Cormorant Garamond', 'Times New Roman', serif" },
-            palette: { paperBgCenter: '#FFF9EB', paperBgEdge: '#E8D5B5', paperBgDark: '#D8B88C', inkDark: '#3A2618', redRoyal: '#A61C1C', goldRoyal: '#C49A00', photoWhite: '#FFFFFF' }
-        };
+  document.getElementById('text_' + day).textContent = shift ? shift.id : (label || t('off'));
+  document.getElementById('time_' + day).textContent = shift ? shift.time : '';
+  document.getElementById('mark_' + day).innerHTML = shift ? GLYPH[shift.glyph] : GLYPH.off;
 
-        const AppState = { frames: [], currentDeviceId: null, currentFacingMode: 'user', isMirroredPreview: true, stream: null, isProcessing: false, countdownTime: 3, filters: { bright: 100, contrast: 100, sepia: 0 }, savedGallery: [] };
+  const trigger = dd.querySelector('.dd-trigger');
+  trigger.className = 'dd-trigger' + (shift ? ' ' + shift.sel : '');
+  dd.closest('.day-card').classList.toggle('is-set', !!shift);
 
-        const Utils = {
-            el: (id) => document.getElementById(id),
-            Storage: {
-                save: (dataArray) => { try { localStorage.setItem(APP_CONFIG.storageKey, JSON.stringify(dataArray)); } catch(e) { console.warn("Bộ nhớ Local đầy."); } },
-                load: () => { const d = localStorage.getItem(APP_CONFIG.storageKey); return d ? JSON.parse(d) : []; }
-            },
-            Toast: {
-                show: (msg, type = 'success', duration = 3500) => {
-                    const toast = Utils.el('toastNotification'); const text = Utils.el('toastMessage'); const icon = document.querySelector('.toast-icon');
-                    text.innerText = msg;
-                    if(type === 'error') { icon.style.color = '#ef4444'; toast.style.borderColor = 'rgba(239, 68, 68, 0.3)'; } 
-                    else { icon.style.color = '#10b981'; toast.style.borderColor = 'rgba(255, 255, 255, 0.1)'; }
-                    toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), duration);
-                }
-            }
-        };
+  dd.querySelectorAll('.dd-option').forEach(o => o.setAttribute('data-active', o.dataset.value === value ? '1' : '0'));
 
-        class AudioEngine {
-            constructor() { const AudioCtx = window.AudioContext || window.webkitAudioContext; this.ctx = new AudioCtx(); }
-            playTone(freq, dur, type = 'sine', vol = 0.5) {
-                if(this.ctx.state === 'suspended') this.ctx.resume();
-                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                osc.type = type; osc.frequency.value = freq; osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); gain.gain.setValueAtTime(vol, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + dur); osc.stop(this.ctx.currentTime + dur);
-            }
-            beepTimer() { this.playTone(880, 0.15, 'sine', 0.4); }
-            beepShutter() { this.playTone(150, 0.1, 'square', 0.6); }
-        }
-        const AudioSys = new AudioEngine();
+  dd.classList.remove('open');
+  dd.closest('.day-card').style.zIndex = '1';
+  if (navigator.vibrate && shift) navigator.vibrate(8);
+};
 
-        class CameraManager {
-            constructor() {
-                this.videoEl = Utils.el('liveVideoFeed'); this.selectEl = Utils.el('cameraSelect'); this.btnCapture = Utils.el('btnTriggerCapture');
-            }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown')){
+    document.querySelectorAll('.dropdown.open').forEach(el => {
+      el.classList.remove('open'); el.closest('.day-card').style.zIndex = '1';
+    });
+  }
+});
 
-            async initializeSystem() {
-                try {
-                    await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                    await this.populateCameraList();
-                    await this.startStream(false); // Gọi luồng theo deviceId ban đầu
-                } catch (err) {
-                    Utils.el('cameraStatusText').innerText = "Từ chối quyền Camera!";
-                    Utils.Toast.show("Không thể truy cập máy ảnh. Vui lòng cấp quyền.", "error");
-                }
-            }
+function resetBoard(){
+  DAYS.forEach(day => window.selectShift(day, '', t('off')));
+}
 
-            async populateCameraList() {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(d => d.kind === 'videoinput');
-                this.selectEl.innerHTML = '';
-                if(videoDevices.length === 0) { this.selectEl.innerHTML = '<option>Không tìm thấy thiết bị</option>'; return; }
+/* --- 12. Board lock state ------------------------------------------- */
+let manualLock = null;
+onValue(ref(db, "settings/lock"), snap => {
+  manualLock = snap.exists() ? snap.val() : null;
+  paintStatus();
+});
 
-                videoDevices.forEach((d, i) => {
-                    const opt = document.createElement('option'); opt.value = d.deviceId; opt.text = d.label || `Máy ảnh ${i + 1}`; this.selectEl.appendChild(opt);
-                });
-                AppState.currentDeviceId = videoDevices[0].deviceId;
-                
-                this.selectEl.addEventListener('change', (e) => {
-                    AppState.currentDeviceId = e.target.value;
-                    this.startStream(false); // Dùng DeviceID khi chọn từ Dropdown
-                });
-            }
+function isSystemLocked(){
+  if (manualLock === true) return true;
+  if (manualLock === false) return false;
+  const now = new Date(), dow = now.getDay(), h = now.getHours();
+  return (dow === 5 && h >= 20) || dow === 6 || dow === 0;
+}
 
-            // Logic quản lý luồng ảnh, tự động nhận biết cam trước/sau
-            async startStream(useFacingMode = false) {
-                if (AppState.stream) AppState.stream.getTracks().forEach(t => t.stop());
-                this.btnCapture.disabled = true;
+function paintStatus(){
+  const plate = document.getElementById('lockStatus');
+  const submit = document.getElementById('submitBtn');
+  const locked = isSystemLocked();
+  const sigil = locked
+    ? '<rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>'
+    : '<path d="M21 12.2V13a9 9 0 1 1-5.3-8.2"/><path d="M21.5 5L12 14.5l-2.8-2.8"/>';
+  plate.innerHTML = `
+    <div class="status-plate ${locked ? 'is-locked' : 'is-open'}">
+      <div class="status-sigil">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${sigil}</svg>
+      </div>
+      <div class="status-copy">
+        <span class="status-title">${locked ? t('sysLocked') : t('sysOpen')}</span>
+        <span class="status-desc">${locked ? t('stopReg') : t('sysOnline')}</span>
+      </div>
+    </div>`;
+  submit.disabled = locked;
+  submit.textContent = locked ? t('sysLocked') : t('confirmBtn');
+}
 
-                let constraints = { audio: false, video: { width: { ideal: 1920 }, height: { ideal: 1080 } } };
-                
-                if (useFacingMode) {
-                    constraints.video.facingMode = { ideal: AppState.currentFacingMode };
-                    AppState.currentDeviceId = null;
-                    this.selectEl.value = ""; // Xoá trắng dropdown vì đang xài mode di động
-                } else if (AppState.currentDeviceId) {
-                    constraints.video.deviceId = { exact: AppState.currentDeviceId };
-                } else {
-                    constraints.video.facingMode = { ideal: AppState.currentFacingMode };
-                }
+/* --- 13. Submit ------------------------------------------------------ */
+document.getElementById('submitBtn').onclick = async () => {
+  const nameInput = document.getElementById('name');
+  const employeeName = nameInput.value.trim();
+  if (!employeeName){ nameInput.focus(); return showToast(t('needName'), 'warn'); }
+  if (isSystemLocked()) return showToast(t('sysLocked'), 'err');
 
-                try {
-                    AppState.stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    this.videoEl.srcObject = AppState.stream;
-                    
-                    // Phát hiện thông minh: Cam sau thì không được lật
-                    const track = AppState.stream.getVideoTracks()[0];
-                    const label = track.label.toLowerCase();
-                    if (AppState.currentFacingMode === 'environment' || label.includes('back') || label.includes('rear') || label.includes('sau')) {
-                        AppState.isMirroredPreview = false;
-                    } else {
-                        AppState.isMirroredPreview = true;
-                    }
-                    
-                    // Chỉ lật Preview để dễ tạo dáng (nếu là cam trước)
-                    this.videoEl.style.transform = AppState.isMirroredPreview ? 'scaleX(-1)' : 'none';
+  const schedule = {};
+  DAYS.forEach(day => {
+    const v = document.getElementById(day).value;
+    if (v) schedule[day] = v;
+  });
+  if (!Object.keys(schedule).length) return showToast(t('needShift'), 'warn');
 
-                    this.videoEl.onloadedmetadata = () => {
-                        this.btnCapture.disabled = false;
-                        Utils.el('cameraStatusText').innerText = "Hệ thống Quang học Ổn định";
-                        AppCtrl.updateUIState();
-                    };
-                } catch (e) { Utils.Toast.show("Lỗi khởi động luồng camera.", "error"); }
-            }
+  const btn = document.getElementById('submitBtn');
+  const label = btn.textContent;
+  btn.textContent = '...'; btn.disabled = true;
 
-            toggleMobileCamera() {
-                AppState.currentFacingMode = AppState.currentFacingMode === 'user' ? 'environment' : 'user';
-                this.startStream(true);
-            }
+  try {
+    const snap = await get(ref(db, "dangKy/" + employeeName));
+    if (snap.exists() && !confirm(t('overwrite')(employeeName))){
+      btn.textContent = label; btn.disabled = false; return;
+    }
+    await set(ref(db, "dangKy/" + employeeName), { lich:schedule, timestamp:Date.now() });
+    showToast(t('saved'), 'ok');
+    if (navigator.vibrate) navigator.vibrate([12, 40, 12]);
+    nameInput.value = '';
+    resetBoard();
+  } catch (err){
+    console.error('Firebase write error:', err);
+    showToast(err.message || 'Error', 'err');
+  } finally {
+    btn.textContent = label; btn.disabled = false;
+    paintStatus();
+  }
+};
 
-            applyLiveFilters() { const f = AppState.filters; this.videoEl.style.filter = `brightness(${f.bright}%) contrast(${f.contrast}%) sepia(${f.sepia}%)`; }
+/* --- 14. Area switching ---------------------------------------------- */
+document.getElementById('managerBtn').onclick = () => {
+  document.getElementById('userCard').classList.add('hidden');
+  document.getElementById('managerBox').classList.remove('hidden');
+  initSwipeTrail();
+};
+document.getElementById('logoutBtn').onclick = () => {
+  document.getElementById('adminPanel').classList.add('hidden');
+  document.getElementById('managerBox').classList.add('hidden');
+  document.getElementById('userCard').classList.remove('hidden');
+  document.getElementById('loginSection').classList.remove('hidden');
+};
 
-            captureHighResFrame() {
-                const tempCanvas = document.createElement('canvas'); const vW = this.videoEl.videoWidth; const vH = this.videoEl.videoHeight; const target = APP_CONFIG.rules.targetRatio;
-                let cropX = 0, cropY = 0, cropW = vW, cropH = vH;
-                if (vW / vH > target) { cropW = cropH * target; cropX = (vW - cropW) / 2; } else { cropH = cropW / target; cropY = (vH - cropH) / 2; }
+/* --- 15. Swipe to unlock --------------------------------------------- */
+let startX = 0, isSwiping = false, swipeDone = false, trail = [];
+const swipeZone = document.getElementById('swipeZone');
+const trailCanvas = document.getElementById('swipeTrailCanvas');
+const tCtx = trailCanvas.getContext('2d');
 
-                tempCanvas.width = 1200; tempCanvas.height = 900; const ctx = tempCanvas.getContext('2d');
-                ctx.filter = `brightness(${AppState.filters.bright}%) contrast(${AppState.filters.contrast}%) sepia(${AppState.filters.sepia}%)`;
-                
-                // QUAN TRỌNG: Không Flip Canvas ở đây để Ảnh in cuối cùng luôn thuận chiều chữ thực tế!
-                ctx.drawImage(this.videoEl, cropX, cropY, cropW, cropH, 0, 0, tempCanvas.width, tempCanvas.height);
-                return tempCanvas;
-            }
-        }
-        const CamSys = new CameraManager();
+function resizeTrailCanvas(){
+  const r = swipeZone.parentElement.getBoundingClientRect();
+  trailCanvas.width = r.width; trailCanvas.height = r.height;
+}
+function initSwipeTrail(){
+  swipeDone = false; isSwiping = false; trail = [];
+  resizeTrailCanvas();
+  tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+}
+window.addEventListener('resize', resizeTrailCanvas);
 
-        class GraphicsEngine {
-            constructor() { this.canvas = Utils.el('finalPrintCanvas'); this.ctx = this.canvas.getContext('2d'); }
+function drawTrail(){
+  tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+  if (trail.length < 2) return;
+  tCtx.beginPath();
+  tCtx.moveTo(trail[0].x, trail[0].y);
+  for (let i = 1; i < trail.length; i++){
+    const xc = (trail[i].x + trail[i-1].x) / 2;
+    const yc = (trail[i].y + trail[i-1].y) / 2;
+    tCtx.quadraticCurveTo(trail[i-1].x, trail[i-1].y, xc, yc);
+  }
+  tCtx.strokeStyle = 'rgba(226,200,139,.85)';
+  tCtx.lineWidth = 3;
+  tCtx.lineCap = 'round';
+  tCtx.lineJoin = 'round';
+  tCtx.shadowBlur = 10;
+  tCtx.shadowColor = 'rgba(214,163,94,.7)';
+  tCtx.stroke();
+}
+setInterval(() => {
+  if (trail.length && !isSwiping){ trail.shift(); drawTrail(); }
+  else if (trail.length > 18) trail.shift();
+}, 22);
 
-            drawTextStrictBounds(text, x, y, maxWidth, lineHeight) {
-                const paragraphs = text.split('\n'); let currentY = y;
-                for (let p of paragraphs) {
-                    const words = p.split(' '); let line = '';
-                    for (let n = 0; n < words.length; n++) {
-                        const testLine = line + words[n] + ' '; const metrics = this.ctx.measureText(testLine);
-                        if (metrics.width > maxWidth && n > 0) { this.ctx.fillText(line.trim(), x, currentY); line = words[n] + ' '; currentY += lineHeight; } else { line = testLine; }
-                    }
-                    this.ctx.fillText(line.trim(), x, currentY); currentY += lineHeight;
-                } return currentY;
-            }
+swipeZone.addEventListener('pointerdown', e => {
+  if (swipeDone) return;
+  isSwiping = true; startX = e.clientX; trail = [];
+  swipeZone.setPointerCapture(e.pointerId);
+});
+swipeZone.addEventListener('pointermove', e => {
+  if (!isSwiping || swipeDone) return;
+  const r = trailCanvas.getBoundingClientRect();
+  trail.push({ x:e.clientX - r.left, y:e.clientY - r.top });
+  drawTrail();
+  if (e.clientX - startX > 150){
+    swipeDone = true; isSwiping = false;
+    tCtx.fillStyle = 'rgba(214,163,94,.16)';
+    tCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
+    if (navigator.vibrate) navigator.vibrate([18, 40, 18]);
+    setTimeout(() => { loginAdmin(); initSwipeTrail(); }, 230);
+  }
+});
+swipeZone.addEventListener('pointerup', e => {
+  if (!isSwiping) return;
+  isSwiping = false;
+  swipeZone.releasePointerCapture(e.pointerId);
+});
 
-            drawVectorStar(cx, cy, r, color) {
-                this.ctx.beginPath(); this.ctx.moveTo(cx, cy - r);
-                for (let i = 0; i < 5; i++) {
-                    this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i)) * r, cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i)) * r);
-                    this.ctx.lineTo(cx + Math.cos(Math.PI/2*3 + Math.PI/5 * (2*i+1)) * (r/2.2), cy + Math.sin(Math.PI/2*3 + Math.PI/5 * (2*i+1)) * (r/2.2));
-                }
-                this.ctx.closePath(); this.ctx.fillStyle = color; this.ctx.fill();
-            }
+function loginAdmin(){
+  showToast(t('welcome'), 'ok');
+  document.getElementById('loginSection').classList.add('hidden');
+  document.getElementById('adminPanel').classList.remove('hidden');
+  fetchAndRenderAdminData();
+}
 
-            drawDecorDashedLines(yPos) {
-                this.ctx.beginPath(); this.ctx.setLineDash([8, 8]); this.ctx.moveTo(60, yPos); this.ctx.lineTo(1140, yPos);
-                this.ctx.strokeStyle = APP_CONFIG.palette.inkDark; this.ctx.lineWidth = 1.5; this.ctx.stroke(); this.ctx.setLineDash([]);
-            }
+/* --- 16. Management data --------------------------------------------- */
+let rawExcelDataExport = "";
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-            drawPolaroidShadowFrame(imgObj, x, y, w, h) {
-                this.ctx.save();
-                this.ctx.shadowColor = 'rgba(0,0,0,0.5)'; this.ctx.shadowBlur = 30; this.ctx.shadowOffsetX = 10; this.ctx.shadowOffsetY = 15;
-                this.ctx.fillStyle = APP_CONFIG.palette.photoWhite; this.ctx.fillRect(x - 14, y - 14, w + 28, h + 28);
-                this.ctx.shadowColor = 'transparent';
-                this.ctx.strokeStyle = APP_CONFIG.palette.inkDark; this.ctx.lineWidth = 1; this.ctx.strokeRect(x - 2, y - 2, w + 4, h + 4);
-                this.ctx.drawImage(imgObj, x, y, w, h);
-                this.ctx.restore();
-            }
+async function fetchAndRenderAdminData(){
+  const tableEl = document.getElementById('excelTable');
+  tableEl.innerHTML = `<div style="padding:16px"><div class="skeleton" style="height:120px"></div></div>`;
 
-            async compileFinalPoster() {
-                await document.fonts.ready; const ctx = this.ctx; const c = APP_CONFIG.palette; const fontR = APP_CONFIG.fonts.royal; const w = APP_CONFIG.rules.canvasWidth; const h = APP_CONFIG.rules.canvasHeight;
-                
-                const grad = ctx.createRadialGradient(w/2, h/2, 100, w/2, h/2, h); grad.addColorStop(0, c.paperBgCenter); grad.addColorStop(0.7, c.paperBgEdge); grad.addColorStop(1, c.paperBgDark); ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
-                for(let i=0; i<9000; i++) { ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.03})`; ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2); }
+  try {
+    const snapshot = await get(ref(db, "dangKy"));
+    if (!snapshot.exists()){
+      tableEl.innerHTML = `<div class="empty-note">${t('emptyData')}</div>`;
+      document.getElementById('totalUsers').textContent = '0';
+      document.getElementById('totalShifts').textContent = '0';
+      document.getElementById('priorityAdminContainer').innerHTML = '';
+      rawExcelDataExport = '';
+      return;
+    }
 
-                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 2.5; ctx.strokeRect(30, 30, w - 60, h - 60); ctx.lineWidth = 1; ctx.strokeRect(38, 38, w - 76, h - 76);
+    const data = snapshot.val() || {};
+    const isSpecialAdmin = name => { const n = name.toLowerCase(); return n.includes('tùng') || n.includes('tung'); };
+    const allNames = Object.keys(data).sort((a, b) => a.localeCompare(b));
+    const adminNames = allNames.filter(isSpecialAdmin);
+    let countUsers = allNames.length, countShifts = 0;
 
-                ctx.beginPath(); ctx.roundRect(60, 60, 240, 90, 20); ctx.stroke();
-                ctx.fillStyle = c.inkDark; ctx.textAlign = "center"; ctx.font = `bold 28px ${fontR}`; ctx.fillText("Đăng Tùng", 180, 100); ctx.font = `italic 22px ${fontR}`; ctx.fillText("Photobooth", 180, 135);
+    /* priority notice */
+    const priority = document.getElementById('priorityAdminContainer');
+    let decree = '';
+    adminNames.forEach(adminName => {
+      const lich = (data[adminName] && data[adminName].lich) || {};
+      const cells = DAYS.filter(d => lich[d]).map(d => {
+        const info = shiftById(lich[d]);
+        return `<div class="decree-cell">
+            <span class="decree-day">${t('dayShort_' + d)}</span>
+            <span class="badge ${info ? info.class : 'badge-double'}">${esc(lich[d])}</span>
+          </div>`;
+      }).join('');
+      if (cells){
+        decree += `<div class="decree-member">
+            <div class="decree-name">${esc(adminName)} <span class="tag">ADMIN</span></div>
+            <div class="decree-shifts">${cells}</div>
+          </div>`;
+      }
+    });
+    priority.innerHTML = decree
+      ? `<div class="decree"><div class="decree-title">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6L12 16.8 6.6 19.6l1.2-6L3.3 9.4l6.1-.8z"/></svg>
+           ${esc(t('priority'))}</div>${decree}</div>`
+      : '';
 
-                ctx.textAlign = "left"; ctx.font = `bold 90px ${fontR}`; ctx.fillStyle = 'rgba(196, 154, 0, 0.35)'; ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 345, 140); ctx.fillStyle = c.redRoyal; ctx.fillText("LỄ HỘI ĐỀN ĐÔ", 340, 135);
-                this.drawDecorDashedLines(180);
+    /* roster */
+    let rows = '';
+    rawExcelDataExport = `${t('dayTitle')}\t${t('listTitle')}\n`;
 
-                this.drawPolaroidShadowFrame(AppState.frames[0], 60, 220, 680, 510);
-                this.drawPolaroidShadowFrame(AppState.frames[1], 60, 760, 330, 247.5);
-                this.drawPolaroidShadowFrame(AppState.frames[2], 410, 760, 330, 247.5);
+    DAYS.forEach(day => {
+      const dayName = t('dayFullName_' + day);
+      const chips = [], exportBits = [];
 
-                ctx.strokeRect(60, 1070, 680, 160); ctx.fillStyle = c.redRoyal; ctx.fillRect(70, 1080, 100, 140);
-                this.drawVectorStar(120, 1120, 20, c.goldRoyal); this.drawVectorStar(120, 1180, 20, c.goldRoyal);
-                ctx.fillStyle = c.redRoyal; ctx.textAlign = "center"; ctx.font = `bold 55px ${fontR}`; ctx.fillText("TỰ HÀO LÀ NGƯỜI", 410, 1140); ctx.fillText("VIỆT NAM", 410, 1205);
+      allNames.forEach(person => {
+        const lich = (data[person] && typeof data[person] === 'object') ? data[person].lich : null;
+        const shift = lich ? lich[day] : null;
+        if (!shift) return;
+        countShifts++;
+        exportBits.push(`${person} (${shift})`);
+        if (isSpecialAdmin(person)) return;
+        const info = shiftById(shift);
+        chips.push(`<span class="staff-chip"><span class="staff-name">${esc(person)}</span><span class="badge ${info ? info.class : 'badge-double'}">${esc(shift)}</span></span>`);
+      });
 
-                const rx = 760; const rw = 380;
-                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 2; ctx.strokeRect(rx, 220, rw, 1030); ctx.lineWidth = 1; ctx.strokeRect(rx+6, 226, rw-12, 1018);
-                ctx.fillStyle = c.inkDark; ctx.textAlign = "left"; ctx.font = `bold 60px ${fontR}`; ctx.fillText("BẢN TIN", rx + 25, 300);
-                ctx.fillStyle = c.redRoyal; ctx.fillRect(rx + rw - 85, 250, 60, 40); this.drawVectorStar(rx + rw - 55, 270, 12, c.goldRoyal);
+      rows += `<tr><td class="day-col">${dayName}</td><td>${chips.length ? chips.join('') : '<span style="opacity:.5">—</span>'}</td></tr>`;
+      rawExcelDataExport += `${dayName}\t${exportBits.length ? exportBits.join(', ') : '-'}\n`;
+    });
 
-                ctx.fillStyle = c.inkDark; ctx.font = `24px ${fontR}`;
-                const textHistory = "Đền Đô hay còn gọi là (Đền Lý Bát Đế, Cổ Pháp Điện) được xây dựng vào thế kỷ XI, nằm ở phường Đình Bảng, TP Từ Sơn. Nơi đây thờ 8 vị vua triều Lý.\n\nĐền được dựng trên nền đất mà khi xưa vua Lý Công Uẩn đăng quang và trở lại thăm quê hương. Theo sử sách, dân làng đã cho xây dựng một ngôi nhà lớn làm nơi nghênh tiếp nhà vua.\n\nNhắc đến Bắc Ninh, người ta thường nghĩ đến những làn điệu Quan họ ngọt ngào, những làng nghề truyền thống và văn hóa lâu đời đậm đà bản sắc dân tộc.";
-                this.drawTextStrictBounds(textHistory, rx + 25, 350, rw - 50, 36);
+    tableEl.innerHTML = `<table><thead><tr><th>${t('dayTitle')}</th><th>${t('listTitle')}</th></tr></thead><tbody>${rows}</tbody></table>`;
+    countUp('totalUsers', countUsers);
+    countUp('totalShifts', countShifts);
 
-                const templeY = 1200; 
-                ctx.fillStyle = c.inkDark; ctx.fillRect(rx + rw/2 - 80, templeY, 160, 12); ctx.fillRect(rx + rw/2 - 60, templeY-40, 15, 40); ctx.fillRect(rx + rw/2 + 45, templeY-40, 15, 40);
-                ctx.beginPath(); ctx.moveTo(rx + rw/2 - 100, templeY-40); ctx.lineTo(rx + rw/2 + 100, templeY-40); ctx.lineTo(rx + rw/2 + 60, templeY-70); ctx.lineTo(rx + rw/2 - 60, templeY-70); ctx.fill();
-                ctx.fillRect(rx + rw/2 - 25, templeY-100, 50, 30); ctx.beginPath(); ctx.moveTo(rx + rw/2 - 50, templeY-100); ctx.lineTo(rx + rw/2 + 50, templeY-100); ctx.lineTo(rx + rw/2 + 30, templeY-130); ctx.lineTo(rx + rw/2 - 30, templeY-130); ctx.fill();
-                ctx.strokeStyle = c.inkDark; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(rx + rw/2 - 100, templeY-55, 15, 0.5*Math.PI, 1.5*Math.PI); ctx.stroke(); ctx.beginPath(); ctx.arc(rx + rw/2 + 100, templeY-55, 15, 1.5*Math.PI, 0.5*Math.PI); ctx.stroke();
+  } catch (err){
+    console.error('Firebase read error:', err);
+    showToast(err.message || 'Error', 'err');
+  }
+}
 
-                this.drawDecorDashedLines(1290);
-                ctx.fillStyle = c.inkDark; ctx.textAlign = "center"; ctx.font = `bold 45px ${fontR}`; ctx.fillText("Chào Mừng Đến Với Di Tích Quốc Gia Đặc Biệt Lễ Hội Đền Đô", w / 2, 1410);
-                ctx.font = `italic 30px ${fontR}`; ctx.fillText("Bắc Ninh, Ngày " + new Date().toLocaleDateString('vi-VN'), w / 2, 1475);
-            }
-        }
-        const Engine = new GraphicsEngine();
+/* --- 17. Management actions ------------------------------------------ */
+document.getElementById('copyBtn').onclick = () => {
+  if (!rawExcelDataExport) return showToast(t('emptyData'), 'warn');
+  navigator.clipboard.writeText(rawExcelDataExport)
+    .then(() => showToast(t('copied'), 'ok'))
+    .catch(() => showToast(t('copyFail'), 'err'));
+};
+document.getElementById('unlockBtn').onclick = async () => {
+  if (!confirm(t('confirmOpen'))) return;
+  await set(ref(db, "settings/lock"), false);
+  showToast(t('opened'), 'ok');
+};
+document.getElementById('lockBtn').onclick = async () => {
+  if (!confirm(t('confirmLock'))) return;
+  await set(ref(db, "settings/lock"), true);
+  showToast(t('locked'), 'warn');
+};
+document.getElementById('clearBtn').onclick = async () => {
+  if (!confirm(t('confirmClear'))) return;
+  const pin = prompt(t('pinPrompt'));
+  if (pin === "2005"){
+    await remove(ref(db, "dangKy"));
+    showToast(t('cleared'), 'ok');
+    fetchAndRenderAdminData();
+  } else if (pin !== null){
+    showToast(t('badPin'), 'err');
+  }
+};
 
-        const AppCtrl = {
-            async boot() { this.initBackgroundFX(); this.bindDOMEvents(); AppState.savedGallery = Utils.Storage.load(); await CamSys.initializeSystem(); },
-            bindDOMEvents() {
-                Utils.el('btnToggleCamMobile').onclick = () => CamSys.toggleMobileCamera();
-                Utils.el('sliderBright').oninput = (e) => { AppState.filters.bright = e.target.value; Utils.el('valBright').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
-                Utils.el('sliderContrast').oninput = (e) => { AppState.filters.contrast = e.target.value; Utils.el('valContrast').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
-                Utils.el('sliderSepia').oninput = (e) => { AppState.filters.sepia = e.target.value; Utils.el('valSepia').innerText = e.target.value + '%'; CamSys.applyLiveFilters(); };
-                Utils.el('timerSelect').onchange = (e) => { AppState.countdownTime = parseInt(e.target.value); };
-                Utils.el('btnTriggerCapture').onclick = () => this.handleCaptureSequence();
-                Utils.el('btnResetSession').onclick = () => { AppState.frames = []; this.updateUIState(); this.switchTab('tab-camera'); };
-                Utils.el('btnSaveToDevice').onclick = () => {
-                    const dataUrl = Utils.el('finalPrintCanvas').toDataURL('image/jpeg', APP_CONFIG.rules.exportQuality);
-                    const a = document.createElement('a'); a.download = `PhienBan_DangTung_Photobooth_${Date.now()}.jpg`; a.href = dataUrl; a.click();
-                    AppState.savedGallery.push(dataUrl); Utils.Storage.save(AppState.savedGallery); Utils.Toast.show("Đã in và lưu vào Thư Viện hệ thống!");
-                };
-            },
-            updateUIState() {
-                const len = AppState.frames.length; const req = APP_CONFIG.rules.totalPhotosRequired; const btn = Utils.el('btnTriggerCapture');
-                [1, 2, 3].forEach(i => { Utils.el(`progDot${i}`).className = i <= len ? 'progress-dot active' : 'progress-dot'; });
-                if (len === 0) btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg> Bấm Khởi Động (${len}/${req})`;
-                else if (len < req) btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg> Chụp Góc Kế Tiếp (${len}/${req})`;
-            },
-            handleCaptureSequence() {
-                if (AppState.isProcessing) return; AppState.isProcessing = true; Utils.el('btnTriggerCapture').disabled = true;
-                let counter = AppState.countdownTime; const overDisplay = Utils.el('timerOverlay'); const textDisplay = Utils.el('timerDisplay');
-                overDisplay.style.display = 'flex'; textDisplay.innerText = counter; AudioSys.beepTimer();
-                const timerInterval = setInterval(() => {
-                    counter--; if (counter > 0) { textDisplay.innerText = counter; AudioSys.beepTimer(); }
-                    else { clearInterval(timerInterval); overDisplay.style.display = 'none'; this.executeSnap(); }
-                }, 1000);
-            },
-            executeSnap() {
-                AudioSys.beepShutter(); const flash = Utils.el('shutterFlash'); flash.style.animation = 'none'; flash.offsetHeight; flash.style.animation = 'shutterFlash 0.6s ease-out forwards';
-                AppState.frames.push(CamSys.captureHighResFrame()); AppState.isProcessing = false; this.updateUIState();
-                if (AppState.frames.length >= APP_CONFIG.rules.totalPhotosRequired) this.renderCompilation(); else Utils.el('btnTriggerCapture').disabled = false;
-            },
-            renderCompilation() {
-                this.switchTab('tab-processing');
-                setTimeout(async () => { await Engine.compileFinalPoster(); this.switchTab('tab-result'); Utils.Toast.show("Đã kết xuất thành công Bản in Nghệ thuật!"); }, 1500);
-            },
-            switchTab(targetId) {
-                document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                Utils.el(targetId).classList.add('active'); const btn = document.querySelector(`[data-target="${targetId}"]`); if(btn) btn.classList.add('active');
-                if (targetId === 'tab-gallery') this.buildGalleryDOM();
-            },
-            buildGalleryDOM() {
-                const grid = Utils.el('galleryGrid'); Utils.el('galleryCounter').innerText = `Tổng: ${AppState.savedGallery.length} bản in`;
-                if (AppState.savedGallery.length === 0) { grid.innerHTML = `<div class="gallery-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><p>Dữ liệu trống. Máy chủ chưa ghi nhận bản in nào.</p></div>`; return; }
-                let htmlContent = ''; [...AppState.savedGallery].reverse().forEach(imgBase64 => { htmlContent += `<div class="gallery-card" onclick="window.open('${imgBase64}', '_blank')"><img src="${imgBase64}" loading="lazy" alt="Lễ Hội Đền Đô"></div>`; }); grid.innerHTML = htmlContent;
-            },
-            initBackgroundFX() {
-                const canvas = Utils.el('particleCanvas'); const ctx = canvas.getContext('2d'); let w, h, particles = [];
-                const onResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }; window.addEventListener('resize', onResize); onResize();
-                for(let i = 0; i < 60; i++) particles.push({ x: Math.random() * w, y: Math.random() * h, radius: Math.random() * 2.5 + 0.5, dy: Math.random() * -0.6 - 0.2, opacity: Math.random() * 0.4 + 0.1 });
-                const animateLoop = () => { ctx.clearRect(0, 0, w, h); particles.forEach(p => { p.y += p.dy; if(p.y < 0) { p.y = h; p.x = Math.random() * w; } ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fillStyle = `rgba(245, 158, 11, ${p.opacity})`; ctx.fill(); }); requestAnimationFrame(animateLoop); }; animateLoop();
-            }
-        };
+function countUp(id, end){
+  const el = document.getElementById(id);
+  if (reduceMotion){ el.textContent = end; return; }
+  const dur = 600; let t0 = null;
+  const step = ts => {
+    if (!t0) t0 = ts;
+    const p = Math.min((ts - t0) / dur, 1);
+    el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * end);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
 
-        window.addEventListener('DOMContentLoaded', () => AppCtrl.boot());
-    </script>
+/* --- 18. Language switching ------------------------------------------ */
+function applyLanguage(){
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (typeof val === 'string') el.innerHTML = val;
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  });
+
+  DAYS.forEach(day => {
+    const full = document.getElementById('fullDayText_' + day);
+    const short = document.getElementById('shortDayText_' + day);
+    const slot = document.getElementById('slotLabel_' + day);
+    const head = document.getElementById('ddHeading_' + day);
+    if (full) full.textContent = t('dayFullName_' + day);
+    if (short) short.textContent = t('dayShort_' + day);
+    if (slot) slot.textContent = t('shiftLabel');
+    if (head) head.textContent = t('chooseShift');
+
+    const dd = document.getElementById('dropdown_' + day);
+    if (!dd) return;
+    const offOption = dd.querySelector('.dd-option[data-off="1"]');
+    if (offOption){
+      offOption.querySelector('.o-code').textContent = t('off');
+      offOption.querySelector('.o-time').textContent = t('offHint');
+    }
+    if (!document.getElementById(day).value){
+      document.getElementById('text_' + day).textContent = t('off');
+      document.getElementById('time_' + day).textContent = '';
+    }
+  });
+
+  paintStatus();
+  if (!document.getElementById('adminPanel').classList.contains('hidden')) fetchAndRenderAdminData();
+}
+
+document.getElementById('langSelect').addEventListener('change', e => {
+  currentLang = e.target.value;
+  localStorage.setItem('lang', currentLang);
+  applyLanguage();
+});
+
+/* --- 19. Easter egg: gravity failure ---------------------------------- */
+let gravityOn = false, logoTaps = 0;
+document.querySelector('.brand').addEventListener('click', () => {
+  if (gravityOn) return;
+  logoTaps++;
+  if (logoTaps >= 5) dropEverything();
+  setTimeout(() => { logoTaps = 0; }, 2000);
+});
+
+let lastA = { x:null, y:null, z:null };
+window.addEventListener('devicemotion', ev => {
+  if (gravityOn) return;
+  const a = ev.accelerationIncludingGravity;
+  if (!a || a.x === null) return;
+  const d = Math.abs(lastA.x !== null ? a.x - lastA.x : 0)
+          + Math.abs(lastA.y !== null ? a.y - lastA.y : 0)
+          + Math.abs(lastA.z !== null ? a.z - lastA.z : 0);
+  if (d > 40) dropEverything();
+  lastA = { x:a.x, y:a.y, z:a.z };
+});
+
+function dropEverything(){
+  gravityOn = true;
+  showToast('Gravity failure — tap to restore', 'warn');
+  if (navigator.vibrate) navigator.vibrate([90, 50, 90]);
+
+  const reset = document.createElement('button');
+  reset.textContent = 'Khôi phục';
+  reset.style.cssText = "position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:999999;padding:11px 18px;border-radius:5px;border:1px solid rgba(0,0,0,.6);color:#fdf1e2;font-family:inherit;font-weight:600;cursor:pointer;background-image:linear-gradient(170deg,#d0705c,#9c4136);box-shadow:inset 0 1px 0 rgba(255,210,190,.4),0 4px 12px rgba(0,0,0,.5)";
+  document.body.appendChild(reset);
+  reset.onclick = () => location.reload();
+
+  const bodies = [];
+  document.querySelectorAll('.card, .header').forEach(el => {
+    const r = el.getBoundingClientRect();
+    Object.assign(el.style, {
+      width:r.width + 'px', height:r.height + 'px', position:'fixed',
+      top:r.top + 'px', left:r.left + 'px', margin:'0', transition:'none', zIndex:'9999'
+    });
+    bodies.push({ el, x:r.left, y:r.top, vx:(Math.random()-.5)*14, vy:-5-Math.random()*9, rot:0, vr:(Math.random()-.5)*9 });
+  });
+
+  const g = .8, bounce = .5;
+  (function tick(){
+    if (!gravityOn) return;
+    bodies.forEach(p => {
+      p.vy += g; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      if (p.y + p.el.offsetHeight > innerHeight){
+        p.y = innerHeight - p.el.offsetHeight; p.vy *= -bounce; p.vx *= .95; p.vr *= .95;
+      }
+      if (p.x < 0){ p.x = 0; p.vx *= -bounce; p.vr *= -.8; }
+      else if (p.x + p.el.offsetWidth > innerWidth){ p.x = innerWidth - p.el.offsetWidth; p.vx *= -bounce; p.vr *= -.8; }
+      p.el.style.top = p.y + 'px'; p.el.style.left = p.x + 'px';
+      p.el.style.transform = `rotate(${p.rot}deg)`;
+    });
+    requestAnimationFrame(tick);
+  })();
+}
+
+/* --- boot ------------------------------------------------------------- */
+applyLanguage();
+</script>
 </body>
 </html>
