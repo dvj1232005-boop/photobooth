@@ -1,0 +1,467 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+/* =================================
+   INTRO ROOT
+================================= */
+
+.intro-screen {
+  --brand-red: #b51f2b;
+  --brand-red-deep: #941923;
+
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+
+  min-height: 100vh;
+  min-height: 100svh;
+
+  overflow: hidden;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  padding:
+    max(24px, env(safe-area-inset-top))
+    clamp(22px, 5vw, 76px)
+    max(24px, env(safe-area-inset-bottom));
+
+  color: #ffffff;
+  background: var(--brand-red);
+
+  font-family: "Manrope", Arial, sans-serif;
+
+  isolation: isolate;
+
+  animation: intro-bg-in 650ms ease both;
+}
+
+/* =================================
+   BACKGROUND
+================================= */
+
+.intro-screen::before {
+  content: "";
+
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 43%,
+      rgba(255, 255, 255, 0.075),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      transparent 48%,
+      rgba(70, 0, 8, 0.08)
+    );
+}
+
+.intro-screen__grain {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+
+  pointer-events: none;
+  opacity: 0.11;
+
+  background-image: url(
+    "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"
+  );
+}
+
+/* =================================
+   TOP BAR
+================================= */
+
+.intro-screen__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.19em;
+
+  opacity: 0;
+
+  animation: intro-rise 650ms 250ms ease forwards;
+}
+
+.intro-screen__topline span:last-child {
+  opacity: 0.72;
+}
+
+/* =================================
+   CENTER CONTENT
+================================= */
+
+.intro-screen__center {
+  align-self: center;
+  justify-self: center;
+
+  width: min(100%, 820px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  transform: translateY(-1.5%);
+}
+
+/* =================================
+   LOGO
+================================= */
+
+.intro-screen__logo-wrap {
+  width: clamp(190px, 38vw, 390px);
+
+  aspect-ratio: 1;
+
+  display: grid;
+  place-items: center;
+
+  opacity: 0;
+
+  transform: scale(0.78) rotate(-2deg);
+
+  animation:
+    intro-logo-in
+    1050ms
+    250ms
+    cubic-bezier(0.2, 0.8, 0.2, 1)
+    forwards;
+}
+
+.intro-screen__logo {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+/* =================================
+   TYPOGRAPHY
+================================= */
+
+.intro-screen__copy {
+  margin-top: clamp(12px, 2.5vh, 28px);
+  overflow: hidden;
+}
+
+.intro-screen__overline {
+  margin: 0 0 12px;
+
+  font-size: clamp(9px, 1.4vw, 12px);
+  font-weight: 800;
+  letter-spacing: 0.34em;
+
+  opacity: 0;
+
+  animation: intro-rise 600ms 850ms ease forwards;
+}
+
+.intro-screen__headline {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0;
+  margin: 0;
+
+  font-size: clamp(35px, 8.3vw, 92px);
+  line-height: 0.98;
+
+  font-weight: 800;
+  letter-spacing: -0.075em;
+}
+
+.intro-screen__headline span {
+  display: block;
+
+  opacity: 0;
+
+  transform: translateY(105%) scale(0.94);
+
+  animation:
+    intro-word-in
+    850ms
+    cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+.intro-screen__headline span:first-child {
+  animation-delay: 950ms;
+}
+
+.intro-screen__headline-second {
+  font-size: 0.43em;
+  letter-spacing: 0.12em;
+
+  margin-top: 15px;
+
+  animation-delay: 1250ms !important;
+}
+
+.intro-screen__tagline {
+  margin: 22px 0 0;
+
+  font-size: clamp(9px, 1.5vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+
+  opacity: 0;
+
+  animation: intro-rise 650ms 1650ms ease forwards;
+}
+
+/* =================================
+   BOTTOM BAR
+================================= */
+
+.intro-screen__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  opacity: 0;
+
+  animation: intro-rise 650ms 1500ms ease forwards;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.19em;
+}
+
+.intro-screen__index {
+  opacity: 0.72;
+}
+
+.intro-screen__caption {
+  opacity: 0.72;
+}
+
+/* =================================
+   ENTER BUTTON
+================================= */
+
+.intro-screen__enter {
+  min-width: 160px;
+  min-height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  padding: 0 19px;
+
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  border-radius: 999px;
+
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+
+  cursor: pointer;
+
+  transition:
+    color 220ms ease,
+    background 220ms ease,
+    transform 220ms ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.intro-screen__enter:hover {
+  color: var(--brand-red);
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+.intro-screen__enter:active {
+  transform: scale(0.97);
+}
+
+.intro-screen__enter:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.intro-screen__enter:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.intro-screen__arrow {
+  font-size: 19px;
+  line-height: 1;
+}
+
+/* =================================
+   EXIT ANIMATION
+================================= */
+
+.intro-screen--leaving {
+  pointer-events: none;
+
+  animation:
+    intro-exit
+    720ms
+    cubic-bezier(0.7, 0, 0.2, 1)
+    forwards;
+}
+
+.intro-screen--leaving .intro-screen__logo-wrap {
+  animation:
+    intro-logo-out
+    720ms
+    ease
+    forwards;
+}
+
+/* =================================
+   KEYFRAMES
+================================= */
+
+@keyframes intro-bg-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes intro-logo-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.78) rotate(-2deg);
+    filter: blur(10px);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(1.035) rotate(0);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes intro-word-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes intro-logo-out {
+  to {
+    transform: scale(1.18);
+    opacity: 0;
+    filter: blur(5px);
+  }
+}
+
+@keyframes intro-exit {
+  to {
+    opacity: 0;
+    transform: scale(1.035);
+    visibility: hidden;
+  }
+}
+
+/* =================================
+   MOBILE RESPONSIVE
+================================= */
+
+@media (max-width: 600px) {
+  .intro-screen {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .intro-screen__topline,
+  .intro-screen__bottom {
+    font-size: 8px;
+    letter-spacing: 0.13em;
+  }
+
+  .intro-screen__topline span:last-child {
+    text-align: right;
+  }
+
+  .intro-screen__logo-wrap {
+    width: min(66vw, 290px);
+  }
+
+  .intro-screen__headline {
+    font-size: clamp(39px, 12vw, 66px);
+  }
+
+  .intro-screen__headline-second {
+    font-size: 0.36em;
+    letter-spacing: 0.08em;
+  }
+
+  .intro-screen__enter {
+    min-width: 132px;
+    min-height: 48px;
+
+    gap: 14px;
+    padding: 0 15px;
+  }
+
+  .intro-screen__caption {
+    max-width: 90px;
+
+    text-align: right;
+    line-height: 1.5;
+  }
+}
+
+/* =================================
+   REDUCED MOTION ACCESSIBILITY
+================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-screen *,
+  .intro-screen::before {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
